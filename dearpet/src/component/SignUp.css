@@ -1,12 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Licorice&display=swap');
-
 body {
     font-family: 'Noto Sans', sans-serif;
     font-size: 16px;
     color: #333;
-    background: linear-gradient(135deg, #e3f2fd, #90caf9); /* 배경 그라데이션 추가 */
-    margin: 0;
-    padding: 0;
   }
   
   .main-content {
@@ -17,11 +12,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* 수직 정렬 */
+    justify-content: center;
     background-color: #F7F4FD;
   }
   
-  .login-container {
+  .signup-container {
     background-color: rgba(255, 255, 255, 0.95); /* 반투명 배경 */
     padding: 30px;
     border-radius: 20px; /* 둥근 모서리 */
@@ -30,9 +25,22 @@ body {
     transition: all 0.3s ease-in-out; /* 부드러운 트랜지션 */
   }
   
-  .login-button:hover {
-    background-color: #7B52E1; /* hover 시 더 진한 색상 */
-    transform: scale(1.02); /* 살짝 커지는 애니메이션 */
+  .dearpet-title {
+    font-family: 'Licorice', cursive;
+    font-size: 100px;
+    text-align: center;
+  }
+  
+  .signup-button {
+    background-color: #7B52E1;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  .signup-button:hover {
+    background-color: #A558E2;
+    transform: scale(1.02);
   }
   
   input {
@@ -44,14 +52,7 @@ body {
   }
   
   input:focus {
-    border-color: #7B52E1; /* 포커스 시 테두리 색 변경 */
-    outline: none; /* 기본 outline 제거 */
+    border-color: #1976d2;
+    outline: none;
   }
-  
-  img {
-    border-radius: 50%;
-  }
-
-  
-  
   

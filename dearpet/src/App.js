@@ -1,8 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
+import { Routes, Route, Router } from 'react-router-dom';
+import Login from './component/Login'; // 로그인 컴포넌트
+import SignUp from './component/SignUp'; // 회원가입 컴포넌트
 
-function App() {
+const App = () => {
   return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+    </Routes>
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -15,11 +22,11 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React12
+          Learn React
         </a>
       </header>
     </div>
   );
-}
+};
 
 export default App;

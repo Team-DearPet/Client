@@ -31,13 +31,12 @@ const PetList = () => {
                     alignItems: 'flex-start',
                     padding: 3,
                     borderRadius: 2,
-                    maxWidth: 600,
+                    maxWidth: 800,
                     width: '100%',
                     bgcolor: 'background.paper',
-                    gap: 2, // 요소 간 간격 조정
+                    gap: 2,
                 }}
             >
-                {/* 마이펫 텍스트 */}
                 <Typography 
                     variant="h6" 
                     sx={{ fontWeight: 'bold', alignSelf: 'flex-start' }}
@@ -45,7 +44,6 @@ const PetList = () => {
                     마이펫
                 </Typography>
 
-                {/* 아바타, 펫 정보, 편집 버튼 */}
                 <Box 
                     sx={{ 
                         display: 'flex', 
@@ -68,7 +66,6 @@ const PetList = () => {
                         </Typography>
                     </Box>
 
-                    {/* 편집 버튼 */}
                     <Button 
                         onClick={handleMypet} 
                         sx={{ 
@@ -77,7 +74,7 @@ const PetList = () => {
                             bgcolor: '#d9d9d9', 
                             color: 'white', 
                             '&:hover': { bgcolor: '#9f9f9f' },
-                            marginLeft: 2, // 버튼과 펫 정보 간격
+                            marginLeft: 2,
                         }}
                     >
                         편집

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { 
   Box, Typography, Avatar, IconButton, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions 
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit'; 
 import PersonIcon from '@mui/icons-material/Person';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import CloseIcon from '@mui/icons-material/Close';
@@ -26,13 +25,11 @@ const UserDetail = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // 입력 폼 데이터 업데이트 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 사진 첨부 핸들러
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -60,6 +57,7 @@ const UserDetail = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        margin: '5vh 0',
       }}
     >
       <Box
@@ -68,7 +66,7 @@ const UserDetail = () => {
           alignItems: 'center',
           padding: 3,
           borderRadius: 2,
-          maxWidth: 600,
+          maxWidth: 800,
           width: '100%',
           bgcolor: 'background.paper',
         }}
@@ -112,6 +110,7 @@ const UserDetail = () => {
         >
             <CloseIcon />
         </IconButton>
+        
         <DialogTitle sx={{ textAlign: 'center' }}>내 정보 수정창</DialogTitle>
         <DialogContent>
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>

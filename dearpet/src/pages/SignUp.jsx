@@ -80,7 +80,7 @@ export default function SignUp() {
         DearPet
         </div>
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="sm" className="signup-container">
+        <Container component="main" maxWidth="xs" className="signup-container">
           <CssBaseline />
           <Box
             sx={{
@@ -92,7 +92,7 @@ export default function SignUp() {
           >
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.5rem', marginTop:'-20px' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem', marginTop:'-20px' }}
             >
               아이디
             </Typography>
@@ -112,7 +112,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
-                  height: '70px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },
@@ -121,7 +121,7 @@ export default function SignUp() {
             />
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.5rem' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
             >
               비밀번호
             </Typography>
@@ -141,7 +141,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
-                  height: '70px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },
@@ -150,7 +150,7 @@ export default function SignUp() {
             />
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.5rem' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
             >
               닉네임
             </Typography>
@@ -170,7 +170,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
-                  height: '70px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },
@@ -179,7 +179,7 @@ export default function SignUp() {
             />
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.5rem' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
             >
               이메일
             </Typography>
@@ -199,7 +199,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
-                  height: '70px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },

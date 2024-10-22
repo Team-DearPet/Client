@@ -86,11 +86,11 @@ export default function Login({ setIsLoggedIn, setUserId }) {
 
   return (
     <div className="main-content">
-      <div className="dearpet-title" style={{fontFamily:"Licorice", fontSize:"150px"}}>
+      <div className="dearpet-title" style={{fontFamily:"Licorice", fontSize:"100px"}}>
         DearPet
       </div>
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="sm" className="login-container">
+        <Container component="main" maxWidth="xs" className="login-container">
           <CssBaseline />
           <Box
             sx={{
@@ -125,7 +125,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
-                  height: '70px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#7B52E1',
                   },
@@ -157,7 +157,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
-                  height: '70px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#7B52E1',
                   },

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import { Routes, Route, Router } from 'react-router-dom';
 import Login from './pages/Login'; // 로그인 컴포넌트
 import SignUp from './pages/SignUp'; // 회원가입 컴포넌트
+import OrderHistory from './pages/OrderHistory';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/orders" element={<OrderHistory/>}/>
     </Routes>
   );
 };

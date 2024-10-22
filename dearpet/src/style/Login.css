@@ -48,7 +48,7 @@ body {
     outline: none; /* 기본 outline 제거 */
   }
   
-  img {
+  icon-image {
     border-radius: 50%;
   }
 

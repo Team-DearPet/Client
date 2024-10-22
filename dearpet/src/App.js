@@ -2,8 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home';
 import { Routes, Route, Router } from 'react-router-dom';
-import Login from './component/Login'; // 로그인 컴포넌트
-import SignUp from './component/SignUp'; // 회원가입 컴포넌트
+import Login from './pages/Login'; // 로그인 컴포넌트
+import SignUp from './pages/SignUp'; // 회원가입 컴포넌트
 
 const App = () => {
   return (

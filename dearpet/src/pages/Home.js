@@ -1,7 +1,7 @@
-import Header from '../components/Header';
-import Carousel from '../components/Carousel';
-import Category from '../components/Category';
-import Footer from '../components/Footer';
+import Header from '../component/Header';
+import Carousel from '../component/Carousel';
+import Category from '../component/Category';
+import Footer from '../component/Footer';
 
 const Home = () => {
   return (

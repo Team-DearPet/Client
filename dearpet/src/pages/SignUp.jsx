@@ -87,7 +87,7 @@ export default function SignUp() {
               marginTop: 4,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center', // 중앙 정렬
+              alignItems: 'center', 
             }}
           >
             <Typography

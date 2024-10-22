@@ -183,6 +183,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               startIcon={<img
+                className='icon-image'
                 src={require('../images/Google.jpg')}
                 alt="Google"
                 style={{ width: '24px', height: '24px', borderRadius: '50%' }}
@@ -197,6 +198,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               startIcon={<img
+                className='icon-image'
                 src={require('../images/kakao.jpg')}
                 alt="kakao"
                 style={{ width: '24px', height: '24px', borderRadius: '50%' }}

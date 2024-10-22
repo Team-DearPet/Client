@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Box, TextField, Button, Link, IconButton } from '@mui/material';
 import { Search as SearchIcon, ShoppingCart, Person, ExitToApp, AccountCircle } from '@mui/icons-material';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   };
 
-  // const handleMypage = () => {
-  //   navigate('/mypage');
-  // }
+  const handleMypage = () => {
+    navigate('/mypage');
+  }
 
   // const handleCart = () => {
   //   navigate('/cart')
   // }
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'white', padding: '0 20px', boxShadow: 'none' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#F7F4FD', padding: '0 20px', boxShadow: 'none' }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
       <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
       <Box display="flex" alignItems="center" gap={5}>
@@ -56,7 +56,7 @@ const Header = () => {
         <Box display="flex" alignItems="center" gap={2}>
           {isLoggedIn ? (
             <>
-              <IconButton aria-label='Mypage'>
+              <IconButton onClick={handleMypage} aria-label='Mypage'>
                 <AccountCircle />
               </IconButton>
               <IconButton aria-label="Shopping Cart">

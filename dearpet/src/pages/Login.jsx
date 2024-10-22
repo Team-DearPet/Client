@@ -86,11 +86,11 @@ export default function Login({ setIsLoggedIn, setUserId }) {
 
   return (
     <div className="main-content">
-      <div className="dearpet-title" style={{fontFamily:"Licorice", fontSize:"100px"}}>
+      <div className="dearpet-title" style={{fontFamily:"Licorice", fontSize:"150px"}}>
         DearPet
       </div>
       <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs" className="login-container">
+        <Container component="main" maxWidth="sm" className="login-container">
           <CssBaseline />
           <Box
             sx={{
@@ -100,16 +100,9 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               alignItems: 'center', // 가운데 정렬
             }}
           >
-            <Typography style={{ textShadow: "none" }}
-              component="h1"
-              variant="h5"
-              sx={{ marginBottom: 3, textAlign: 'center' }}
-            >
-              로그인
-            </Typography>
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none', marginTop:'-20px', fontSize:'1.5rem' }}
             >
               아이디
             </Typography>
@@ -132,6 +125,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '70px',
                   '&:focus': {
                     borderColor: '#7B52E1',
                   },
@@ -140,7 +134,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
 
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none', fontSize:'1.5rem' }}
             >
               비밀번호
             </Typography>
@@ -163,6 +157,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '70px',
                   '&:focus': {
                     borderColor: '#7B52E1',
                   },
@@ -188,7 +183,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               startIcon={<img
-                className='icon-image'
                 src={require('../images/Google.jpg')}
                 alt="Google"
                 style={{ width: '24px', height: '24px', borderRadius: '50%' }}
@@ -203,7 +197,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               startIcon={<img
-              className='icon-image'
                 src={require('../images/kakao.jpg')}
                 alt="kakao"
                 style={{ width: '24px', height: '24px', borderRadius: '50%' }}
@@ -228,3 +221,4 @@ export default function Login({ setIsLoggedIn, setUserId }) {
     </div>
   );
 }
+

@@ -193,7 +193,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               구글로 로그인
             </Button>
 
-            {/* Kakao 로그인 버튼 */}
             <Button
               fullWidth
               variant="outlined"

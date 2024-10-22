@@ -164,8 +164,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                 },
               }}
             />
-            
-            {/* 로컬 로그인 버튼 */}
             <Button
               type="submit"
               fullWidth
@@ -177,8 +175,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
             >
               로그인
             </Button>
-
-            {/* Google 로그인 버튼 */}
             <Button
               fullWidth
               variant="outlined"

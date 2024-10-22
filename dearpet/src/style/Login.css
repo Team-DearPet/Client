@@ -2,7 +2,7 @@ body {
   font-family: 'Noto Sans', sans-serif;
   font-size: 16px;
   color: #333;
-  background: linear-gradient(135deg, #e3f2fd, #90caf9); /* 배경 그라데이션 추가 */
+  background: linear-gradient(135deg, #e3f2fd, #90caf9);
   margin: 0;
   padding: 0;
 }
@@ -15,22 +15,22 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* 수직 정렬 */
+  justify-content: center;
   background-color: #F7F4FD;
 }
 
 .login-container {
-  background-color: rgba(255, 255, 255, 0.95); /* 반투명 배경 */
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 30px;
-  border-radius: 20px; /* 둥근 모서리 */
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); /* 더 강한 그림자 */
-  backdrop-filter: blur(10px); /* 블러 효과 추가 */
-  transition: all 0.3s ease-in-out; /* 부드러운 트랜지션 */
+  border-radius: 20px; 
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); 
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease-in-out;
 }
 
 .login-button:hover {
-  background-color: #7B52E1; /* hover 시 더 진한 색상 */
-  transform: scale(1.02); /* 살짝 커지는 애니메이션 */
+  background-color: #7B52E1;
+  transform: scale(1.02); 
 }
 
 input {

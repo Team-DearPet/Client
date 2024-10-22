@@ -42,8 +42,8 @@ input {
 }
 
 input:focus {
-  border-color: #7B52E1; /* 포커스 시 테두리 색 변경 */
-  outline: none; /* 기본 outline 제거 */
+  border-color: #7B52E1;
+  outline: none;
 }
 
 icon-image {

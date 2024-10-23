@@ -68,9 +68,6 @@ const Header = () => {
             </>
           ):(
             <>
-            <Link href="/detail" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
-            상세
-            </Link>
             <Link href="/login" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
             로그인
             </Link>

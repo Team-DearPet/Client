@@ -110,8 +110,7 @@ const UserDetail = () => {
         >
             <CloseIcon />
         </IconButton>
-        
-        <DialogTitle sx={{ textAlign: 'center' }}>내 정보 수정창</DialogTitle>
+        <h3 style={{textAlign: 'center' }}>내 정보 수정창</h3>
         <DialogContent>
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
             <Box sx={{ position: 'relative', marginRight: 2 }}>

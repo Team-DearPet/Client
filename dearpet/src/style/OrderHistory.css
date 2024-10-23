@@ -23,7 +23,6 @@
     margin-bottom: 50px !important;
   }
   
-  /* 주문 상태 섹션 */
   .order-status-container {
     width: 100%;
     max-width: 1024px;
@@ -39,7 +38,6 @@
     font-size: 1.5rem;
   }
   
-  /* 주문 아이템 스타일 */
   .order-item {
     width: 100%;
     max-width: 1024px;
@@ -59,7 +57,6 @@
     font-weight: bold !important;
   }
   
-  /* 주문 상세 정보 */
   .order-paper {
     padding: 15px;
     background-color: #fff;
@@ -109,7 +106,6 @@
     margin-bottom: 5px !important;
   }
   
-  /* 버튼 스타일 */
   .order-button-container {
     text-align: right !important;
   }

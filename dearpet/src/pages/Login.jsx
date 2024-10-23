@@ -100,16 +100,9 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               alignItems: 'center', // 가운데 정렬
             }}
           >
-            <Typography style={{ textShadow: "none" }}
-              component="h1"
-              variant="h5"
-              sx={{ marginBottom: 3, textAlign: 'center' }}
-            >
-              로그인
-            </Typography>
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none', marginTop:'-20px', fontSize:'1.5rem' }}
             >
               아이디
             </Typography>
@@ -132,6 +125,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#7B52E1',
                   },
@@ -140,7 +134,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
 
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none', fontSize:'1.5rem' }}
             >
               비밀번호
             </Typography>
@@ -163,14 +157,13 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#7B52E1',
                   },
                 },
               }}
             />
-            
-            {/* 로컬 로그인 버튼 */}
             <Button
               type="submit"
               fullWidth
@@ -182,8 +175,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
             >
               로그인
             </Button>
-
-            {/* Google 로그인 버튼 */}
             <Button
               fullWidth
               variant="outlined"
@@ -198,12 +189,11 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               구글로 로그인
             </Button>
 
-            {/* Kakao 로그인 버튼 */}
             <Button
               fullWidth
               variant="outlined"
               startIcon={<img
-              className='icon-image'
+                className='icon-image'
                 src={require('../images/kakao.jpg')}
                 alt="kakao"
                 style={{ width: '24px', height: '24px', borderRadius: '50%' }}
@@ -228,3 +218,4 @@ export default function Login({ setIsLoggedIn, setUserId }) {
     </div>
   );
 }
+

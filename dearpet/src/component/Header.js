@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Box, TextField, Button, Link, IconButton } from '@mui/material';
 import { Person } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 import boneLogo from '../images/bone.png';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
 
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn);

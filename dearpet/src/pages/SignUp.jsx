@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,6 +11,8 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormGroup } from '@mui/material';
 import '../style/SignUp.css';
+import boneLogo from '../images/bone.png';
+
 
 // Material UI 테마
 const theme = createTheme({
@@ -76,9 +79,12 @@ export default function SignUp() {
   };
   return (
     <div className="main-content">
-        <div className="dearpet-title">
-        DearPet
-        </div>
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
+              CarePet
+              <img style={{width: '40px'}} src={boneLogo} alt='로고'></img>
+            </Typography>
+      </Link>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" className="signup-container">
           <CssBaseline />

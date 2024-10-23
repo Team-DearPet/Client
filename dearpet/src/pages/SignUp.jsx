@@ -87,19 +87,12 @@ export default function SignUp() {
               marginTop: 4,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center', // 중앙 정렬
+              alignItems: 'center', 
             }}
           >
             <Typography
-              component="h1"
-              variant="h5"
-              sx={{ marginBottom: 3, textAlign: 'center' }}
-            >
-              회원가입
-            </Typography>
-            <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem', marginTop:'-20px' }}
             >
               아이디
             </Typography>
@@ -119,6 +112,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },
@@ -127,7 +121,7 @@ export default function SignUp() {
             />
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
             >
               비밀번호
             </Typography>
@@ -147,6 +141,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },
@@ -155,7 +150,7 @@ export default function SignUp() {
             />
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
             >
               닉네임
             </Typography>
@@ -175,6 +170,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },
@@ -183,7 +179,7 @@ export default function SignUp() {
             />
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
             >
               이메일
             </Typography>
@@ -203,6 +199,7 @@ export default function SignUp() {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   padding: '10px',
+                  height: '50px',
                   '&:focus': {
                     borderColor: '#B3D9E2',
                   },
@@ -216,7 +213,7 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}
               className="signup-button"
               onClick={handleSubmit}
-              style={{backgroundColor:'#7B52E1'}}
+              style={{backgroundColor:'#7B52E1', height:"50px"}}
             >
               회원가입
             </Button>

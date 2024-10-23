@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Tab, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import items from '../data/items';
@@ -13,6 +14,7 @@ const Category = () => {
   const renderItems = (categoryIndex) => (
     <Box display="flex" gap={2} flexWrap="wrap" justifyContent="center">
       {items[categoryIndex].map((item, index) => (
+        <Link to='/detail'>
         <Card
           key={index}
           sx={{
@@ -84,6 +86,7 @@ const Category = () => {
             </Typography>
           </CardContent>
         </Card>
+        </Link>
       ))}
     </Box>
   );

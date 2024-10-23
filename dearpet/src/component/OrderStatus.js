@@ -63,7 +63,7 @@ const OrderStatus = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: '5vh 0',
+        marginTop: '5vh',
       }}
     >
       <Box

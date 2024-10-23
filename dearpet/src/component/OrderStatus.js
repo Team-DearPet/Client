@@ -40,7 +40,7 @@ const OrderStatus = () => {
   const handleClose = () => setOpen(false);
 
   const handleOrder = () => {
-    navigate('/orderhistory');
+    navigate('/orders');
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const OrderStatus = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: '5vh',
+        margin: '5vh 0',
       }}
     >
       <Box

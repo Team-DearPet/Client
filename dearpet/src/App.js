@@ -6,15 +6,18 @@ import Login from './pages/Login'; // 로그인 컴포넌트
 import SignUp from './pages/SignUp'; // 회원가입 컴포넌트
 import OrderHistory from './pages/OrderHistory';
 import OrderComplete from './pages/OrderComplete';
+import Map from './pages/Map';
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/map" element={<Map />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/orders" element={<OrderHistory/>}/>
-      <Route path="/ordersComplete" element={<OrderComplete/>} />
+      <Route path="/orderscomplete" element={<OrderComplete/>} />
+      
     </Routes>
   );
 };

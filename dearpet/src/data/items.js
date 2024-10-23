@@ -1,15 +1,16 @@
 const items = {
   1: [
-    { brand: '바잇미', title: '바잇미 강아지 이지핏 하네스 패딩', image: 'https://via.placeholder.com/200', price: '18,000원' },
-    { brand: '미소펫', title: '가죽 인식표 강아지 목걸이', image: 'https://via.placeholder.com/200', price: '12,000원' },
-    { brand: '몽슈슈', title: '몽슈슈 애견 니트 스웨터', image: 'https://via.placeholder.com/200', price: '25,000원' },
-    { brand: '도그아이템', title: '강아지용 레인코트', image: 'https://via.placeholder.com/200', price: '22,000원' },
-    { brand: '푸디웍스', title: '반려견 겨울 부츠', image: 'https://via.placeholder.com/200', price: '28,000원' },
-    { brand: '아이엠독', title: '아이엠독 털실 방울모자', image: 'https://via.placeholder.com/200', price: '10,000원' },
-    { brand: '해피독', title: '산책용 LED 목걸이', image: 'https://via.placeholder.com/200', price: '8,000원' },
-    { brand: '러브펫', title: '강아지용 털모자 스카프 세트', image: 'https://via.placeholder.com/200', price: '30,000원' },
-    { brand: '댕댕코', title: '댕댕코 애견 반사 조끼', image: 'https://via.placeholder.com/200', price: '15,000원' },
-    { brand: '베베펫', title: '베베펫 니트 가디건', image: 'https://via.placeholder.com/200', price: '32,000원' },
+    { brand: '바잇미', title: '바잇미 강아지 이지핏 하네스 패딩', image: 'https://via.placeholder.com/200', price: '18,000원', discount: '16' },
+    { brand: '미소펫', title: '가죽 인식표 강아지 목걸이', image: 'https://via.placeholder.com/200', price: '12,000원', discount: '23' },
+    { brand: '몽슈슈', title: '몽슈슈 애견 니트 스웨터', image: 'https://via.placeholder.com/200', price: '25,000원', discount: '14' },
+    { brand: '도그아이템', title: '강아지용 레인코트', image: 'https://via.placeholder.com/200', price: '22,000원', discount: '15' },
+    { brand: '푸디웍스', title: '반려견 겨울 부츠', image: 'https://via.placeholder.com/200', price: '28,000원', discount: '18' },
+    { brand: '아이엠독', title: '아이엠독 털실 방울모자', image: 'https://via.placeholder.com/200', price: '10,000원', discount: '8' },
+    { brand: '해피독', title: '산책용 LED 목걸이', image: 'https://via.placeholder.com/200', price: '8,000원', discount: '17' },
+    { brand: '러브펫', title: '강아지용 털모자 스카프 세트', image: 'https://via.placeholder.com/200', price: '30,000원', discount: '30' },
+    { brand: '댕댕코', title: '댕댕코 애견 반사 조끼', image: 'https://via.placeholder.com/200', price: '15,000원', discount: '23' },
+    { brand: '베베펫', title: '베베펫 니트 가디건', image: 'https://via.placeholder.com/200', price: '32,000원', discount: '12' },
+
   ],
   2: [
     { brand: '하림펫푸드', title: '하림펫푸드 밥이보약', image: 'https://via.placeholder.com/200', price: '20,000원' },

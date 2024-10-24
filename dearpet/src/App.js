@@ -9,6 +9,7 @@ import OrderHistory from './pages/OrderHistory';
 import OrderComplete from './pages/OrderComplete';
 import Map from './pages/Map';
 import MyPet from './pages/MyPet';
+import Emergency from './pages/Emergency';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="/mypet" element={<MyPet />} />
       <Route path="/orders" element={<OrderHistory/>}/>
       <Route path="/orderscomplete" element={<OrderComplete/>} />
+      <Route path="/emergency" element={<Emergency/>} />
     </Routes>
   );
 };

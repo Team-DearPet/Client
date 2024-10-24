@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, Typography, Button, Divider } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const BuyFooter = () => {
   const orderAmount = 30000;  // 총 주문금액
-  const shippingCost = 2500;  // 배송비backgroundColor: 'rgba(172, 146, 237, 0.5)',
+  const shippingCost = 2500;  // 배송비
   const totalAmount = orderAmount + shippingCost;  // 결제 예정금액
 
     return (
@@ -11,7 +12,7 @@ const BuyFooter = () => {
             <Box
                 sx={{
                     backgroundColor: '#C0ADF0',
-                    padding: '30px',
+                    padding: '40px',  
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
@@ -20,31 +21,33 @@ const BuyFooter = () => {
                 }}
             >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography sx={{ marginRight: '100px', marginLeft: '300px' }}>
+                    <Typography sx={{ marginRight: '100px', marginLeft: '300px', textAlign: 'center' }}>
                         총 주문금액 <br />
                         <strong>{orderAmount.toLocaleString()}원</strong>
                     </Typography>
                     <Divider orientation="vertical" flexItem sx={{ marginRight: '100px', borderColor: '#ddd' }} />
-                    <Typography sx={{ marginRight: '100px' }}>
+                    <Typography sx={{ marginRight: '100px', textAlign: 'center' }}>
                         배송비 <br />
                         <strong>{shippingCost.toLocaleString()}원</strong>
                     </Typography>
                     <Divider orientation="vertical" flexItem sx={{ marginRight: '100px', borderColor: '#ddd' }} />
-                    <Typography>
+                    <Typography sx={{ textAlign: 'center' }}>
                         결제예정금액 <br />
                         <strong>{totalAmount.toLocaleString()}원</strong>
                     </Typography>
                 </Box>
-                <Button variant="contained"
-                    sx={{ 
-                        backgroundColor: '#7B52E1', 
-                        color: 'white', 
-                        padding: '15px 150px', 
-                        marginRight: '200px',
-                        fontSize: '1.2rem'
-                    }}>
-                    구매하기
-                </Button>
+                <Link to="/order">
+                    <Button variant="contained"
+                        sx={{ 
+                            backgroundColor: '#7B52E1', 
+                            color: 'white', 
+                            padding: '10px 100px',  
+                            marginRight: '200px',
+                            fontSize: '1.2rem'
+                        }}>
+                        주문하기
+                    </Button>
+                </Link>
             </Box>
         </Box>
     );

@@ -11,6 +11,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Map from './pages/Map';
 import MyPet from './pages/MyPet';
+import Order from './pages/Order';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/mypet" element={<MyPet />} />
+      <Route path="/order" element={<Order/>}/>
       <Route path="/orders" element={<OrderHistory/>}/>
       <Route path="/orderscomplete" element={<OrderComplete/>} />
     </Routes>

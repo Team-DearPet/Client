@@ -3,17 +3,24 @@ import { Link } from 'react-router-dom';
 import { Box, Tab, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import items from '../data/items';
+import SearchBar from '../component/SearchBar';
 
 const Category = () => {
   const [value, setValue] = useState('1');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const filteredItems = (categoryIndex) =>
+    items[categoryIndex].filter((item) =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
   const renderItems = (categoryIndex) => (
     <Box display="flex" gap={2} flexWrap="wrap" justifyContent="center">
-      {items[categoryIndex].map((item, index) => (
+      {filteredItems(categoryIndex).map((item, index) => (
         <Link to='/detail'>
         <Card
           key={index}
@@ -46,14 +53,15 @@ const Category = () => {
               sx={{
                 fontWeight: '600',
                 textAlign: 'left',
-                color:"#d9d9d9",
+                color: "#d9d9d9",
                 overflow: 'hidden',
-                whiteSpace: 'nowarp',
+                whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
                 width: '100%',
-                }}>
-                {item.brand}
-            </Typography> 
+              }}
+            >
+              {item.brand}
+            </Typography>
             <Typography
               variant="h6"
               component="div"
@@ -93,13 +101,38 @@ const Category = () => {
 
   return (
     <TabContext value={value}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TabList onChange={handleChange} aria-label="Category tabs" textColor="secondary" indicatorColor="secondary" centered>
-          <Tab label="패션" value="1" />
-          <Tab label="사료" value="2" />
-          <Tab label="장난감" value="3" />
-        </TabList>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '80%',
+          margin: '0 auto',
+          marginTop: 2,
+          padding: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flex: 1,
+            borderBottom: 1,
+            borderColor: 'divider',
+          }}
+        >
+          <TabList onChange={handleChange} aria-label="Category tabs" textColor="secondary" indicatorColor="secondary">
+            <Tab label="패션" value="1" />
+            <Tab label="사료" value="2" />
+            <Tab label="장난감" value="3" />
+          </TabList>
+        </Box>
+
+        <Box>
+          <SearchBar setSearchTerm={setSearchTerm} />
+        </Box>
       </Box>
+
       <TabPanel value="1">{renderItems(1)}</TabPanel>
       <TabPanel value="2">{renderItems(2)}</TabPanel>
       <TabPanel value="3">{renderItems(3)}</TabPanel>

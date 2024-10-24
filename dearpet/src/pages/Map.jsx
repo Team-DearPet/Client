@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker, OverlayView ,InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import '../style/Map.css';
 import hospitalIconOpen from '../images/hospital.png'; // 진료 중인 병원 아이콘
 import hospitalIconClosed from '../images/hospital2.png'; // 진료 중이지 않은 병원 아이콘
 import locationIcon from '../images/location.png';
 import Header from "../component/Header";
+import { blue } from "@mui/material/colors";
 
 const containerStyle = {
   width: '100%',
@@ -141,13 +142,30 @@ function NearbyAnimalHospitals() {
             ))}
 
             {activeMarker && (
-              <InfoWindow
+                <OverlayView
                 position={{ lat: activeMarker.lat, lng: activeMarker.lng }}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} // 커스텀 인포박스가 지도 상단에 표시되도록 설정
               >
-                <div style={{ textAlign: 'center', padding: '5px', fontSize: '12px', minWidth: '100px', maxWidth: '150px' }}>
-                  <h3 style={{ margin: '0', fontSize: '12px', color: '#333' }}>{activeMarker.name}</h3>
+                <div
+                  style={{
+                    display: 'inline-block',  // 텍스트 길이에 맞춰 크기 자동 조정
+                    backgroundColor: 'white',
+                    borderRadius: '20px',
+                    border: '2px solid blue',
+                    padding: '5px',
+                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+                    fontSize: '12px',
+                    textAlign: 'center',
+                    transform: 'translate(-50%, -100%)',
+                    position: 'relative',
+                    bottom: '30px',
+                    whiteSpace: 'nowrap',
+                    maxWidth: '300px', 
+                  }}
+                >
+                  <h3 style={{ margin: '0', fontSize: '15px', color: '#333', padding: '5px' }}>{activeMarker.name}</h3>
                 </div>
-              </InfoWindow>
+                </OverlayView>
             )}
           </GoogleMap>
         </div>

@@ -28,7 +28,7 @@ const Header = () => {
               <Link href="/map" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 인근병원검색
                 </Link>
-              <Link href="#" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/emergency" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 응급처치
               </Link>
               <Link href="/mypage" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>

@@ -68,7 +68,7 @@ const UserDetail = () => {
           borderRadius: 2,
           maxWidth: 800,
           width: '100%',
-          bgcolor: 'background.paper',
+          bgcolor: '#F7F4FD',
         }}
       >
         <Avatar 

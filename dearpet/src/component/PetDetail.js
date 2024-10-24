@@ -71,7 +71,7 @@ const PetDetail = () => {
               }} onClick={handleAddPetOpen}>추가</Button>
             </Box>
             {pets.map((pet, index) => (
-                <Card key={index} style={{ margin: '10px 0', width: '100%', maxWidth: 800, display: 'flex', alignItems: 'center' }}>
+                <Card key={index} style={{ margin: '10px 0', width: '100%', maxWidth: 800, display: 'flex', alignItems: 'center', backgroundColor:'#F7F4FD' }}>
                     <CardContent sx={{ flexGrow: 1 }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold'}}>{pet.name}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '30px' }}>견종</span> {pet.type}</Typography>

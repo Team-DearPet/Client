@@ -7,7 +7,7 @@ import { WidthFull } from "@mui/icons-material";
 
 export default function OrderComplete() {
     return(
-        <div style={{minHeight:'100vh', backgroundColor:"#F7F4FD"}}>
+        <div style={{minHeight:'100vh'}}>
             <Header></Header>
             <Typography variant="h5" gutterBottom style={{marginTop:"50px", textAlign:"center", fontSize:"2.5rem", fontWeight:"bold", color:"black"}}>
                 주문완료

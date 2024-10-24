@@ -112,7 +112,7 @@ const Category = () => {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             flex: 1,
             borderBottom: 1,
             borderColor: 'divider',

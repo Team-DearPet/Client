@@ -1,6 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { Card, CardMedia, Box } from '@mui/material';
+import mainImage from "../images/main2.png"
 
 const Carousel = () => {
   const settings = {
@@ -14,7 +15,7 @@ const Carousel = () => {
   };
 
   const items = [
-    { image: 'https://via.placeholder.com/600x300'},
+    { image: mainImage},
     { image: 'https://via.placeholder.com/600x300'},
     { image: 'https://via.placeholder.com/600x300'},
   ];
@@ -26,7 +27,7 @@ const Carousel = () => {
           <Card key={index} sx={{ maxWidth: '100%' }}>
             <CardMedia
               component="img"
-              height="300"
+              height="auto"
               image={item.image}
             />
           </Card>

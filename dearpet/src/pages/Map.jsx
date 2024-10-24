@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, Marker, OverlayView ,InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import '../style/Map.css';
-import hospitalIconOpen from '../images/hospital.png'; // 진료 중인 병원 아이콘
-import hospitalIconClosed from '../images/hospital2.png'; // 진료 중이지 않은 병원 아이콘
+import hospitalIconOpen from '../images/hospital.png'; 
+import hospitalIconClosed from '../images/hospital2.png'; 
 import locationIcon from '../images/location.png';
 import Header from "../component/Header";
 import { blue } from "@mui/material/colors";
@@ -90,7 +90,7 @@ function NearbyAnimalHospitals() {
     setActiveMarker(hospital);
     const cardElement = document.getElementById(`hospital-card-${hospital.name}`);
     if (cardElement) {
-    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); // 해당 카드로 스크롤 이동
+    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
   };
 
@@ -124,8 +124,8 @@ function NearbyAnimalHospitals() {
               <Marker
                 position={userLocation}
                 icon={{
-                  url: locationIcon, // 사용자 위치 마커
-                  scaledSize: new window.google.maps.Size(30, 30) // 아이콘 크기 조정
+                  url: locationIcon,
+                  scaledSize: new window.google.maps.Size(30, 30)
                 }}
               />
             }
@@ -135,8 +135,8 @@ function NearbyAnimalHospitals() {
                 position={{ lat: hospital.lat, lng: hospital.lng }}
                 onClick={() => handleMarkerClick(hospital)}
                 icon={{
-                  url: hospital.isOpen ? hospitalIconOpen : hospitalIconClosed, // 진료 상태에 따른 아이콘 선택
-                  scaledSize: new window.google.maps.Size(30, 30) // 아이콘 크기 조정
+                  url: hospital.isOpen ? hospitalIconOpen : hospitalIconClosed, 
+                  scaledSize: new window.google.maps.Size(30, 30)
                 }}
               />
             ))}
@@ -144,11 +144,11 @@ function NearbyAnimalHospitals() {
             {activeMarker && (
                 <OverlayView
                 position={{ lat: activeMarker.lat, lng: activeMarker.lng }}
-                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} // 커스텀 인포박스가 지도 상단에 표시되도록 설정
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} 
               >
                 <div
                   style={{
-                    display: 'inline-block',  // 텍스트 길이에 맞춰 크기 자동 조정
+                    display: 'inline-block',
                     backgroundColor: 'white',
                     borderRadius: '20px',
                     border: '2px solid blue',

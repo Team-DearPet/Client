@@ -3,14 +3,14 @@ import { Box, Typography, Button, Divider } from '@mui/material';
 
 const BuyFooter = () => {
   const orderAmount = 30000;  // 총 주문금액
-  const shippingCost = 2500;  // 배송비
+  const shippingCost = 2500;  // 배송비backgroundColor: 'rgba(172, 146, 237, 0.5)',
   const totalAmount = orderAmount + shippingCost;  // 결제 예정금액
 
     return (
         <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
             <Box
                 sx={{
-                    backgroundColor: '#e1b0ff',
+                    backgroundColor: '#C0ADF0',
                     padding: '30px',
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -37,10 +37,11 @@ const BuyFooter = () => {
                 </Box>
                 <Button variant="contained"
                     sx={{ 
-                        backgroundColor: '#8a2be2', 
+                        backgroundColor: '#7B52E1', 
                         color: 'white', 
-                        padding: '19px 150px', 
-                        marginRight: '200px'
+                        padding: '15px 150px', 
+                        marginRight: '200px',
+                        fontSize: '1.2rem'
                     }}>
                     구매하기
                 </Button>

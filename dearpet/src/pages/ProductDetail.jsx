@@ -105,10 +105,12 @@ function ProductDetail() {
                                         value={quantity}
                                         onChange={(e) => setQuantity(e.target.value)}
                                     >
-                                        <MenuItem value={0}>[필수] 용량을 선택해주세요</MenuItem>
-                                        <MenuItem value={1}>1kg</MenuItem>
-                                        <MenuItem value={2}>2kg</MenuItem>
-                                        <MenuItem value={3}>3kg</MenuItem>
+                                        <MenuItem value={0}>[필수] 개수를 선택해주세요</MenuItem>
+                                        <MenuItem value={1}>1</MenuItem>
+                                        <MenuItem value={2}>2</MenuItem>
+                                        <MenuItem value={3}>3</MenuItem>
+                                        <MenuItem value={4}>4</MenuItem>
+                                        <MenuItem value={5}>5</MenuItem>
                                     </Select>
                                 </FormControl>
 

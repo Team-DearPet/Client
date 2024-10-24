@@ -33,7 +33,7 @@ const PetList = () => {
                     borderRadius: 2,
                     maxWidth: 800,
                     width: '100%',
-                    bgcolor: 'background.paper',
+                    bgcolor: '#F7F4FD',
                     gap: 2,
                 }}
             >
@@ -49,7 +49,7 @@ const PetList = () => {
                         display: 'flex', 
                         alignItems: 'center', 
                         width: '100%', 
-                        marginTop: 2, // 마이펫 텍스트와의 간격
+                        marginTop: 2,
                     }}
                 >
                     <Avatar 

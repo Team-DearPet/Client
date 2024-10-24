@@ -25,7 +25,7 @@ const Header = () => {
         <Box display="flex" alignItems="center" gap={2}>
           {isLoggedIn ? (
             <>
-              <Link href="#" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/map" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 인근병원검색
                 </Link>
               <Link href="#" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>

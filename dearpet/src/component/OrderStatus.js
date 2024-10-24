@@ -75,7 +75,7 @@ const OrderStatus = () => {
           borderRadius: 2,
           maxWidth: 800,
           width: '100%',
-          bgcolor: 'background.paper',
+          bgcolor: '#F7F4FD',
           gap: 2,
         }}
       >
@@ -94,6 +94,7 @@ const OrderStatus = () => {
               padding: 1,
               border: '1px solid #d9d9d9',
               borderRadius: 2,
+              backgroundColor:'white'
             }}
           >
             <LocationOnOutlinedIcon />
@@ -110,6 +111,7 @@ const OrderStatus = () => {
           justifyContent="center"
           alignItems="center"
           sx={{ marginBottom: 2 }}
+          
         >
           {['주문접수', '결제완료', '상품준비중', '배송중', '배송완료'].map((status, index) => (
             <React.Fragment key={index}>
@@ -124,7 +126,7 @@ const OrderStatus = () => {
                       justifyContent: 'center',
                       margin: '0 auto',
                       borderRadius: '15%',
-                      bgcolor: '#f1f3f5',
+                      bgcolor: 'white',
                     }}
                   >
                     <Typography variant="h6" color={orderCnts[status] !== 0 ? '#FF4255' : '#BEBFCA'}>
@@ -137,7 +139,7 @@ const OrderStatus = () => {
                 </Box>
               </Grid2>
               {index < 4 && (
-                <NavigateNextIcon sx={{ margin: '0 8px', color: '#F3F3F6' }} />
+                <NavigateNextIcon sx={{ margin: '0 8px', color: '#D3D2D2' }} />
               )}
             </React.Fragment>
           ))}
@@ -147,7 +149,7 @@ const OrderStatus = () => {
           sx={{
             display: 'flex',
             justifyContent: 'space-around',
-            backgroundColor: '#F3F3F6',
+            backgroundColor: 'white',
             padding: 1,
             borderRadius: 2,
             marginBottom: 2,

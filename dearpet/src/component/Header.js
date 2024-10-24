@@ -15,7 +15,7 @@ const Header = () => {
       <Toolbar sx={{ justifyContent: 'space-between' }}>
       <Box sx={{ flex: 1, marginLeft: '10vw' }}>
           <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif', color:'black' }}>
+            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black' }}>
               CarePet
               <img style={{width: '23px'}} src={boneLogo} alt='로고'></img>
             </Typography>
@@ -37,7 +37,7 @@ const Header = () => {
               <Link href="#" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 장바구니
               </Link>
-              <Button onClick={handleLogin} underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Button onClick={handleLogin} underline="none" sx={{ fontWeight: 'bold', fontSize: '1rem', color: 'black' }}>
                 로그아웃
               </Button>
             </>

@@ -5,7 +5,7 @@ import Footer from '../component/Footer';
 
 const Home = () => {
   return (
-    <div style={{backgroundColor:"#F7F4FD"}}>
+    <div>
       <Header />
       <Carousel />
       <Category />

@@ -98,7 +98,11 @@ const Cart = () => {
         <Header />
         <Container>
             <Box sx={{ p: 4 }}>
-                <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
+                <Typography variant="h5" gutterBottom 
+                    sx={{ 
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                        }}>
                     장바구니
                 </Typography>
                 <Grid2 container alignItems="center" sx={{ mb: 2 }}>
@@ -115,7 +119,7 @@ const Cart = () => {
                         </Typography>
                     </Grid2>
                     <Grid2 item>
-                        <Button onClick={handleDeleteSelected}>선택 삭제</Button>
+                        <Button onClick={handleDeleteSelected} >선택 삭제</Button>
                     </Grid2>
                 </Grid2>
                 {items.map((item) => (

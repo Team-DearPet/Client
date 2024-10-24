@@ -13,11 +13,12 @@ const Footer = () => {
         padding: '20px',
         marginTop: 'auto',
         borderTop: '1px solid #dee2e6',
+        
       }}
     >
       <Grid2 container spacing={2} justifyContent="space-between" alignItems="center" sx={{ maxWidth: '1000px', margin: '0 auto'}}>
         <Grid2 item xs={12} sm={4} textAlign="center">
-          <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif', color:'black' }}>
+          <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black' }}>
             CarePet
             <img style={{width: '23px'}} src={boneLogo} alt='로고'></img>
           </Typography>

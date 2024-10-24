@@ -8,10 +8,8 @@ import { WidthFull } from "@mui/icons-material";
 export default function OrderComplete() {
     return(
         <div style={{minHeight:'100vh'}}>
-            <Header></Header>
-            <Typography variant="h5" gutterBottom style={{marginTop:"50px", textAlign:"center", fontSize:"2.5rem", fontWeight:"bold", color:"black"}}>
-                주문완료
-            </Typography>
+            <Header/>
+            <h2 style={{ textAlign: 'center' }}>주문완료</h2>
             <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px'}}>
             <Box className="container" style={{WidthFull}}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '20px 0' }}>

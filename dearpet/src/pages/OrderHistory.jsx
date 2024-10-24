@@ -93,14 +93,14 @@ const OrderHistory = () => {
       <Header/>
       <Box className="order-history-container">
         <div className="order-header">
-          <h3 style={{textAlign:'center'}}>주문내역</h3>
+          <h2 style={{textAlign:'center'}}>주문내역</h2>
         </div>
 
         <div className="order-status-container">
           {['배송중', '배송완료', '취소/반품'].map((status) => (
             <div className="order-status-item" key={status}>
               <Typography sx={{ fontWeight: 'bold' }}>{status}</Typography>
-              <Typography sx={{ fontWeight: 'bold' }}>{statusCounts[status]}</Typography>
+              <Typography sx={{ color: 'gray' }}>{statusCounts[status]}</Typography>
             </div>
           ))}
         </div>

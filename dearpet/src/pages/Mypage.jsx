@@ -8,7 +8,7 @@ function Mypage(props) {
     return (
         <div>
             <Header />
-            <h3 style={{ textAlign:'center'}}>마이페이지</h3>
+            <h2 style={{ textAlign:'center'}}>마이페이지</h2>
             <UserDetail />
             <PetList />
             <OrderStatus />

@@ -40,6 +40,7 @@
     justify-content: space-between;
     font-weight: bold !important;
     margin-bottom: 10px !important;
+    font-size: 1.2rem !important;
   }
 
   .DeleteButton {
@@ -77,7 +78,6 @@
   
   .order-status {
     color: #ff4d4f !important;
-    font-weight: bold !important;
     margin-bottom: 5px !important;
   }
   
@@ -102,7 +102,6 @@
   
   .order-button {
     background-color: white !important;
-    font-weight: bold !important;
     color: #AC92ED !important;
     border: 1px solid #AC92ED !important;
     padding: 8px !important;

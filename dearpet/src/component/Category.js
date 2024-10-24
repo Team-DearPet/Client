@@ -49,7 +49,6 @@ const Category = () => {
             <Typography
               component="p"
               sx={{
-                fontWeight: '600',
                 textAlign: 'left',
                 color: "#d9d9d9",
                 overflow: 'hidden',
@@ -119,9 +118,9 @@ const Category = () => {
           }}
         >
           <TabList onChange={handleChange} aria-label="Category tabs" textColor="secondary" indicatorColor="secondary">
-            <Tab label="패션" value="1" />
-            <Tab label="사료" value="2" />
-            <Tab label="장난감" value="3" />
+            <Tab sx={{fontSize: '1.1rem'}} label="패션" value="1" />
+            <Tab sx={{fontSize: '1.1rem'}} label="사료" value="2" />
+            <Tab sx={{fontSize: '1.1rem'}} label="장난감" value="3" />
           </TabList>
         </Box>
 

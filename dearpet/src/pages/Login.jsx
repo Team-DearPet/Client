@@ -88,7 +88,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
   return (
     <div className="main-content">
       <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
+            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
               CarePet
               <img style={{width: '40px'}} src={boneLogo} alt='로고'></img>
             </Typography>

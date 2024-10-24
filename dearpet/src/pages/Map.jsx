@@ -142,7 +142,7 @@ function NearbyAnimalHospitals() {
             ))}
 
             {activeMarker && (
-                <OverlayView
+              <OverlayView
                 position={{ lat: activeMarker.lat, lng: activeMarker.lng }}
                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} 
               >

@@ -33,7 +33,6 @@ const UserDetail = () => {
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData((prev) => ({ ...prev, photo: file }));
       setPhotoPreview(URL.createObjectURL(file)); // 미리보기
     }
   };
@@ -46,10 +45,15 @@ const UserDetail = () => {
   };
 
   // 저장 (임시)
-  const handleSave = () => {
+  const handleSave = (e) => {
+    setFormData((prev) => ({ ...prev, photo: photoPreview }));
     console.log('Updated User Data:', formData);
     handleClose();
   };
+
+  const handleDefaultPhoto = () => {
+    setPhotoPreview('');
+  } 
 
   return (
     <Box
@@ -72,27 +76,29 @@ const UserDetail = () => {
         }}
       >
         <Avatar 
-        src={photoPreview} 
-        sx={{ width: 100, height: 100, marginRight: 2, }}
+        src={formData.photo} 
+        sx={{ width: 100, height: 100, marginLeft: '1vw' }}
         >
         {!formData.photo && <PersonIcon sx={{ fontSize: 80 }}/>}
         </Avatar>
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, marginLeft: '2vw'}}>
           <Typography variant="h6">{formData.nickname}</Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" paddingTop='15px'>
             {formData.email}
           </Typography>
         </Box>
 
         <Button 
           onClick={handleOpen} 
-          sx={{ 
+          sx={{
+            marginRight: '1vw', 
             width: 48,
+            border: '1px solid #AC92ED',
             borderRadius: '50px',  
-            bgcolor: '#d9d9d9', 
-            color: 'white', 
-            '&:hover': { bgcolor: '#9f9f9f' } 
+            bgcolor: 'white', 
+            color: '#AC92ED', 
+            '&:hover': { bgcolor: '#E0D7F8' } 
           }}
         >
           편집
@@ -137,16 +143,29 @@ const UserDetail = () => {
                 <input type="file" hidden onChange={handlePhotoUpload} />
                 </IconButton>
             </Box>
-
-            <TextField
-                margin="dense"
-                label="닉네임"
-                type="text"
-                fullWidth
-                name="nickname"
-                value={formData.nickname}
-                onChange={handleChange}
-            />
+                
+            <Box width="100%">
+              <Button
+              onClick={handleDefaultPhoto}
+              sx={{
+                  marginBottom:'5px', 
+                  border: '1px solid #AC92ED', 
+                  bgcolor: 'white', 
+                  color: '#AC92ED', 
+                  '&:hover': { bgcolor: '#E0D7F8' } 
+                }}>
+                기본이미지로 변경
+              </Button>
+              <TextField
+                  margin="dense"
+                  label="닉네임"
+                  type="text"
+                  fullWidth
+                  name="nickname"
+                  value={formData.nickname}
+                  onChange={handleChange}
+              />
+            </Box>
             </Box>
 
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>

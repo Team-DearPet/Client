@@ -43,6 +43,12 @@ const Header = () => {
             </>
           ):(
             <>
+            <Link href="/map" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+                인근병원검색
+                </Link>
+              <Link href="/emergency" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+                응급처치
+              </Link>
               <Link href="/login" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 로그인
               </Link>

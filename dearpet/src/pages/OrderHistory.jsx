@@ -91,10 +91,8 @@ const OrderHistory = () => {
   return (
     <Box>
       <Header/>
+      <h1 style={{ textAlign: 'center' }}>주문내역</h1>
       <Box className="order-history-container">
-        <div className="order-header">
-          <h2 style={{textAlign:'center'}}>주문내역</h2>
-        </div>
 
         <div className="order-status-container">
           {['배송중', '배송완료', '취소/반품'].map((status) => (

@@ -28,13 +28,13 @@ const Header = () => {
               <Link href="/map" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 인근병원검색
                 </Link>
-              <Link href="#" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/emergency" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 응급처치
               </Link>
               <Link href="/mypage" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 마이페이지
                 </Link>
-              <Link href="#" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/cart" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 장바구니
               </Link>
               <Button onClick={handleLogin} underline="none" sx={{ fontWeight: 'bold', fontSize: '1rem', color: 'black' }}>

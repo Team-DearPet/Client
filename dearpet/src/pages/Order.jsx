@@ -11,12 +11,9 @@ const Order = () => {
     return (
         <div>
             <Header />
+            <h1 style={{ textAlign: 'center' }}>주문서</h1>
             <Container maxWidth={false} sx={{ padding: 3, width: "80%" }}> 
                 <Box sx={{ maxWidth: 800, margin: 'auto',paddingLeft: '20px' }}>
-                    <Typography variant="h5" gutterBottom
-                        sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 3 }}>
-                        주문서
-                    </Typography>
                     <BuyerInfo />
                     <ShippingInfo />
                     <OrderSummary />

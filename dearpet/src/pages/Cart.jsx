@@ -42,11 +42,8 @@ const Cart = () => {
         <div>
             <Header />
 				<Container>
+                <h1 style={{ textAlign:'center'}}>장바구니</h1>
 					<Box sx={{ p: 4 }}>
-						<Typography variant="h5" gutterBottom 
-							sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-							장바구니
-						</Typography>
 						<CartHeader 
 							items={items} 
 							handleSelectAll={handleSelectAll} 

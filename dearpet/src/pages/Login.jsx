@@ -106,7 +106,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
           >
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none', marginTop:'-20px', fontSize:'1.5rem' }}
+              sx={{ alignSelf: 'flex-start', mb: 0, fontWeight: 'bold', textShadow: 'none', marginTop:'-40px', fontSize:'1.5rem' }}
             >
               아이디
             </Typography>
@@ -124,7 +124,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                 disableUnderline: true,
               }}
               sx={{
-                mb: 2,
+                mb: 1,
                 '& .MuiInputBase-root': {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
@@ -138,7 +138,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
 
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', textShadow: 'none', fontSize:'1.5rem' }}
+              sx={{ alignSelf: 'flex-start', mb: 0, fontWeight: 'bold', textShadow: 'none', fontSize:'1.5rem' }}
             >
               비밀번호
             </Typography>
@@ -175,27 +175,29 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               sx={{ mt: 3, mb: 2 }}
               className="login-button"
               onClick={handleSubmit}
-              style={{backgroundColor:"#7B52E1"}}
+              style={{backgroundColor:"#7B52E1", height:"50px", fontSize:"1.2rem"}}
             >
               로그인
             </Button>
             <Button
               fullWidth
               variant="outlined"
+              style={{height:"50px"}}
               startIcon={<img
                 className='icon-image'
                 src={require('../images/Google.jpg')}
                 alt="Google"
-                style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                style={{ width: '30px', height: '30px', borderRadius: '50%' }}
               />}
               sx={{ mt: 2, mb: 2 }}
             >
-              구글로 로그인
+              <div style={{fontSize:"1.2rem"}}>구글로 시작하기</div>
             </Button>
 
             <Button
               fullWidth
               variant="outlined"
+              style={{height:"50px"}}
               startIcon={<img
                 className='icon-image'
                 src={require('../images/kakao.jpg')}
@@ -204,7 +206,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               />}
               sx={{ mt: 2, mb: 2 }}
             >
-              카카오톡으로 로그인
+               <div style={{fontSize:"1.2rem"}}>카카오톡으로 시작하기</div>
             </Button>
             <Typography
               variant="body2"

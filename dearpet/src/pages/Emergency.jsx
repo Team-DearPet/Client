@@ -5,6 +5,7 @@ import '../style/Emergency.css';
 import Header from "../component/Header";
 import SearchBar from "../component/SearchBar";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import videoData from '../data/videoData';
 import emergencyGuides from '../data/emergencyGuides';
 import emergencyDefault from '../images/emergencyDefault.png'
@@ -13,6 +14,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import emergencyGuides from '../data/emergencyGuides'; 
 import videoData from '../data/videodata'; // 비디오 데이터 임포트
 >>>>>>> 8aa4756 (Feat: 데이터파일생성)
+=======
+import CloseIcon from '@mui/icons-material/Close';
+>>>>>>> 2f0f238bf5fc6c803a61a55a9b87bdda1da82ab4
 
 export default function Emergency() {
     const [open, setOpen] = useState(false); // 모달 열림 상태 관리
@@ -54,7 +58,7 @@ export default function Emergency() {
         <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
             <h1>반려동물 응급처치 가이드</h1>
             <div className="search">
-                <SearchBar setSearchTerm={setSearchTerm}/>
+            <SearchBar/>
             </div>
             <Box 
                 sx={{ 
@@ -86,12 +90,6 @@ export default function Emergency() {
                         반려동물 건강정보
                     </Typography>
                 </Box>
-                {filteredVideos.length === 0 ? (
-                        <Typography variant="h6" sx={{ margin: 'auto', padding: '110px' }}>
-                            검색 결과가 없습니다.
-                        </Typography>
-                    ) : (
-                <>
                 <IconButton 
                     onClick={() => scroll('left')} 
                     disabled={startIndex === 0} // 시작 인덱스가 0일 때 비활성화
@@ -126,7 +124,11 @@ export default function Emergency() {
                     }}
                 >
 <<<<<<< HEAD
+<<<<<<< HEAD
                     {filteredVideos.slice(startIndex, startIndex + 4).map((video, index) => ( // 현재 보이는 인덱스 범위만 표시
+=======
+                    {videoData.slice(startIndex, startIndex + 4).map((video, index) => ( // 현재 보이는 인덱스 범위만 표시
+>>>>>>> 2f0f238bf5fc6c803a61a55a9b87bdda1da82ab4
                         <Box 
                             key={index} 
                             sx={{ 
@@ -235,8 +237,6 @@ export default function Emergency() {
 <<<<<<< HEAD
                     <ChevronRight />
                 </IconButton>
-            </>
-            )}
             </Box>
         </Container>
         <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
@@ -338,19 +338,24 @@ export default function Emergency() {
                     )}
                 </Box>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 {filteredGuides.length === 0 ? (
                         <Typography variant="h6" sx={{ margin: 'auto', padding: '110px' }}>
                             검색 결과가 없습니다.
                         </Typography>
                     ) : (
+=======
+
+                {/* 응급처치 가이드 카드 목록 */}
+>>>>>>> 2f0f238bf5fc6c803a61a55a9b87bdda1da82ab4
                 <Grid container spacing={3} sx={{ paddingTop: '60px' }}>
-                    {filteredGuides.map((guide, index) => (
+                    {emergencyGuides.map((guide, index) => (
                         <Grid item xs={12} sm={6} md={3} key={index}>
                             <Card sx={{ height: '100%' }} onClick={() => handleOpen(guide)}>
                                 <CardMedia
                                     component="img"
                                     height="140"
-                                    image={emergencyDefault}
+                                    image={guide.image}
                                     alt={guide.title}
                                 />
                                 <CardContent>
@@ -365,30 +370,16 @@ export default function Emergency() {
                         </Grid>
                     ))}
                 </Grid>
-                )}
             </Box>
         </Container>
 
-        <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-        >
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: '#F7F4FD', // Set the background color to match your theme
-                    border: '2px solid #E0D7F8', // Border color to match your theme
-                    boxShadow: 24,
-                    borderRadius: '10px', // Add rounded corners
-                    p: 4,
-                }}
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-title"
+                aria-describedby="modal-description"
             >
+<<<<<<< HEAD
                 {selectedGuide && (
                     <>
                         <Typography id="modal-title" variant="h6" component="h2">
@@ -404,6 +395,41 @@ export default function Emergency() {
 =======
             </Modal>
 >>>>>>> 8aa4756 (Feat: 데이터파일생성)
+=======
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        bgcolor: '#F7F4FD',
+                        border: '2px solid #E0D7F8',
+                        boxShadow: 24,
+                        borderRadius: '10px',
+                        p: 4,
+                    }}
+                >
+                    <IconButton
+                        sx={{ position: 'absolute', top: 8, right: 8 }}
+                        onClick={handleClose}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
+                    {selectedGuide && (
+                        <>
+                            <Typography id="modal-title" variant="h6" component="h2">
+                                {selectedGuide.title}
+                            </Typography>
+                            <Typography id="modal-description" sx={{ mt: 2 }}>
+                                {selectedGuide.detail}
+                            </Typography>
+                        </>
+                    )}
+                </Box>
+            </Modal>
+>>>>>>> 2f0f238bf5fc6c803a61a55a9b87bdda1da82ab4
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Dialog,
@@ -17,10 +17,38 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-const AddressModal = ({ open, onClose }) => {
+const AddressModal = ({ open, onClose, onSelectAddress }) => {
   const [address, setAddress] = useState('');
-  const [addressList, setAddressList] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [addressList, setAddressList] = useState(() => {
+    // 로컬 스토리지에서 저장된 주소를 가져옴
+    const savedAddresses = localStorage.getItem('addressList');
+    return savedAddresses ? JSON.parse(savedAddresses) : [];
+  });
+  const [selectedAddress, setSelectedAddress] = useState(() => {
+    return localStorage.getItem('selectedAddress') || ''; // 저장된 주소 불러오기
+  });
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+    script.async = true;
+    script.onload = () => {
+      console.log('Daum Postcode script loaded.');
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('addressList', JSON.stringify(addressList));
+  }, [addressList]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedAddress', selectedAddress);
+  }, [selectedAddress]);
 
   const handleAddressSearch = () => {
     // Daum 우편번호 서비스 호출
@@ -36,8 +64,14 @@ const AddressModal = ({ open, onClose }) => {
     setAddressList((prev) => [...prev, newAddress]);
   };
 
+  const handleSelect = (address) => {
+    setSelectedAddress(address);
+    onSelectAddress(address); // 부모로 선택된 주소 전달
+  };
+
   const removeAddress = (index) => {
-    setAddressList((prev) => prev.filter((_, i) => i !== index));
+    const updatedList = addressList.filter((_, i) => i !== index);
+    setAddressList(updatedList);
     if (selectedAddress === addressList[index]) {
       setSelectedAddress(''); // 선택된 주소가 삭제될 경우 초기화
     }
@@ -70,7 +104,7 @@ const AddressModal = ({ open, onClose }) => {
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <Typography variant="subtitle1">배송지 선택</Typography>
-          <RadioGroup value={selectedAddress} onChange={(e) => setSelectedAddress(e.target.value)}>
+          <RadioGroup value={selectedAddress} onChange={(e) => handleSelect(e.target.value)}>
             {addressList.map((addr, index) => (
               <Card key={index} variant="outlined" sx={{ marginTop: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <CardContent sx={{ display: 'flex', alignItems: 'center' }}>

@@ -8,6 +8,7 @@ import Header from "../component/Header";
 import { blue } from "@mui/material/colors";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { IconButton } from '@mui/material';
+import Footer from "../component/Footer";
 
 const containerStyle = {
   width: '100%',
@@ -255,6 +256,7 @@ function NearbyAnimalHospitals() {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   ) : <div>Loading...</div>;
 }

@@ -8,10 +8,11 @@ import Mypage from './pages/Mypage';
 import OrderHistory from './pages/OrderHistory';
 import OrderComplete from './pages/OrderComplete';
 import ProductDetail from './pages/ProductDetail';
+import Emergency from './pages/Emergency';
 import Cart from './pages/Cart';
+import Order from './pages/Order';
 import Map from './pages/Map';
 import MyPet from './pages/MyPet';
-import Order from './pages/Order';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
       <Route path="/order" element={<Order/>}/>
       <Route path="/orders" element={<OrderHistory/>}/>
       <Route path="/orderscomplete" element={<OrderComplete/>} />
+      <Route path="/emergency" element={<Emergency/>} />
     </Routes>
   </>
   );

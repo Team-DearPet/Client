@@ -9,7 +9,7 @@ export default function OrderComplete() {
     return(
         <div style={{minHeight:'100vh'}}>
             <Header/>
-            <h2 style={{ textAlign: 'center' }}>주문완료</h2>
+            <h1 style={{ textAlign: 'center' }}>주문완료</h1>
             <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px'}}>
             <Box className="container" style={{WidthFull}}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '20px 0' }}>

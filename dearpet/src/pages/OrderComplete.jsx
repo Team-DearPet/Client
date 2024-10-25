@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import '../style/OrderComplete.css'
 import { WidthFull } from "@mui/icons-material";
+import Footer from "../component/Footer";
 
 export default function OrderComplete() {
     return(
@@ -47,6 +48,7 @@ export default function OrderComplete() {
                 </Button>
             </Link>
         </Container>
+        <Footer/>
         </div>
     )
 }

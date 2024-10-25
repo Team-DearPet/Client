@@ -72,7 +72,7 @@ const PetDetail = () => {
             </Box>
             {pets.map((pet, index) => (
                 <Card key={index} style={{ margin: '10px 0', width: '100%', maxWidth: 800, display: 'flex', alignItems: 'center', backgroundColor:'#F7F4FD' }}>
-                    <CardContent sx={{ flexGrow: 1 }}>
+                    <CardContent sx={{ flexGrow: 1, marginLeft:'1vw' }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold'}}>{pet.name}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '30px' }}>견종</span> {pet.type}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '30px' }}>나이</span> {pet.age} 살</Typography>
@@ -80,10 +80,10 @@ const PetDetail = () => {
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>중성화</span> {pet.condition}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>몸무게</span> {pet.weight} kg</Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginLeft: 15}}>
-      <Button onClick={() => handlePetDetailOpen(pet)}>
-        펫 맞춤 데이터 보러가기 &gt;
-      </Button>
-    </Box>
+                        <Button onClick={() => handlePetDetailOpen(pet)}>
+                            펫 맞춤 데이터 보러가기 &gt;
+                        </Button>
+                        </Box>
                     </CardContent>
                     <Box sx={{ position: 'relative' }}>
                         <Button 
@@ -93,16 +93,17 @@ const PetDetail = () => {
                               top: -50,
                               right: 10, 
                               width: 48,
+                              border: '1px solid #AC92ED',
                               borderRadius: '50px',  
-                              bgcolor: '#d9d9d9', 
-                              color: 'white', 
-                              '&:hover': { bgcolor: '#9f9f9f' } 
+                              bgcolor: 'white', 
+                                color: '#AC92ED', 
+                                '&:hover': { bgcolor: '#E0D7F8' }  
                             }}
                         >삭제
                         </Button>
                         <Avatar 
                             src={pet.photo ? URL.createObjectURL(pet.photo) : null} 
-                            sx={{ width: 100, height: 100, marginRight: '20px', border: 'solid 2px #d9d9d9' }}
+                            sx={{ width: 100, height: 100, marginRight: '20px' }}
                         >
                             {!pet.photo && <PetsIcon sx={{ fontSize: 80 }}/>}
                         </Avatar>

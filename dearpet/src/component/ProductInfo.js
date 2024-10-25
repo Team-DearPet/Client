@@ -21,13 +21,13 @@ const ProductInfo = ({ item }) => {
                         {item.discount}%
                     </Box>
                 </Box>
-                <Typography variant="body2" color="textSecondary">
+                <Typography variant="body2" color="textSecondary" fontSize="1.1rem">
                     소비자가: {item.price}
                 </Typography>
-                <Typography variant="body2" color="textSecondary">
+                <Typography variant="body2" color="textSecondary" fontSize="1.1rem">
                     배송비: 2,500원
                 </Typography>
-                <Typography variant="body2" color="textSecondary" marginBottom={3}>
+                <Typography variant="body2" color="textSecondary" marginBottom={3} fontSize="1.1rem">
                     브랜드: {item.brand}
                 </Typography>
 

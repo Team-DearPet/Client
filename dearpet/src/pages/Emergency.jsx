@@ -334,13 +334,6 @@ export default function Emergency() {
                             <Typography id="modal-description" sx={{ mt: 2 }}>
                                 {selectedGuide.detail}
                             </Typography>
-                            {/* 출처 섹션 추가 */}
-                            <Typography sx={{ mt: 3, fontWeight: 'bold' }}>자료 출처:</Typography>
-                            <Typography>
-                                <a href={selectedGuide.sourceLink} target="_blank" rel="noopener noreferrer">
-                                    {selectedGuide.source}
-                                </a>
-                            </Typography>
                         </>
                     )}
                 </Box>

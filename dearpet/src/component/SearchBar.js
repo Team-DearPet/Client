@@ -12,7 +12,7 @@ const SearchBar = ({ setSearchTerm }) => {
       fullWidth
       variant="outlined"
       size="small"
-      placeholder="찾으시는 상품명을 입력해주세요."
+      placeholder="검색어를 입력해주세요."
       onChange={handleSearch}
       InputProps={{
         endAdornment: <SearchIcon />,

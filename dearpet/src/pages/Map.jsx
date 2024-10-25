@@ -45,7 +45,7 @@ function NearbyAnimalHospitals() {
       console.error("Google Maps API가 로드되지 않았습니다.");
       return;
     }
-
+  
     const service = new window.google.maps.places.PlacesService(document.createElement('div'));
     const request = {
       location: new window.google.maps.LatLng(lat, lng),
@@ -53,7 +53,7 @@ function NearbyAnimalHospitals() {
       keyword: 'animal hospital',
       language: 'ko'
     };
-
+  
     service.nearbySearch(request, (results, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         const markersPromises = results.map(place => {
@@ -62,7 +62,8 @@ function NearbyAnimalHospitals() {
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 const isOpen = details.opening_hours ? details.opening_hours.isOpen() : false;
                 const translatedAddress = details.vicinity;
-
+                const openingHours = details.opening_hours ? details.opening_hours.weekday_text : []; // 영업시간 가져오기
+  
                 resolve({
                   lat: details.geometry.location.lat(),
                   lng: details.geometry.location.lng(),
@@ -70,7 +71,8 @@ function NearbyAnimalHospitals() {
                   address: translatedAddress,
                   website: details.website || '#',
                   phone: details.formatted_phone_number || '정보 없음',
-                  isOpen: isOpen
+                  isOpen: isOpen,
+                  openingHours: openingHours || [] // 영업시간이 undefined일 경우 빈 배열로 초기화
                 });
               } else {
                 resolve(null);
@@ -78,13 +80,15 @@ function NearbyAnimalHospitals() {
             });
           });
         });
-
+  
         Promise.all(markersPromises).then(markers => {
           setHospitalMarkers(markers.filter(marker => marker));
         });
       }
     });
   };
+  
+  
 
   const handleMarkerClick = (hospital) => {
     setActiveMarker(hospital);
@@ -107,7 +111,7 @@ function NearbyAnimalHospitals() {
       </div>
       <div className="map-list-container">
         <div className="map-box">
-          <div className="icon-legend" style={{ position: 'absolute', top: '170px', left: '330px', padding: '10px', border:"none", zIndex: 100 }}>
+          <div className="icon-legend" style={{ position: 'absolute', top: '170px', left: '370px', padding: '10px', border:"none", zIndex: 100 }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
               <img src={hospitalIconOpen} alt="진료 중" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
               <span style={{ fontWeight: 'bold' }}>진료 중</span>
@@ -170,14 +174,13 @@ function NearbyAnimalHospitals() {
           </GoogleMap>
         </div>
         <div className="hospital-list">
-          {hospitalMarkers.map((hospital, index) => (
+        {hospitalMarkers.map((hospital, index) => (
             <div 
               key={index} 
               id={`hospital-card-${hospital.name}`} 
               className={`hospital-card ${activeMarker?.name === hospital.name ? 'active' : ''}`} 
               onClick={() => handleListItemClick(hospital)}
             >
-              {/* 아이콘과 병원이름을 나란히 배치 */}
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <img 
                   src={hospital.isOpen ? hospitalIconOpen : hospitalIconClosed} 
@@ -188,6 +191,16 @@ function NearbyAnimalHospitals() {
               </div>
               <p style={{fontWeight:"bold"}}>주소: {hospital.address}</p>
               <p style={{fontWeight:"bold"}}>전화번호: {hospital.phone}</p>
+              {hospital.openingHours.length > 0 && (
+                <div style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                  <p>영업시간 정보</p>
+                  <ul style={{ paddingLeft: '20px' }}>
+                    {hospital.openingHours.map((hour, i) => (
+                      <li key={i}>{hour}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {hospital.website !== '#' && (
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                   <a

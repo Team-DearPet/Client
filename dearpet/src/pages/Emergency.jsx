@@ -8,6 +8,7 @@ import videoData from '../data/videoData';
 import emergencyGuides from '../data/emergencyGuides';
 import emergencyDefault from '../images/emergencyDefault.png'
 import Footer from "../component/Footer";
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function Emergency() {
     const [open, setOpen] = useState(false); // 모달 열림 상태 관리
@@ -219,6 +220,12 @@ export default function Emergency() {
                     p: 4,
                 }}
             >
+                <IconButton
+                    sx={{ position: 'absolute', top: 8, right: 8 }}
+                    onClick={handleClose}
+                >
+                    <CloseIcon />
+                </IconButton>
                 {selectedGuide && (
                     <>
                         <Typography id="modal-title" variant="h6" component="h2">

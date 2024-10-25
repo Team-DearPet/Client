@@ -20,7 +20,9 @@ const reviews = [
 const ReviewList = () => {
     const renderStars = (rating) => {
         return (
-            <Box display="flex" alignItems="center">
+            <Box 
+                display="flex" 
+                alignItems="center">
                 {[...Array(5)].map((_, index) => (
                     index < rating ? <Star key={index} /> : <StarBorder key={index} />
                 ))}
@@ -31,18 +33,40 @@ const ReviewList = () => {
     return (
         <Box>
             {reviews.map((review) => (
-                <Card key={review.id} variant="outlined" sx={{ marginBottom: 2, padding: 2 }}>
-                    <Box display="flex" alignItems="center" marginBottom={1}>
-                        <Avatar sx={{ marginRight: 2 }}>{review.username.charAt(0)}</Avatar>
-                        <Typography variant="body1" fontWeight="bold">
+                <Card 
+                    key={review.id} 
+                    variant="outlined" 
+                    sx={{ 
+                        marginBottom: 2, 
+                        padding: 2 
+                    }}>
+                    <Box 
+                        display="flex" 
+                        alignItems="center" 
+                        marginBottom={1}>
+                        <Avatar 
+                            sx={{ 
+                                marginRight: 2 
+                            }}>
+                            {review.username.charAt(0)}
+                        </Avatar>
+                        <Typography 
+                            variant="body1" 
+                            fontWeight="bold">
                             {review.username}
                         </Typography>
                     </Box>
-                    <Typography variant="body2" color="textSecondary">
+                    <Typography 
+                        variant="body2" 
+                        color="textSecondary">
                         별점
                     </Typography>
                     {renderStars(review.rating)}
-                    <Typography variant="body2" sx={{ marginTop: 1 }}>
+                    <Typography 
+                        variant="body2" 
+                        sx={{ 
+                            marginTop: 1 
+                        }}>
                         {review.comment}
                     </Typography>
                 </Card>

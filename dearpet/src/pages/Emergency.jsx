@@ -5,13 +5,12 @@ import '../style/Emergency.css';
 import Header from "../component/Header";
 import SearchBar from "../component/SearchBar";
 import CloseIcon from '@mui/icons-material/Close';
-import emergencyGuides from '../data/emergencyGuides'; 
-import videoData from '../data/videodata'; // 비디오 데이터 임포트
 
 export default function Emergency() {
     const [open, setOpen] = useState(false); // 모달 열림 상태 관리
     const [selectedGuide, setSelectedGuide] = useState(null); // 선택된 가이드 저장
-
+    const [searchTerm, setSearchTerm] = useState('');
+    
     const handleOpen = (guide) => {
         setSelectedGuide(guide);
         setOpen(true);
@@ -32,151 +31,159 @@ export default function Emergency() {
         setStartIndex(newStartIndex); // 새로운 인덱스로 업데이트
     };
 
+    const filteredVideos = videoData.filter((video) =>
+        video.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const filteredGuides = emergencyGuides.filter((guide) =>
+        guide.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div>
-            <Header />
-            <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
-                <h1>반려동물 응급처치 가이드</h1>
-                <div className="search">
-                    <SearchBar />
-                </div>
+        <Header/>
+        <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
+            <h1>반려동물 응급처치 가이드</h1>
+            <div className="search">
+            <SearchBar/>
+            </div>
+            <Box 
+                sx={{ 
+                    backgroundColor:"#F7F4FD",
+                    position: 'relative', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    border: '2px solid #E0D7F8', 
+                    borderRadius: '10px', 
+                    overflow: 'hidden', 
+                    width: '80%', // 박스 너비 설정
+                    maxWidth: '1300px', // 최대 너비 조정
+                    margin: '0 auto', // 중앙 정렬
+                    padding: '10px' // 내부 여백 추가
+                }}
+            >
                 <Box 
                     sx={{ 
-                        backgroundColor: "#F7F4FD",
-                        position: 'relative', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        border: '2px solid #E0D7F8', 
-                        borderRadius: '10px', 
-                        overflow: 'hidden', 
-                        width: '80%', 
-                        maxWidth: '1300px', 
-                        margin: '0 auto', 
-                        padding: '10px' 
+                        position: 'absolute', 
+                        top: '10px', 
+                        left: '10px', 
+                        zIndex: 1, 
+                        padding: '5px 10px', 
+                        backgroundColor: '#F7F4FD', // 배경색 추가
+                        borderRadius: '5px' // 둥근 모서리 추가
                     }}
                 >
-                    <Box 
-                        sx={{ 
-                            position: 'absolute', 
-                            top: '10px', 
-                            left: '10px', 
-                            zIndex: 1, 
-                            padding: '5px 10px', 
-                            backgroundColor: '#F7F4FD', 
-                            borderRadius: '5px' 
-                        }}
-                    >
-                        <Typography variant="h6" style={{ fontWeight: "bold" }}>
-                            반려동물 건강정보
-                        </Typography>
-                    </Box>
-                    <IconButton 
-                        onClick={() => scroll('left')} 
-                        disabled={startIndex === 0} 
-                        style={{ position: 'absolute', left: '2px', zIndex: 1 }}
-                    >
-                        <ChevronLeft />
-                    </IconButton>
-                    <Box 
-                        ref={scrollRef} 
-                        sx={{ 
-                            display: 'flex', 
-                            scrollBehavior: 'smooth', 
-                            width: '100%', 
-                            paddingTop: '40px', 
-                        }}
-                    >
-                        {videoData.slice(startIndex, startIndex + 4).map((video, index) => (
-                            <Box 
-                                key={index} 
-                                sx={{ 
-                                    marginTop: '20px',
-                                    marginRight: '15px',
-                                    marginLeft: '15px', 
-                                    cursor: 'pointer', 
-                                    width: '300px', 
-                                    height: 'auto' 
-                                }} 
-                                onClick={() => window.open(video.link, '_blank')}
-                            >
-                                <img 
-                                    src={video.thumbnail} 
-                                    alt={video.title} 
-                                    style={{ width: '250px', height: 'auto', borderRadius: '10px' }} 
-                                />
-                                <Typography variant="subtitle1" style={{ marginTop: '5px', fontWeight: 'bold' }}>
-                                    {video.title}
-                                </Typography>
-                            </Box>
-                        ))}
-                    </Box>
-                    <IconButton 
-                        onClick={() => scroll('right')} 
-                        disabled={startIndex >= videoData.length - 4} 
-                        style={{ position: 'absolute', right: '1px', zIndex: 1 }} 
-                    >
-                        <ChevronRight />
-                    </IconButton>
+                    <Typography variant="h6" style={{fontWeight:"bold"}}>
+                        반려동물 건강정보
+                    </Typography>
                 </Box>
-            </Container>
-            <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
+                <IconButton 
+                    onClick={() => scroll('left')} 
+                    disabled={startIndex === 0} // 시작 인덱스가 0일 때 비활성화
+                    style={{ position: 'absolute', left: '2px', zIndex: 1 }} // 왼쪽 화살표 위치 조정
+                >
+                    <ChevronLeft />
+                </IconButton>
+                <Box 
+                    ref={scrollRef} 
+                    sx={{ 
+                        display: 'flex', 
+                        scrollBehavior: 'smooth', 
+                        width: '100%', // 부모 박스 크기 설정
+                        paddingTop: '40px', // 제목 아래 여백 추가
+                    }}
+                >
+                    {videoData.slice(startIndex, startIndex + 4).map((video, index) => ( // 현재 보이는 인덱스 범위만 표시
+                        <Box 
+                            key={index} 
+                            sx={{ 
+                                marginTop: '20px',
+                                marginRight: '15px',
+                                marginLeft: '15px', 
+                                cursor: 'pointer', 
+                                width: '300px', // 썸네일 박스 크기 조정
+                                height: 'auto'
+                            }} 
+                            onClick={() => window.open(video.link, '_blank')}
+                        >
+                            <img 
+                                src={video.thumbnail} 
+                                alt={video.title} 
+                                style={{ width: '250px', height: 'auto', borderRadius: '10px' }} 
+                            />
+                            <Typography variant="subtitle1" style={{ marginTop: '5px', fontWeight: 'bold' }}>
+                                {video.title}
+                            </Typography>
+                        </Box>
+                    ))}
+                </Box>
+                <IconButton 
+                    onClick={() => scroll('right')} 
+                    disabled={startIndex >= videoData.length - 4} // 마지막 인덱스에서 비활성화
+                    style={{ position: 'absolute', right: '1px', zIndex: 1 }} // 오른쪽 화살표 위치 조정
+                >
+                    <ChevronRight />
+                </IconButton>
+            </Box>
+        </Container>
+        <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
+            <Box
+                sx={{
+                    backgroundColor: "#F7F4FD",
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    border: '2px solid #E0D7F8',
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    width: '80%',
+                    maxWidth: '1300px',
+                    margin: '0 auto',
+                    padding: '10px'
+                }}
+            >
                 <Box
                     sx={{
-                        backgroundColor: "#F7F4FD",
-                        position: 'relative',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-start',
-                        border: '2px solid #E0D7F8',
-                        borderRadius: '10px',
-                        overflow: 'hidden',
-                        width: '80%',
-                        maxWidth: '1300px',
-                        margin: '0 auto',
-                        padding: '10px'
+                        position: 'absolute',
+                        top: '10px',
+                        left: '10px',
+                        zIndex: 1,
+                        padding: '5px 10px',
+                        backgroundColor: '#F7F4FD',
+                        borderRadius: '5px'
                     }}
                 >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: '10px',
-                            left: '10px',
-                            zIndex: 1,
-                            padding: '5px 10px',
-                            backgroundColor: '#F7F4FD',
-                            borderRadius: '5px'
-                        }}
-                    >
-                        <Typography variant="h6" style={{ fontWeight: "bold" }}>
-                            반려동물 질병정보
-                        </Typography>
-                    </Box>
-
-                    {/* 응급처치 가이드 카드 목록 */}
-                    <Grid container spacing={3} sx={{ paddingTop: '60px' }}>
-                        {emergencyGuides.map((guide, index) => (
-                            <Grid item xs={12} sm={6} md={3} key={index}>
-                                <Card sx={{ height: '100%' }} onClick={() => handleOpen(guide)}>
-                                    <CardMedia
-                                        component="img"
-                                        height="140"
-                                        image={guide.image}
-                                        alt={guide.title}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h6" component="div">
-                                            {guide.title}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary">
-                                            {guide.description}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>
+                        반려동물 질병정보
+                    </Typography>
                 </Box>
-            </Container>
+
+                {/* 응급처치 가이드 카드 목록 */}
+                <Grid container spacing={3} sx={{ paddingTop: '60px' }}>
+                    {emergencyGuides.map((guide, index) => (
+                        <Grid item xs={12} sm={6} md={3} key={index}>
+                            <Card sx={{ height: '100%' }} onClick={() => handleOpen(guide)}>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={guide.image}
+                                    alt={guide.title}
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        {guide.title}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary">
+                                        {guide.description}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
+        </Container>
 
             <Modal
                 open={open}

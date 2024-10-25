@@ -54,27 +54,28 @@ const PetList = () => {
                 >
                     <Avatar 
                         src={photoPreview} 
-                        sx={{ width: 100, height: 100, marginRight: 2 }}
+                        sx={{ width: 100, height: 100, marginLeft: '1vw' }}
                     >
                         {!formData.photo && <PetsIcon sx={{ fontSize: 80 }} />}
                     </Avatar>
 
-                    <Box sx={{ flexGrow: 1 }}>
+                    <Box sx={{ flexGrow: 1, marginLeft: '2vw' }}>
                         <Typography variant="h6">{formData.petname}</Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" paddingTop='15px'>
                             {formData.species}
                         </Typography>
                     </Box>
 
                     <Button 
                         onClick={handleMypet} 
-                        sx={{ 
+                        sx={{
+                            marginRight: '1vw', 
                             width: 48,
+                            border: '1px solid #AC92ED',
                             borderRadius: '50px',  
-                            bgcolor: '#d9d9d9', 
-                            color: 'white', 
-                            '&:hover': { bgcolor: '#9f9f9f' },
-                            marginLeft: 2,
+                            bgcolor: 'white', 
+                            color: '#AC92ED', 
+                            '&:hover': { bgcolor: '#E0D7F8' } 
                         }}
                     >
                         편집

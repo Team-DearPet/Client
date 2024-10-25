@@ -3,6 +3,7 @@ import Header from '../component/Header';
 import UserDetail from '../component/UserDetail';
 import PetList from '../component/PetList';
 import OrderStatus from '../component/OrderStatus';
+import Footer from '../component/Footer';
 
 function Mypage(props) {
     return (
@@ -12,6 +13,7 @@ function Mypage(props) {
             <UserDetail />
             <PetList />
             <OrderStatus />
+            <Footer />
         </div>
     );
 }

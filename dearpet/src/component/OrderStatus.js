@@ -8,6 +8,7 @@ import AddressModal from './AddressModal';
 
 const OrderStatus = () => {
   const [open, setOpen] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState('')
   const navigate = useNavigate();
   const [orderCnts, setOrderCnts] = useState({
     주문접수: 0,
@@ -36,26 +37,16 @@ const OrderStatus = () => {
     setOrderCnts(fetchedData);
   }, []);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const handleAddressSelect = (address) => {
+        setSelectedAddress(address);
+    }
 
   const handleOrder = () => {
     navigate('/orders');
   };
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-    script.async = true;
-    script.onload = () => {
-      console.log('Daum Postcode script loaded.');
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   return (
     <Box
@@ -92,9 +83,11 @@ const OrderStatus = () => {
               alignItems: 'center',
               gap: 1,
               padding: 1,
-              border: '1px solid #d9d9d9',
               borderRadius: 2,
-              backgroundColor:'white'
+              backgroundColor:'white',
+              border: '1px solid #AC92ED', 
+              color: '#AC92ED', 
+              '&:hover': { bgcolor: '#E0D7F8' } 
             }}
           >
             <LocationOnOutlinedIcon />
@@ -102,7 +95,7 @@ const OrderStatus = () => {
               배송지 관리
             </Typography>
           </IconButton>
-          <AddressModal open={open} onClose={handleClose} />
+          <AddressModal open={open} onClose={handleClose} onSelectAddress={handleAddressSelect} />
         </Box>
 
         <Grid2
@@ -125,6 +118,7 @@ const OrderStatus = () => {
                       alignItems: 'center',
                       justifyContent: 'center',
                       margin: '0 auto',
+                      marginBottom: '10px',
                       borderRadius: '15%',
                       bgcolor: 'white',
                     }}
@@ -133,7 +127,7 @@ const OrderStatus = () => {
                       {orderCnts[status]}
                     </Typography>
                   </Box>
-                  <Typography variant="caption" color="#616161">
+                  <Typography variant="caption" color="#616161" sx={{ marginTop: '5px' , fontSize: '1rem'}}>
                     {status}
                   </Typography>
                 </Box>
@@ -168,7 +162,7 @@ const OrderStatus = () => {
           ))}
         </Box>
 
-        <Button onClick={handleOrder} variant="text" sx={{ textTransform: 'none', fontWeight: 'bold', color: 'black' }}>
+        <Button onClick={handleOrder} variant="text" sx={{ textTransform: 'none', fontWeight: 'bold', color: '#7B52E1', fontSize: '1rem' }}>
           주문/배송 조회 보러가기 &gt;
         </Button>
       </Box>

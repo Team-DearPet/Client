@@ -90,7 +90,7 @@ export default function SignUp() {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 4,
+              marginTop: 2,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center', 
@@ -113,7 +113,8 @@ export default function SignUp() {
               value={id}
               onChange={(e) => setId(e.target.value)}
               sx={{
-                mb: 2,
+                mb: 1,
+                mt: 1,
                 '& .MuiInputBase-root': {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
@@ -142,7 +143,8 @@ export default function SignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               sx={{
-                mb: 2,
+                mb: 1,
+                mt: 1,
                 '& .MuiInputBase-root': {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
@@ -171,7 +173,8 @@ export default function SignUp() {
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               sx={{
-                mb: 2,
+                mb: 1,
+                mt: 1,
                 '& .MuiInputBase-root': {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
@@ -200,7 +203,8 @@ export default function SignUp() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               sx={{
-                mb: 2,
+                mb: 1,
+                mt: 1,
                 '& .MuiInputBase-root': {
                   border: '1px solid #ccc',
                   borderRadius: '5px',
@@ -221,7 +225,7 @@ export default function SignUp() {
               onClick={handleSubmit}
               style={{backgroundColor:'#7B52E1', height:"50px"}}
             >
-              회원가입
+              <div style={{fontSize:"1.2rem"}}>회원가입</div>
             </Button>
           </Box>
         </Container>

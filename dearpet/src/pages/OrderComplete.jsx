@@ -13,7 +13,7 @@ export default function OrderComplete() {
             <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px'}}>
             <Box className="container" style={{WidthFull}}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '20px 0' }}>
-                <CheckCircleIcon style={{ fontSize: '70px', color: 'red', marginTop:"50px" }} />
+                <CheckCircleIcon style={{ fontSize: '70px', color: '#DC0044', marginTop:"50px" }} />
                 <Typography style={{marginTop:"20px", fontSize:"2rem", fontWeight:"bold", color:"black"}} variant="h6">구매가 완료되었습니다</Typography>
                 <Typography style={{marginTop:"50px", fontSize:"1.5rem", fontWeight:"bold", color:"black"}}>ooo님이 구매하신 상품은 2024.10.21부터 배송될 예정이에요!</Typography>
                 <Typography style={{marginBottom:"50px", fontSize:"1.5rem", fontWeight:"bold", color:"black"}}>구매내역은 마이페이지 '구매내역'에서 하실 수 있습니다.</Typography>
@@ -21,7 +21,7 @@ export default function OrderComplete() {
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}>
                     {/* 주문 정보 박스 */}
-                    <Box sx={{ width: '20%', marginLeft: "450px", marginRight:"20px", padding: '20px', backgroundColor: '#fff', border: '3px solid #E0D7F8', borderRadius:"20px", textAlign:"left"}}>
+                    <Box sx={{ width: '20%', marginLeft: "510px", marginRight:"20px", padding: '20px', backgroundColor: '#fff', border: '3px solid #E0D7F8', borderRadius:"20px", textAlign:"left"}}>
                         <div className="info">
                         <Typography variant="h6">주문 정보</Typography>
                         <Typography variant="subtitle1" gutterBottom>배송지 정보</Typography>
@@ -32,7 +32,7 @@ export default function OrderComplete() {
                     </Box>
 
                     {/* 결제 정보 박스 */}
-                    <Box sx={{ width: '20%', marginRight: "450px", padding: '20px', backgroundColor: '#fff', border: '3px solid #E0D7F8', borderRadius:"20px", textAlign:"left" }}>
+                    <Box sx={{ width: '20%', marginRight: "510px", padding: '20px', backgroundColor: '#fff', border: '3px solid #E0D7F8', borderRadius:"20px", textAlign:"left" }}>
                         <Typography variant="h6">결제 정보</Typography>
                         <Typography variant="subtitle1" gutterBottom>결제 방식</Typography>
                         <Typography>카카오페이</Typography>

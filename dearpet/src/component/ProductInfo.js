@@ -51,12 +51,14 @@ const ProductInfo = ({ item }) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: 'space-between' }}>
+                <Link to="/order">
                 <Button
                     variant="contained"
                     sx={{ backgroundColor: '#7B52E1', fontSize: '1.2rem', padding: '12px 100px', boxShadow: 'none' }}
                 >
                     구매하기
                 </Button>
+                </Link>
                 <Link to="/cart">
                     <Button sx={{ backgroundColor: '#FFFFFF', color: '#AC92ED', fontSize: '1.2rem', padding: '12px 100px', border: '1px solid #7B52E1', boxShadow: 'none' }}>
                         장바구니

@@ -7,6 +7,7 @@ import SearchBar from "../component/SearchBar";
 import videoData from '../data/videoData';
 import emergencyGuides from '../data/emergencyGuides';
 import emergencyDefault from '../images/emergencyDefault.png'
+import Footer from "../component/Footer";
 
 export default function Emergency() {
     const [open, setOpen] = useState(false); // 모달 열림 상태 관리
@@ -19,8 +20,7 @@ export default function Emergency() {
     };
 
     const handleClose = () => {
-        setOpen(false);
-    };
+        setOpen(false);    };
     const scrollRef = useRef(null);
     const [startIndex, setStartIndex] = useState(0); // 현재 보이는 시작 인덱스
 
@@ -42,6 +42,7 @@ export default function Emergency() {
 
     return (
         <div>
+
         <Header/>
         <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
             <h1>반려동물 응급처치 가이드</h1>
@@ -230,6 +231,7 @@ export default function Emergency() {
                 )}
             </Box>
         </Modal>
+        <Footer/>
         </div>
     );
 }

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { GoogleMap, Marker, OverlayView ,InfoWindow, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker, OverlayView, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import '../style/Map.css';
-import hospitalIconOpen from '../images/hospital.png'; 
-import hospitalIconClosed from '../images/hospital2.png'; 
+import hospitalIconOpen from '../images/hospital.png';
+import hospitalIconClosed from '../images/hospital2.png';
 import locationIcon from '../images/location.png';
 import Header from "../component/Header";
 import { blue } from "@mui/material/colors";
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import { IconButton } from '@mui/material';
+import Footer from "../component/Footer";
 
 const containerStyle = {
   width: '100%',
@@ -22,6 +25,7 @@ function NearbyAnimalHospitals() {
   const [userLocation, setUserLocation] = useState(null);
   const [hospitalMarkers, setHospitalMarkers] = useState([]);
   const [activeMarker, setActiveMarker] = useState(null);
+  const [copySuccess, setCopySuccess] = useState("");
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -45,7 +49,7 @@ function NearbyAnimalHospitals() {
       console.error("Google Maps API가 로드되지 않았습니다.");
       return;
     }
-
+  
     const service = new window.google.maps.places.PlacesService(document.createElement('div'));
     const request = {
       location: new window.google.maps.LatLng(lat, lng),
@@ -53,7 +57,7 @@ function NearbyAnimalHospitals() {
       keyword: 'animal hospital',
       language: 'ko'
     };
-
+  
     service.nearbySearch(request, (results, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         const markersPromises = results.map(place => {
@@ -62,7 +66,8 @@ function NearbyAnimalHospitals() {
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 const isOpen = details.opening_hours ? details.opening_hours.isOpen() : false;
                 const translatedAddress = details.vicinity;
-
+                const openingHours = details.opening_hours ? details.opening_hours.weekday_text : [];
+  
                 resolve({
                   lat: details.geometry.location.lat(),
                   lng: details.geometry.location.lng(),
@@ -70,7 +75,8 @@ function NearbyAnimalHospitals() {
                   address: translatedAddress,
                   website: details.website || '#',
                   phone: details.formatted_phone_number || '정보 없음',
-                  isOpen: isOpen
+                  isOpen: isOpen,
+                  openingHours: openingHours || []
                 });
               } else {
                 resolve(null);
@@ -78,26 +84,43 @@ function NearbyAnimalHospitals() {
             });
           });
         });
-
+  
         Promise.all(markersPromises).then(markers => {
           setHospitalMarkers(markers.filter(marker => marker));
         });
       }
     });
   };
-
+  
   const handleMarkerClick = (hospital) => {
     setActiveMarker(hospital);
     const cardElement = document.getElementById(`hospital-card-${hospital.name}`);
     if (cardElement) {
-    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
+      cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   const handleListItemClick = (hospital) => {
     setActiveMarker(hospital);
     setMapCenter({ lat: hospital.lat, lng: hospital.lng });
   };
+
+  const getTodayOpeningHours = (openingHours) => {
+  const today = new Date().getDay(); 
+  const todayHours = openingHours[today - 1]; 
+  const hoursOnly = todayHours?.split(": ")[1]; 
+  return hoursOnly || "정보 없음";
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopySuccess("복사되었습니다!"); // 복사 성공 시 메시지 표시
+      setTimeout(() => setCopySuccess(""), 2000); // 2초 후 메시지 사라짐
+    }, () => {
+      setCopySuccess("복사 실패!");
+    });
+  };
+
 
   return isLoaded ? (
     <div className="page-container">
@@ -107,7 +130,7 @@ function NearbyAnimalHospitals() {
       </div>
       <div className="map-list-container">
         <div className="map-box">
-          <div className="icon-legend" style={{ position: 'absolute', top: '170px', left: '330px', padding: '10px', border:"none", zIndex: 100 }}>
+          <div className="icon-legend" style={{ position: 'absolute', top: '170px', left: '370px', padding: '10px', border: "none", zIndex: 100 }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
               <img src={hospitalIconOpen} alt="진료 중" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
               <span style={{ fontWeight: 'bold' }}>진료 중</span>
@@ -140,7 +163,6 @@ function NearbyAnimalHospitals() {
                 }}
               />
             ))}
-
             {activeMarker && (
               <OverlayView
                 position={{ lat: activeMarker.lat, lng: activeMarker.lng }}
@@ -165,7 +187,7 @@ function NearbyAnimalHospitals() {
                 >
                   <h3 style={{ margin: '0', fontSize: '15px', color: '#333', padding: '5px' }}>{activeMarker.name}</h3>
                 </div>
-                </OverlayView>
+              </OverlayView>
             )}
           </GoogleMap>
         </div>
@@ -177,17 +199,39 @@ function NearbyAnimalHospitals() {
               className={`hospital-card ${activeMarker?.name === hospital.name ? 'active' : ''}`} 
               onClick={() => handleListItemClick(hospital)}
             >
-              {/* 아이콘과 병원이름을 나란히 배치 */}
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <img 
                   src={hospital.isOpen ? hospitalIconOpen : hospitalIconClosed} 
                   alt="병원 아이콘" 
                   style={{ width: '30px', height: '30px', marginRight: '10px' }} 
                 />
-                <h3 style={{fontWeight:"bold"}}>{hospital.name}</h3>
+                <h3 style={{ fontWeight: "bold" }}>{hospital.name}</h3>
               </div>
-              <p style={{fontWeight:"bold"}}>주소: {hospital.address}</p>
-              <p style={{fontWeight:"bold"}}>전화번호: {hospital.phone}</p>
+              <p style={{ fontWeight: "bold" }}>
+                주소: {hospital.address}
+                <IconButton 
+                  onClick={() => copyToClipboard(hospital.address)} 
+                  size="small" 
+                  style={{ marginLeft: '10px' }}>
+                  <FileCopyIcon fontSize="small" />
+                </IconButton>
+                </p>
+              {hospital.openingHours.length > 0 ? (
+                <p style={{ fontWeight: "bold", marginTop: "10px" }}>
+                  영업시간: {getTodayOpeningHours(hospital.openingHours)}
+                </p>
+              ) : (
+                <p style={{ fontWeight: "bold", marginTop: "10px" }}>영업시간: 정보 없음</p>
+              )}
+              <p style={{ fontWeight: "bold" }}>
+                전화번호: {hospital.phone}
+                <IconButton 
+                  onClick={() => copyToClipboard(hospital.phone)} 
+                  size="small" 
+                  style={{ marginLeft: '10px' }}>
+                  <FileCopyIcon fontSize="small" />
+                </IconButton>
+                </p>
               {hospital.website !== '#' && (
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                   <a
@@ -200,8 +244,7 @@ function NearbyAnimalHospitals() {
                       color: '#fff',
                       textDecoration: 'none',
                       borderRadius: '5px',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
+                      fontSize: '15px',
                       textAlign: 'center',
                     }}
                   >
@@ -213,8 +256,9 @@ function NearbyAnimalHospitals() {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   ) : <div>Loading...</div>;
 }
 
-export default React.memo(NearbyAnimalHospitals);
+export default NearbyAnimalHospitals;

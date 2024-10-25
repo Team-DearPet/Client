@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../component/Header";
-import { Container, Typography, Button, Box, Paper } from '@mui/material';
+import { Container, Typography, Button, Box, Paper} from '@mui/material';
+import { Link } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import '../style/OrderComplete.css'
 import { WidthFull } from "@mui/icons-material";
@@ -40,9 +41,11 @@ export default function OrderComplete() {
                         <Typography>총 32,500원</Typography>
                     </Box>
                 </Box>
-            <Button variant="contained" style={{ marginTop: '20px' , backgroundColor:"#AC92ED", fontWeight:"bold" }}>
-                다른 상품 보러가기
-            </Button>
+            <Link to="/">
+                <Button variant="contained" style={{ marginTop: '20px' , backgroundColor:"#AC92ED", fontWeight:"bold" }}>
+                    다른 상품 보러가기
+                </Button>
+            </Link>
         </Container>
         </div>
     )

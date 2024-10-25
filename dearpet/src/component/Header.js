@@ -34,7 +34,7 @@ const Header = () => {
               <Link href="/mypage" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 마이페이지
                 </Link>
-              <Link href="#" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/cart" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
                 장바구니
               </Link>
               <Button onClick={handleLogin} underline="none" sx={{ fontWeight: 'bold', fontSize: '1rem', color: 'black' }}>

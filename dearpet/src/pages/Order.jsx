@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
 import BuyFooter from '../component/BuyFooter';
 import Footer from '../component/Footer';
-import Header from '../component/Header';
 import BuyerInfo from '../component/BuyerInfo';
 import ShippingInfo from '../component/ShippingInfo';
 import OrderSummary from '../component/OrderSummary';
@@ -10,7 +9,6 @@ import OrderSummary from '../component/OrderSummary';
 const Order = ( ) => {
     return (
         <div>
-            <Header />
             <h1 
                 style={{ 
                     textAlign: 'center' 

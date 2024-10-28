@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../component/Header";
 import { Container, Typography, Button, Box, Paper} from '@mui/material';
 import { Link } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -10,7 +9,6 @@ import Footer from "../component/Footer";
 export default function OrderComplete() {
     return(
         <div style={{minHeight:'100vh'}}>
-            <Header/>
             <h1 style={{ textAlign: 'center' }}>주문완료</h1>
             <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px'}}>
             <Box className="container" style={{WidthFull}}>

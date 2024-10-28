@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
-import { Container, Box, Button } from '@mui/material';
+import React from 'react';
+import { Container, Box, Typography, Button } from '@mui/material';
+import BuyFooter from '../component/BuyFooter';
+import Footer from '../component/Footer';
 import BuyerInfo from '../component/BuyerInfo';
 import ShippingInfo from '../component/ShippingInfo';
 import OrderSummary from '../component/OrderSummary';
@@ -41,9 +43,24 @@ const Order = () => {
     }
     return (
         <div>
-            <h1 style={{ textAlign: 'center' }}>주문서</h1>
-            <Container maxWidth={false} sx={{ padding: 3, width: "80%" }}>
-                <Box sx={{ maxWidth: 800, margin: 'auto', paddingLeft: '20px' }}>
+            <h1 
+                style={{ 
+                    textAlign: 'center' 
+                }}>
+                주문서
+            </h1>
+            <Container 
+                maxWidth={false} 
+                sx={{ 
+                    padding: 3, 
+                    width: "80%" 
+                }}> 
+                <Box 
+                    sx={{ 
+                        maxWidth: 800, 
+                        margin: 'auto',
+                        paddingLeft: '20px' 
+                    }}>
                     <BuyerInfo />
                     <ShippingInfo />
                     <OrderSummary />

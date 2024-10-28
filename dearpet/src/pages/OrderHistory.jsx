@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Box, Typography, Paper } from '@mui/material';
 import '../style/OrderHistory.css';
-import Header from '../component/Header';
 import ReviewModal from '../component/ReviewModal';
 
 const OrderHistory = () => {
@@ -90,7 +89,6 @@ const OrderHistory = () => {
 
   return (
     <Box>
-      <Header/>
       <h1 style={{ textAlign: 'center' }}>주문내역</h1>
       <Box className="order-history-container">
 

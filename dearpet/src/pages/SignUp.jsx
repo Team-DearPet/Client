@@ -12,8 +12,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormGroup } from '@mui/material';
 import '../style/SignUp.css';
 import boneLogo from '../images/bone.png';
-
-
 // Material UI 테마
 const theme = createTheme({
   typography: {
@@ -58,7 +56,7 @@ export default function SignUp() {
       nickname: nickname
     };
     try {
-      const response = await fetch("http://localhost:8080/api/users/signup", {
+      const response = await fetch("http://localhost:8080/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +91,7 @@ export default function SignUp() {
               marginTop: 2,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center', 
+              alignItems: 'center',
             }}
           >
             <Typography

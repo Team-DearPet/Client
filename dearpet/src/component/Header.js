@@ -3,9 +3,7 @@ import { AppBar, Toolbar, Typography, Box, TextField, Button, Link, IconButton }
 import { Person } from '@mui/icons-material';
 import boneLogo from '../images/bone.png';
 
-const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+const Header = ({ isLoggedIn, setIsLoggedIn }) => {
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   };

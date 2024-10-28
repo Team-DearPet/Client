@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home';
+import React, { useState } from 'react';
 import { Routes, Route, Router } from 'react-router-dom';
 import Login from './pages/Login'; // 로그인 컴포넌트
 import SignUp from './pages/SignUp'; // 회원가입 컴포넌트
@@ -13,14 +14,17 @@ import Cart from './pages/Cart';
 import Order from './pages/Order';
 import Map from './pages/Map';
 import MyPet from './pages/MyPet';
-
+import Header from './component/Header';
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
   return (
     <>
+    <Header isLoggedIn={isLoggedIn} />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/map" element={<Map />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserId={setUserId}/>} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/detail" element={<ProductDetail />} />
       <Route path="/cart" element={<Cart />} />
@@ -34,5 +38,4 @@ const App = () => {
   </>
   );
 };
-
 export default App;

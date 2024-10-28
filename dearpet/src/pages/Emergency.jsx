@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { Container, Typography, Box, IconButton, Card, CardContent, CardMedia, Grid, Modal  } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import '../style/Emergency.css';
-import Header from "../component/Header";
 import SearchBar from "../component/SearchBar";
 import videoData from '../data/videoData';
 import emergencyGuides from '../data/emergencyGuides';
@@ -43,8 +42,6 @@ export default function Emergency() {
 
     return (
         <div>
-
-        <Header/>
         <Container maxWidth={false} style={{ textAlign: 'center', padding: '20px' }}>
             <h1>반려동물 응급처치 가이드</h1>
             <div className="search">

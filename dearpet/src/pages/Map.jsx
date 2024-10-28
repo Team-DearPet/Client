@@ -4,7 +4,6 @@ import '../style/Map.css';
 import hospitalIconOpen from '../images/hospital.png';
 import hospitalIconClosed from '../images/hospital2.png';
 import locationIcon from '../images/location.png';
-import Header from "../component/Header";
 import { blue } from "@mui/material/colors";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { IconButton } from '@mui/material';
@@ -124,7 +123,6 @@ function NearbyAnimalHospitals() {
 
   return isLoaded ? (
     <div className="page-container">
-      <Header />
       <div className="title">
         <h1>내 주변 동물병원 찾기</h1>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -7,33 +7,33 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import '../style/Login.css';  // 스타일을 위한 CSS 파일
+import '../style/Login.css'; 
 import boneLogo from '../images/bone.png';
 
 // Material UI 테마
 const theme = createTheme({
   typography: {
     allVariants: {
-      color: '#000', // 모든 텍스트 색상을 검은색으로 설정
-      fontWeight: 'normal', // 모든 텍스트 굵기 제거
+      color: '#000',
+      fontWeight: 'normal', 
     },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         contained: {
-          backgroundColor: '#000', // 버튼 배경색을 검은색으로 설정
-          color: '#fff', // 버튼 글씨 색상을 흰색으로 설정
+          backgroundColor: '#000',
+          color: '#fff',
           '&:hover': {
-            backgroundColor: '#333', // 버튼 hover 시 어두운 색상으로 변경
+            backgroundColor: '#333', 
           },
         },
         outlined: {
-          color: '#000', // outlined 버튼 글씨 색상을 검은색으로 설정
-          borderColor: '#000', // outlined 버튼 테두리 색상을 검은색으로 설정
+          color: '#000',
+          borderColor: '#000',
           '&:hover': {
-            borderColor: '#333', // outlined 버튼 hover 시 테두리 색상 변경
-            backgroundColor: '#f5f5f5', // hover 시 배경색 변경
+            borderColor: '#333',
+            backgroundColor: '#f5f5f5', 
           },
         },
       },
@@ -44,7 +44,8 @@ const theme = createTheme({
 export default function Login({ setIsLoggedIn, setUserId }) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지 상태 추가
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const navigate = useNavigate();
 
   // 로컬 로그인 처리
   const handleSubmit = async (event) => {
@@ -56,7 +57,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/users/login", {
+      const response = await fetch("http://localhost:8080/api/auth/login", { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,22 +65,24 @@ export default function Login({ setIsLoggedIn, setUserId }) {
         body: JSON.stringify(userData),
       });
 
-      const textResponse = await response.text(); 
-
       if (response.ok) {
-        const token = textResponse;  // JWT 토큰 문자열 처리
-        console.log('Login successful:', token);
-        localStorage.setItem('token', token);  // 로그인 토큰 저장
-        localStorage.setItem('isLoggedIn', true);  // 로그인 상태 저장
+        const token = await response.text(); 
+        localStorage.setItem('token', token); 
+        localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userId', id);
-        setIsLoggedIn(true);  // 상태 업데이트
+        setIsLoggedIn(true); 
+        setUserId(id);
 
+        navigate("/");
       } else {
-        console.error('Login failed:', textResponse);
+        const errorText = await response.text();
+        setErrorMessage("로그인에 실패했습니다. 다시 시도해 주세요."); 
+        console.error('Login failed:', errorText);
       }
       
     } catch (error) {
       console.error('Error:', error);
+      setErrorMessage("서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
     }
   };
 
@@ -101,7 +104,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               marginTop: 4,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center', // 가운데 정렬
+              alignItems: 'center', 
             }}
           >
             <Typography
@@ -120,9 +123,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               autoFocus
               value={id}
               onChange={(e) => setId(e.target.value)}
-              InputProps={{
-                disableUnderline: true,
-              }}
               sx={{
                 mb: 1,
                 '& .MuiInputBase-root': {
@@ -152,9 +152,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              InputProps={{
-                disableUnderline: true,
-              }}
               sx={{
                 mb: 2,
                 '& .MuiInputBase-root': {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Typography, Container } from '@mui/material';
-import Header from '../component/Header';
 import Footer from '../component/Footer';
 import BuyFooter from '../component/BuyFooter';
 import CartHeader from '../component/CartHeader';
@@ -46,7 +45,6 @@ const Cart = () => {
 
     return (
         <div>
-            <Header />
             <Container>
                 <h1 
                     style={{ 

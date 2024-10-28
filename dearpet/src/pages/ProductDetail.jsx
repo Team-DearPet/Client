@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container, Typography, Box, Grid2 } from '@mui/material';
-import Header from '../component/Header';
 import Footer from '../component/Footer';
 import ProductInfo from '../component/ProductInfo';
 import ReviewTabs from '../component/ReviewTabs';
@@ -15,7 +14,6 @@ function ProductDetail() {
 
     return (
         <div>
-            <Header />
             <Container 
                 maxWidth="lg" 
                 sx={{ 

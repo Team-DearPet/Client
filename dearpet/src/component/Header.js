@@ -5,8 +5,6 @@ import {useNavigate } from 'react-router-dom';
 import boneLogo from '../images/bone.png';
 
 const Header = ({ isLoggedIn, setIsLoggedIn }) => {
-  const handleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
 
   const navigate = useNavigate();
   const handleLogout = () => {

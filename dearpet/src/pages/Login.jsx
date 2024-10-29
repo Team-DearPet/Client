@@ -10,7 +10,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../style/Login.css'; 
 import boneLogo from '../images/bone.png';
 
-// Material UI 테마
 const theme = createTheme({
   typography: {
     allVariants: {
@@ -86,27 +85,33 @@ export default function Login({ setIsLoggedIn, setUserId }) {
     }
   };
 
+  // Google 로그인 핸들러
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
 
+  // Kakao 로그인 핸들러
+  const handleKakaoLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+  };
 
   return (
     <div className="main-content">
       <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
-              CarePet
-              <img style={{width: '40px'}} src={boneLogo} alt='로고'></img>
-            </Typography>
+        <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
+          CarePet
+          <img style={{width: '40px'}} src={boneLogo} alt='로고'></img>
+        </Typography>
       </Link>  
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" className="login-container">
           <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center', 
-            }}
-          >
+          <Box sx={{
+            marginTop: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center', 
+          }}>
             <Typography
               variant="body1"
               sx={{ alignSelf: 'flex-start', mb: 0, fontWeight: 'bold', textShadow: 'none', marginTop:'-40px', fontSize:'1.5rem' }}
@@ -135,7 +140,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                   },
                 }}}
               />
-
             <Typography
               variant="body1"
               sx={{ alignSelf: 'flex-start', mb: 0, fontWeight: 'bold', textShadow: 'none', fontSize:'1.5rem' }}
@@ -180,6 +184,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               style={{height:"50px"}}
+              onClick={handleGoogleLogin} // Google 로그인 핸들러
               startIcon={<img
                 className='icon-image'
                 src={require('../images/Google.jpg')}
@@ -195,6 +200,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               style={{height:"50px"}}
+              onClick={handleKakaoLogin} // Kakao 로그인 핸들러
               startIcon={<img
                 className='icon-image'
                 src={require('../images/kakao.jpg')}
@@ -205,11 +211,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
             >
                <div style={{fontSize:"1.2rem"}}>카카오톡으로 시작하기</div>
             </Button>
-            <Typography
-              variant="body2"
-              align="center"
-              sx={{ mt: 2 }}
-            >
+            <Typography variant="body2" align="center" sx={{ mt: 2 }}>
               회원가입하지 않으셨나요?{" "}
               <Link to="/signup" style={{ textDecoration: 'none', color: '#7B52E1' }}>
                 회원가입하러가기

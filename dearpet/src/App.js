@@ -2,8 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home';
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Router, useLocation } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router, useLocation } from 'react-router-dom';
 import Login from './pages/Login'; // 로그인 컴포넌트
+import OAuth2Callback from './pages/OAuth2Callback'; // 소셜 로그인 콜백 컴포넌트
 import SignUp from './pages/SignUp'; // 회원가입 컴포넌트
 import Mypage from './pages/Mypage';
 import OrderHistory from './pages/OrderHistory';
@@ -45,6 +46,7 @@ const App = () => {
       <Route path="/orders" element={<OrderHistory/>}/>
       <Route path="/orderscomplete" element={<OrderComplete/>} />
       <Route path="/emergency" element={<Emergency/>} />
+      <Route path="/oauth2/callback" element={<OAuth2Callback setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />} />
     </Routes>
   </>
   );

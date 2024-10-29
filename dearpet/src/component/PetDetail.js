@@ -20,7 +20,6 @@ const PetDetail = () => {
     });
 
     useEffect(() => {
-        // 반려동물 데이터 가져오기
         const fetchPets = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/pets', {
@@ -28,14 +27,14 @@ const PetDetail = () => {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
                 });
-                setPets(response.data); // API 응답으로 pets 배열 업데이트
+                setPets(response.data); 
             } catch (error) {
                 console.error('Failed to fetch pets:', error);
             }
         };
 
-        fetchPets(); // 컴포넌트 마운트 시 데이터 가져오기
-    }, []); // 빈 배열을 두 번째 인자로 전달하여 마운트 시 한 번만 실행
+        fetchPets();
+    }, []);
 
     const handleAddPetOpen = () => setOpenAddPet(true);
     const handleAddPetClose = () => setOpenAddPet(false);
@@ -46,11 +45,11 @@ const PetDetail = () => {
             alert('모든 필드를 입력해주세요.');
             return;
         }
-        const photoUrl = photoPreview; // 클라이언트에서 미리 보기 이미지를 사용하여 URL 처리
+        const photoUrl = photoPreview;
     
         const newPetData = {
             ...petData,
-            photo: photoUrl // 실제 이미지 URL이 아닌, 클라이언트에서 사용할 수 있는 URL을 전송
+            photo: photoUrl
         };
     
         try {

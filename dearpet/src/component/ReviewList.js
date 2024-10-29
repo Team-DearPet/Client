@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Card, Avatar } from '@mui/material';
+import { Box, Typography, Card, Avatar, Rating } from '@mui/material';
 import { Star, StarBorder } from '@mui/icons-material';
 
 const reviews = [
@@ -56,12 +56,7 @@ const ReviewList = () => {
                             {review.username}
                         </Typography>
                     </Box>
-                    <Typography 
-                        variant="body2" 
-                        color="textSecondary">
-                        별점
-                    </Typography>
-                    {renderStars(review.rating)}
+                    <Rating name="half-rating" value={review.rating} precision={1} readOnly />
                     <Typography 
                         variant="body2" 
                         sx={{ 

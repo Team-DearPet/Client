@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardActions, Typography, Box, Button, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -11,10 +11,18 @@ const ProductInfo = ({ item }) => {
     const discount = item.discount || 0;
     const originalPrice = item.price * (1 + discount/100);
     const finalPrice = item.price;
-
+    const navigate = useNavigate();
+    
     const handleAddToCart = () => {
-        alert('장바구니에 상품을 담았습니다.');
-    };
+
+            const userConfirmed = window.confirm("장바구니에 상품을 담았습니다.\n장바구니로 이동하시겠습니까?");
+            if (userConfirmed) {
+                navigate('/cart'); 
+            } else {
+                console.log("장바구니에 머무릅니다.");
+            }
+        };
+    
 
     
     const handleIncrease = () => {

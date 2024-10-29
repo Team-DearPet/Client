@@ -4,6 +4,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import PetsIcon from '@mui/icons-material/Pets';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const PetDetail = () => {
     const [pets, setPets] = useState([]);
@@ -88,6 +89,20 @@ const PetDetail = () => {
         }
     };
 
+    const handleDeletePet = async (petId) => {
+        try {
+            await axios.delete(`http://localhost:8080/api/pets/${petId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                }
+            });
+            setPets(pets.filter(pet => pet.petId !== petId));
+        } catch (error) {
+            console.error('Failed to delete pet:', error);
+            alert('반려동물 삭제에 실패했습니다.');
+        }
+    };
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ maxWidth: 800, width: '100%', display: 'flex', justifyContent: 'space-between'}}>
@@ -107,8 +122,8 @@ const PetDetail = () => {
                         <Typography variant="h6" sx={{ fontWeight: 'bold'}}>{pet.name}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '30px' }}>종류</span> {pet.species}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '30px' }}>나이</span> {pet.age} 살</Typography>
-                        <Typography><span style={{ color: 'gray', marginRight: '30px' }}>성별</span> {pet.gender}</Typography>
-                        <Typography><span style={{ color: 'gray', marginRight: '13px' }}>중성화</span> {pet.neutered ? '예' : '아니오'}</Typography>
+                        <Typography><span style={{ color: 'gray', marginRight: '30px' }}>성별</span> {pet.gender === 'MALE' ? '남아' : '여아'}</Typography>
+                        <Typography><span style={{ color: 'gray', marginRight: '13px' }}>중성화</span> {pet.neutered ? 'O' : 'X'}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>몸무게</span> {pet.weight} kg</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>건강상태</span> {pet.healthStatus}</Typography>
                     </CardContent>
@@ -118,6 +133,9 @@ const PetDetail = () => {
                     >
                         {!pet.photo && <PetsIcon sx={{ fontSize: 80 }}/>}
                     </Avatar>
+                    <IconButton onClick={() => handleDeletePet(pet.petId)}>
+                        <DeleteIcon />
+                    </IconButton>
                 </Card>
             ))}
             <Modal open={openAddPet} onClose={handleAddPetClose}>

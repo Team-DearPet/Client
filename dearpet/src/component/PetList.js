@@ -6,9 +6,8 @@ import axios from 'axios';
 
 const PetList = () => {
     const navigate = useNavigate();
-    const [pets, setPets] = useState([]);
+    const [pets, setPets] = useState([]); // 기본값으로 빈 배열 설정
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchPets = async () => {
@@ -19,10 +18,10 @@ const PetList = () => {
                     }
                 });
                 console.log(response.data);
-                setPets(response.data);
+                setPets(Array.isArray(response.data) ? response.data : []); // 응답 데이터가 배열인지 확인
             } catch (error) {
                 console.error('Error fetching pets:', error);
-                setError('반려동물 목록을 가져오는 데 오류가 발생했습니다.');
+                setPets([]); // 오류 발생 시 빈 배열로 설정
             } finally {
                 setLoading(false);
             }
@@ -40,34 +39,32 @@ const PetList = () => {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                marginTop: '5vh',
+                alignItems: 'center',
+                marginTop: '5vh 0',
             }}
         >
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-start',
                     padding: 3,
                     borderRadius: 2,
                     maxWidth: 800,
                     width: '100%',
                     bgcolor: '#F7F4FD',
-                    gap: 2,
+                    position: 'relative', // relative로 설정
                 }}
             >
                 <Typography 
                     variant="h6" 
-                    sx={{ fontWeight: 'bold', alignSelf: 'flex-start' }}
+                    sx={{ fontWeight: 'bold', justifyContent:"flex-start"}}
                 >
                     마이펫
                 </Typography>
 
                 {loading ? (
                     <Typography>로딩 중...</Typography>
-                ) : error ? (
-                    <Typography color="error">{error}</Typography>
-                ) : pets.length > 0 ? (
+                ) : (
                     pets.map((pet) => (
                         <Box 
                             key={pet.petId} 
@@ -91,26 +88,32 @@ const PetList = () => {
                                     {pet.species}
                                 </Typography>
                             </Box>
-
-                            <Button 
-                                onClick={handleMypet} 
-                                sx={{
-                                    marginRight: '1vw', 
-                                    width: 48,
-                                    border: '1px solid #AC92ED',
-                                    borderRadius: '50px',  
-                                    bgcolor: 'white', 
-                                    color: '#AC92ED', 
-                                    '&:hover': { bgcolor: '#E0D7F8' } 
-                                }}
-                            >
-                                편집
-                            </Button>
                         </Box>
                     ))
-                ) : (
-                    <Typography>등록된 반려동물이 없습니다.</Typography>
                 )}
+                {/* 버튼을 감싸는 Box 추가 */}
+                <Box
+                    sx={{
+                        position: 'absolute', // absolute로 설정
+                        top: '50%', // 수직 중앙 정렬
+                        right: '2.5vw', // 오른쪽 여백
+                        transform: 'translateY(-50%)', // 수직 중앙 정렬을 위한 변환
+                    }}
+                >
+                    <Button 
+                        onClick={handleMypet} 
+                        sx={{
+                            width: 48,
+                            border: '1px solid #AC92ED',
+                            borderRadius: '50px',  
+                            bgcolor: 'white', 
+                            color: '#AC92ED', 
+                            '&:hover': { bgcolor: '#E0D7F8' } 
+                        }}
+                    >
+                        편집
+                    </Button>
+                </Box>
             </Box>
         </Box>
     );

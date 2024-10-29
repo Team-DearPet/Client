@@ -59,12 +59,6 @@ const UserDetail = () => {
     }
   };
 
-  const handleCheckId = () => {
-    const isDuplicate = formData.username === 'user123';
-    setIsIdValid(!isDuplicate);
-    alert(isDuplicate ? '이미 사용 중인 ID입니다.' : '사용 가능한 ID입니다.');
-  };
-
   const handleSave = async () => {
     // 서버에 수정된 데이터 전송
     const updatedData = { 
@@ -234,20 +228,6 @@ const UserDetail = () => {
               onChange={handleChange}
               error={!isIdValid}
             />
-            <Button 
-              sx={{
-                width: '100px',
-                height: '55px',
-                bgcolor: '#7B52E1',
-                color: 'white',
-                '&:hover': {
-                  bgcolor: '#6A47B1'
-                }
-              }} 
-              onClick={handleCheckId}
-            >
-              중복 확인
-            </Button>
           </Box>
 
           <TextField

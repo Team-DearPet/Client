@@ -10,7 +10,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../style/SignUp.css';
 import boneLogo from '../images/bone.png';
 
-
 // Material UI 테마
 const theme = createTheme({
   typography: {
@@ -41,11 +40,13 @@ const theme = createTheme({
     },
   },
 });
+
 export default function SignUp() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [nickname, setNickname] = useState("")
+  const [nickname, setNickname] = useState("");
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const userData = {
@@ -65,7 +66,7 @@ export default function SignUp() {
       if (response.ok) {
         const result = await response.json();
         console.log('User created:', result);
-        alert("회원가입이 완료됐습니다!")
+        alert("회원가입이 완료됐습니다!");
         window.location.href = "/login";
       } else {
         console.error('Error creating user');
@@ -74,13 +75,19 @@ export default function SignUp() {
       console.error('Error:', error);
     }
   };
+
+  const handleCheckId = () => {
+    // 중복 확인 로직 구현
+    console.log('중복 확인:', id);
+  };
+
   return (
     <div className="main-content">
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
-              CarePet
-              <img style={{width: '40px'}} src={boneLogo} alt='로고'></img>
-            </Typography>
+      <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color: 'black', fontSize: '3.5rem', marginBottom: '10px' }}>
+          CarePet
+          <img style={{ width: '40px' }} src={boneLogo} alt='로고'></img>
+        </Typography>
       </Link>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" className="signup-container">
@@ -90,39 +97,57 @@ export default function SignUp() {
               marginTop: 2,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center', 
+              alignItems: 'center',
             }}
           >
             <Typography
               variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem', marginTop:'-20px' }}
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem', marginTop: '-20px' }}
             >
               아이디
             </Typography>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="id"
-              name="id"
-              autoComplete="id"
-              autoFocus
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-              sx={{
-                mb: 1,
-                mt: 1,
-                '& .MuiInputBase-root': {
-                  border: '1px solid #ccc',
-                  borderRadius: '5px',
-                  padding: '10px',
-                  height: '50px',
-                  '&:focus': {
-                    borderColor: '#B3D9E2',
+            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="id"
+                name="id"
+                autoComplete="id"
+                autoFocus
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+                sx={{
+                  mb: 1,
+                  mt: 1,
+                  '& .MuiInputBase-root': {
+                    border: '1px solid #ccc',
+                    borderRadius: '5px',
+                    padding: '10px',
+                    height: '50px',
+                    '&:focus': {
+                      borderColor: '#B3D9E2',
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+              <Button
+                sx={{
+                  width: '100px',
+                  height: '50px',
+                  bgcolor: '#7B52E1',
+                  color: 'white',
+                  fontSize: '0.8rem',
+                  marginLeft: '10px', 
+                  '&:hover': {
+                    bgcolor: '#6A47B1'
+                  }
+                }}
+                onClick={handleCheckId}
+              >
+                중복 확인
+              </Button>
+            </Box>
             <Typography
               variant="body1"
               sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
@@ -220,9 +245,9 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}
               className="signup-button"
               onClick={handleSubmit}
-              style={{backgroundColor:'#7B52E1', height:"50px"}}
+              style={{ backgroundColor: '#7B52E1', height: "50px" }}
             >
-              <div style={{fontSize:"1.2rem"}}>회원가입</div>
+              <div style={{ fontSize: "1.2rem" }}>회원가입</div>
             </Button>
           </Box>
         </Container>

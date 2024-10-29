@@ -17,8 +17,25 @@ const PetDetail = () => {
         gender: 'MALE',
         weight: '',
         healthStatus: '',
-        userId: localStorage.getItem('userId')
     });
+
+    useEffect(() => {
+        // 반려동물 데이터 가져오기
+        const fetchPets = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/pets', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    }
+                });
+                setPets(response.data); // API 응답으로 pets 배열 업데이트
+            } catch (error) {
+                console.error('Failed to fetch pets:', error);
+            }
+        };
+
+        fetchPets(); // 컴포넌트 마운트 시 데이터 가져오기
+    }, []); // 빈 배열을 두 번째 인자로 전달하여 마운트 시 한 번만 실행
 
     const handleAddPetOpen = () => setOpenAddPet(true);
     const handleAddPetClose = () => setOpenAddPet(false);
@@ -29,17 +46,13 @@ const PetDetail = () => {
             alert('모든 필드를 입력해주세요.');
             return;
         }
-      
-        const formData = new FormData();
-        formData.append('name', petData.name);
-        formData.append('species', petData.species);
-        formData.append('age', petData.age);
-        formData.append('neutered', petData.neutered);
-        formData.append('gender', petData.gender);
-        formData.append('weight', petData.weight);
-        formData.append('healthStatus', petData.healthStatus);
-        formData.append('photo', petData.photo); // 사진 추가
-      
+        const photoUrl = photoPreview; // 클라이언트에서 미리 보기 이미지를 사용하여 URL 처리
+    
+        const newPetData = {
+            ...petData,
+            photo: photoUrl // 실제 이미지 URL이 아닌, 클라이언트에서 사용할 수 있는 URL을 전송
+        };
+    
         try {
             const response = await axios.post('http://localhost:8080/api/pets', newPetData, {
                 headers: {

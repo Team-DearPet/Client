@@ -6,9 +6,9 @@ import axios from 'axios';
 
 const PetList = () => {
     const navigate = useNavigate();
-    const [pets, setPets] = useState([]); // 반려동물 목록 상태
-    const [loading, setLoading] = useState(true); // 로딩 상태
-    const [error, setError] = useState(null); // 에러 상태 추가
+    const [pets, setPets] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchPets = async () => {
@@ -18,13 +18,13 @@ const PetList = () => {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
                 });
-                console.log(response.data); // API 응답 로그
-                setPets(response.data); // 가져온 반려동물 목록을 상태로 설정
+                console.log(response.data);
+                setPets(response.data);
             } catch (error) {
                 console.error('Error fetching pets:', error);
-                setError('반려동물 목록을 가져오는 데 오류가 발생했습니다.'); // 에러 메시지 설정
+                setError('반려동물 목록을 가져오는 데 오류가 발생했습니다.');
             } finally {
-                setLoading(false); // 로딩 완료
+                setLoading(false);
             }
         };
 
@@ -64,9 +64,9 @@ const PetList = () => {
                 </Typography>
 
                 {loading ? (
-                    <Typography>로딩 중...</Typography> // 로딩 중 표시
+                    <Typography>로딩 중...</Typography>
                 ) : error ? (
-                    <Typography color="error">{error}</Typography> // 에러 메시지 표시
+                    <Typography color="error">{error}</Typography>
                 ) : pets.length > 0 ? (
                     pets.map((pet) => (
                         <Box 
@@ -109,7 +109,7 @@ const PetList = () => {
                         </Box>
                     ))
                 ) : (
-                    <Typography>등록된 반려동물이 없습니다.</Typography> // 반려동물이 없는 경우 표시
+                    <Typography>등록된 반려동물이 없습니다.</Typography>
                 )}
             </Box>
         </Box>

@@ -55,6 +55,7 @@ const UserDetail = () => {
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      console.log(URL.createObjectURL(file))
       setPhotoPreview(URL.createObjectURL(file)); // 미리보기
     }
   };

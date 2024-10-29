@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 import ReviewList from './ReviewList';
 
-const ReviewTabs = ({ activeTab, handleTabChange }) => {
+const ProductTabs = ({ activeTab, handleTabChange, detail }) => {
     return (
         <Box marginTop={5}>
             <Tabs 
@@ -45,11 +45,11 @@ const ReviewTabs = ({ activeTab, handleTabChange }) => {
                     boxShadow: 3, 
                     marginTop: 2 
                 }}>
-                {activeTab === 'detail' && <Typography>상품 상세정보 내용</Typography>}
+                {activeTab === 'detail' && <Typography>{detail}</Typography>}
                 {activeTab === 'review' && <ReviewList />}
             </Box>
         </Box>
     );
 };
 
-export default ReviewTabs;
+export default ProductTabs;

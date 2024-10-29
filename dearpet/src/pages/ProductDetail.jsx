@@ -1,17 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Typography, Box, Grid2 } from '@mui/material';
 import Footer from '../component/Footer';
 import ProductInfo from '../component/ProductInfo';
-import ReviewTabs from '../component/ReviewTabs';
-import items from '../data/items';
+import ProductTabs from '../component/ProductTabs';
+// import items from '../data/items';
 
 function ProductDetail() {
+    const { productId } = useParams();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('detail');
+    const [product, setProduct] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleTabChange = (event, newValue) => {
         setActiveTab(newValue);
     };
 
+    const fetchProduct = async () => {
+        const accessToken = localStorage.getItem('token');
+        try{
+          const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`,
+            }
+          });
+          console.log(response.status);
+          if (!response.ok) {
+            throw new Error('서버 응답 실패');
+          }
+          const data = await response.json();
+          console.log(data);
+          setProduct(data);
+        } catch (error) {
+          console.error('Error: ', error);
+          setErrorMessage("서버 오류 발생");
+        }
+      }
+
+      useEffect(()=>{
+        fetchProduct()
+      },[productId]);
+
+      if (errorMessage) return <p>{errorMessage}</p>;
+      if (!product) return <p>로딩 중...</p>;
+      console.log(product)
     return (
         <div>
             <Container 
@@ -34,7 +69,7 @@ function ProductDetail() {
                             marginBottom: '16px', 
                             marginLeft: '10px' 
                         }}>
-                        [{items[1][0].brand}]{items[1][0].title}
+                        {product.name}
                     </Typography>
                 </Box>
 
@@ -50,7 +85,7 @@ function ProductDetail() {
                             justifyContent: 'center' 
                         }}>
                         <img 
-                            src={items[1][0].image} 
+                            src={product.image} 
                             alt="상품 이미지" 
                             style={{ 
                                 width: 450, 
@@ -63,14 +98,15 @@ function ProductDetail() {
                         xs={12} 
                         md={6}>
                         <ProductInfo 
-                            item={items[1][0]} 
+                            item={product} 
                             />
                     </Grid2>
                 </Grid2>
 
-                <ReviewTabs 
+                <ProductTabs 
                     activeTab={activeTab} 
-                    handleTabChange={handleTabChange} 
+                    handleTabChange={handleTabChange}
+                    detail={product.description}
                 />
             </Container>
 

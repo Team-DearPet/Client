@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Typography, Box, Grid2 } from '@mui/material';
 import Footer from '../component/Footer';
 import ProductInfo from '../component/ProductInfo';
-import ReviewTabs from '../component/ReviewTabs';
+import ProductTabs from '../component/ProductTabs';
 // import items from '../data/items';
 
 function ProductDetail() {
@@ -18,11 +18,13 @@ function ProductDetail() {
     };
 
     const fetchProduct = async () => {
+        const accessToken = localStorage.getItem('token');
         try{
           const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`,
             }
           });
           console.log(response.status);
@@ -44,7 +46,7 @@ function ProductDetail() {
 
       if (errorMessage) return <p>{errorMessage}</p>;
       if (!product) return <p>로딩 중...</p>;
-
+      console.log(product)
     return (
         <div>
             <Container 
@@ -101,9 +103,10 @@ function ProductDetail() {
                     </Grid2>
                 </Grid2>
 
-                <ReviewTabs 
+                <ProductTabs 
                     activeTab={activeTab} 
-                    handleTabChange={handleTabChange} 
+                    handleTabChange={handleTabChange}
+                    detail={product.description}
                 />
             </Container>
 

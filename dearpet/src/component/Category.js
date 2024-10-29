@@ -85,7 +85,7 @@ const Category = () => {
                 width: '100%',
               }}
             >
-              {product.name}
+              {product.seller}
             </Typography>
             <Typography
               variant="h6"
@@ -100,7 +100,7 @@ const Category = () => {
                 width: '100%',
               }}
             >
-              {product.description}
+              {product.name}
             </Typography>
             <Box sx={{ borderTop: '1px solid #ddd', width: '100%', marginY: 1 }} />
             <Typography

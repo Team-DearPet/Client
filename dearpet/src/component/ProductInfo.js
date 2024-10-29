@@ -8,9 +8,9 @@ const ProductInfo = ({ item }) => {
     const [quantity, setQuantity] = useState(1); // 기본 수량 1
 
     // 가격 계산 로직
-    const originalPrice = parseInt(item.price.replace(/,/g, '').replace('원', ''));
-    const discount = item.discount;
-    const finalPrice = originalPrice * (1 - discount / 100);
+    const discount = item.discount || 0;
+    const originalPrice = item.price * (1 + discount/100);
+    const finalPrice = item.price;
 
     const handleAddToCart = () => {
         alert('장바구니에 상품을 담았습니다.');
@@ -59,7 +59,7 @@ const ProductInfo = ({ item }) => {
                     variant="body2" 
                     color="textSecondary" 
                     fontSize="1.1rem">
-                    소비자가: {item.price}
+                    소비자가: {originalPrice.toLocaleString()}원
                 </Typography>
                 <Typography 
                     variant="body2" 
@@ -72,7 +72,7 @@ const ProductInfo = ({ item }) => {
                     color="textSecondary" 
                     marginBottom={3} 
                     fontSize="1.1rem">
-                    브랜드: {item.brand}
+                    브랜드: {item.seller}
                 </Typography>
                 
                 {/* 수량 조절 및 표시 */}

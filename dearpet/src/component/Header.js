@@ -9,6 +9,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     localStorage.setItem('isLoggedIn', false);
     setIsLoggedIn(false);
     navigate('/');  // 로그아웃 후 메인 페이지로 이동

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GoogleMap, Marker, OverlayView, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker, OverlayView, useJsApiLoader } from "@react-google-maps/api";
 import '../style/Map.css';
 import hospitalIconOpen from '../images/hospital.png';
 import hospitalIconClosed from '../images/hospital2.png';

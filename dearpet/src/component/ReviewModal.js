@@ -59,7 +59,7 @@ const ReviewModal = ({ open, item, onClose, onSubmit }) => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography sx={{ fontWeight: 'bold' }}>별점</Typography>
-                <Rating name="half-rating" defaultValue={0} precision={0.5} />
+                <Rating name="half-rating" defaultValue={0} precision={1} />
               </Box>
               <Button
                 variant="outlined"

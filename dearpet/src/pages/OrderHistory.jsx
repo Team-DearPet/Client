@@ -9,8 +9,8 @@ const OrderHistory = () => {
       id: 1,
       date: '2024.10.18',
       items: [
-        { name: '[하림펫푸드] 강아지 사료', price: 15000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '500g', reviewed: false, review: '' },
-        { name: '[바잇미] 롤케이크 노즈워크 매트 장난감', price: 10000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '', reviewed: false, review: '' }
+        { name: '[하림펫푸드] 강아지 사료', productId: 1, price: 15000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '500g', reviewed: false, review: '' },
+        { name: '[바잇미] 롤케이크 노즈워크 매트 장난감', productId: 2, price: 10000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '', reviewed: false, review: '' }
       ],
       status: '주문완료',
       totalprice: 25000,

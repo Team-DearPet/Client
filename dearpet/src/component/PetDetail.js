@@ -17,24 +17,8 @@ const PetDetail = () => {
         gender: 'MALE',
         weight: '',
         healthStatus: '',
+        userId: localStorage.getItem('userId')
     });
-
-    useEffect(() => {
-        const fetchPets = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/pets', {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    }
-                });
-                setPets(response.data); 
-            } catch (error) {
-                console.error('Failed to fetch pets:', error);
-            }
-        };
-
-        fetchPets();
-    }, []);
 
     const handleAddPetOpen = () => setOpenAddPet(true);
     const handleAddPetClose = () => setOpenAddPet(false);
@@ -45,13 +29,17 @@ const PetDetail = () => {
             alert('모든 필드를 입력해주세요.');
             return;
         }
-        const photoUrl = photoPreview;
-    
-        const newPetData = {
-            ...petData,
-            photo: photoUrl
-        };
-    
+      
+        const formData = new FormData();
+        formData.append('name', petData.name);
+        formData.append('species', petData.species);
+        formData.append('age', petData.age);
+        formData.append('neutered', petData.neutered);
+        formData.append('gender', petData.gender);
+        formData.append('weight', petData.weight);
+        formData.append('healthStatus', petData.healthStatus);
+        formData.append('photo', petData.photo); // 사진 추가
+      
         try {
             const response = await axios.post('http://localhost:8080/api/pets', newPetData, {
                 headers: {

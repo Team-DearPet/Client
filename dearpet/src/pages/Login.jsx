@@ -67,7 +67,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
       if (response.ok) {
         const token = await response.text(); 
         localStorage.setItem('token', token); 
-        console.log(token)
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userId', id);
         setIsLoggedIn(true); 
@@ -86,6 +85,10 @@ export default function Login({ setIsLoggedIn, setUserId }) {
     }
   };
 
+  // Google 로그인 핸들러
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
 
   // Kakao 로그인 핸들러
   const handleKakaoLogin = () => {
@@ -189,7 +192,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                 style={{ width: '30px', height: '30px', borderRadius: '50%' }}
               />}
               sx={{ mt: 2, mb: 2 }}
-              onClick={handleGoogleLogin}
             >
               <div style={{fontSize:"1.2rem"}}>구글로 시작하기</div>
             </Button>
@@ -206,7 +208,6 @@ export default function Login({ setIsLoggedIn, setUserId }) {
                 style={{ width: '24px', height: '24px', borderRadius: '50%' }}
               />}
               sx={{ mt: 2, mb: 2 }}
-              onClick={handleKakaoLogin}
             >
                <div style={{fontSize:"1.2rem"}}>카카오톡으로 시작하기</div>
             </Button>

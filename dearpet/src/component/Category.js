@@ -48,7 +48,7 @@ const Category = () => {
   const renderItems = (categoryId) => (
     <Box display="flex" gap={2} flexWrap="wrap" justifyContent="center">
       {filteredItems(categoryId).map((product) => (
-        <Link to='/detail' key={product.productId} style={{ textDecoration: 'none'}}>
+        <Link to={`/detail/${product.productId}`} key={product.productId} style={{ textDecoration: 'none'}}>
         <Card
           sx={{
             width: 200,

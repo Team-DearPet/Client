@@ -1,29 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Tab, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import items from '../data/items';
 import SearchBar from '../component/SearchBar';
 
 const Category = () => {
   const [value, setValue] = useState('1');
   const [searchTerm, setSearchTerm] = useState('');
+  const [products, setProducts] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const fetchProducts = async () => {
+    try{
+      const response = await fetch("http://localhost:8080/api/products", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      if (!response.ok) {
+        throw new Error('서버 응답 실패');
+      }
+      const data = await response.json();
+      console.log(data);
+      setProducts(data);
+    } catch (error) {
+      console.error('Error: ', error);
+      setErrorMessage("서버 오류 발생");
+    }
+  }
+
+  useEffect(()=>{
+    fetchProducts();
+  },[]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const filteredItems = (categoryIndex) =>
-    items[categoryIndex].filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const filteredItems = (categoryId) =>
+    products
+      .filter((product) => product.categoryId === categoryId)
+      .filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
 
-  const renderItems = (categoryIndex) => (
+  const renderItems = (categoryId) => (
     <Box display="flex" gap={2} flexWrap="wrap" justifyContent="center">
-      {filteredItems(categoryIndex).map((item, index) => (
-        <Link to='/detail' style={{ textDecoration: 'none'}}>
+      {filteredItems(categoryId).map((product) => (
+        <Link to={`/detail/${product.productId}`} key={product.productId} style={{ textDecoration: 'none'}}>
         <Card
-          key={index}
           sx={{
             width: 200,
             height: 350,
@@ -39,8 +65,8 @@ const Category = () => {
           <CardMedia
             component="img"
             height="180"
-            image={item.image}
-            alt={item.title}
+            image={product.image}
+            alt={product.name}
             sx={{
               borderTopLeftRadius: 8,
               borderTopRightRadius: 8,
@@ -59,7 +85,7 @@ const Category = () => {
                 width: '100%',
               }}
             >
-              {item.brand}
+              {product.seller}
             </Typography>
             <Typography
               variant="h6"
@@ -74,7 +100,7 @@ const Category = () => {
                 width: '100%',
               }}
             >
-              {item.title}
+              {product.name}
             </Typography>
             <Box sx={{ borderTop: '1px solid #ddd', width: '100%', marginY: 1 }} />
             <Typography
@@ -89,7 +115,7 @@ const Category = () => {
                 width: '100%',
               }}
             >
-              {item.price}
+              {product.price}원
             </Typography>
           </CardContent>
         </Card>
@@ -135,6 +161,12 @@ const Category = () => {
       <TabPanel value="1">{renderItems(1)}</TabPanel>
       <TabPanel value="2">{renderItems(2)}</TabPanel>
       <TabPanel value="3">{renderItems(3)}</TabPanel>
+
+      {errorMessage && (
+        <Typography color="error" sx={{ textAlign: 'center', marginTop: 2 }}>
+          {errorMessage}
+        </Typography>
+      )}
     </TabContext>
   );
 };

@@ -10,8 +10,8 @@ import Footer from "../component/Footer";
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function Emergency() {
-    const [open, setOpen] = useState(false); // 모달 열림 상태 관리
-    const [selectedGuide, setSelectedGuide] = useState(null); // 선택된 가이드 저장
+    const [open, setOpen] = useState(false);
+    const [selectedGuide, setSelectedGuide] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     
     const handleOpen = (guide) => {
@@ -22,14 +22,14 @@ export default function Emergency() {
     const handleClose = () => {
         setOpen(false);    };
     const scrollRef = useRef(null);
-    const [startIndex, setStartIndex] = useState(0); // 현재 보이는 시작 인덱스
+    const [startIndex, setStartIndex] = useState(0);
 
     const scroll = (direction) => {
         const newStartIndex = direction === 'left' 
             ? Math.max(startIndex - 1, 0) 
-            : Math.min(startIndex + 1, videoData.length - 4); // 인덱스 범위 조정
+            : Math.min(startIndex + 1, videoData.length - 4);
         
-        setStartIndex(newStartIndex); // 새로운 인덱스로 업데이트
+        setStartIndex(newStartIndex);
     };
 
     const filteredVideos = videoData.filter((video) =>
@@ -56,10 +56,10 @@ export default function Emergency() {
                     border: '2px solid #E0D7F8', 
                     borderRadius: '10px', 
                     overflow: 'hidden', 
-                    width: '80%', // 박스 너비 설정
-                    maxWidth: '1300px', // 최대 너비 조정
-                    margin: '0 auto', // 중앙 정렬
-                    padding: '10px' // 내부 여백 추가
+                    width: '80%',
+                    maxWidth: '1300px',
+                    margin: '0 auto', 
+                    padding: '10px' 
                 }}
             >
                 <Box 
@@ -69,12 +69,12 @@ export default function Emergency() {
                         left: '10px', 
                         zIndex: 1, 
                         padding: '5px 10px', 
-                        backgroundColor: '#F7F4FD', // 배경색 추가
-                        borderRadius: '5px' // 둥근 모서리 추가
+                        backgroundColor: '#F7F4FD',
+                        borderRadius: '5px' 
                     }}
                 >
                     <Typography variant="h6" style={{fontWeight:"bold"}}>
-                        반려동물 건강정보
+                        반려동물 응급처치
                     </Typography>
                 </Box>
                 {filteredVideos.length === 0 ? (
@@ -85,8 +85,8 @@ export default function Emergency() {
                 <>
                 <IconButton 
                     onClick={() => scroll('left')} 
-                    disabled={startIndex === 0} // 시작 인덱스가 0일 때 비활성화
-                    style={{ position: 'absolute', left: '2px', zIndex: 1 }} // 왼쪽 화살표 위치 조정
+                    disabled={startIndex === 0} 
+                    style={{ position: 'absolute', left: '2px', zIndex: 1 }} 
                 >
                     <ChevronLeft />
                 </IconButton>
@@ -95,11 +95,11 @@ export default function Emergency() {
                     sx={{ 
                         display: 'flex', 
                         scrollBehavior: 'smooth', 
-                        width: '100%', // 부모 박스 크기 설정
-                        paddingTop: '40px', // 제목 아래 여백 추가
+                        width: '100%', 
+                        paddingTop: '40px', 
                     }}
                 >
-                    {filteredVideos.slice(startIndex, startIndex + 4).map((video, index) => ( // 현재 보이는 인덱스 범위만 표시
+                    {filteredVideos.slice(startIndex, startIndex + 4).map((video, index) => ( 
                         <Box 
                             key={index} 
                             sx={{ 
@@ -107,7 +107,7 @@ export default function Emergency() {
                                 marginRight: '15px',
                                 marginLeft: '15px', 
                                 cursor: 'pointer', 
-                                width: '300px', // 썸네일 박스 크기 조정
+                                width: '300px', 
                                 height: 'auto'
                             }} 
                             onClick={() => window.open(video.link, '_blank')}
@@ -125,8 +125,8 @@ export default function Emergency() {
                 </Box>
                 <IconButton 
                     onClick={() => scroll('right')} 
-                    disabled={startIndex >= videoData.length - 4} // 마지막 인덱스에서 비활성화
-                    style={{ position: 'absolute', right: '1px', zIndex: 1 }} // 오른쪽 화살표 위치 조정
+                    disabled={startIndex >= videoData.length - 4}
+                    style={{ position: 'absolute', right: '1px', zIndex: 1 }} 
                 >
                     <ChevronRight />
                 </IconButton>
@@ -210,10 +210,10 @@ export default function Emergency() {
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     width: 400,
-                    bgcolor: '#F7F4FD', // Set the background color to match your theme
-                    border: '2px solid #E0D7F8', // Border color to match your theme
+                    bgcolor: '#F7F4FD', 
+                    border: '2px solid #E0D7F8', 
                     boxShadow: 24,
-                    borderRadius: '10px', // Add rounded corners
+                    borderRadius: '10px', 
                     p: 4,
                 }}
             >

@@ -1,16 +1,34 @@
 import { Box, Avatar, Typography, Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PetsIcon from '@mui/icons-material/Pets';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const PetList = () => {
     const navigate = useNavigate();
-    const [formData] = useState({
-        photo: '',
-        petname: '감자',
-        species: '진돗개',
-    });
-    const [photoPreview] = useState(null);
+    const [pets, setPets] = useState([]); // 기본값으로 빈 배열 설정
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPets = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/pets', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    }
+                });
+                console.log(response.data);
+                setPets(Array.isArray(response.data) ? response.data : []); // 응답 데이터가 배열인지 확인
+            } catch (error) {
+                console.error('Error fetching pets:', error);
+                setPets([]); // 오류 발생 시 빈 배열로 설정
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPets();
+    }, []);
 
     const handleMypet = () => {
         navigate('/mypet');
@@ -21,55 +39,70 @@ const PetList = () => {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                marginTop: '5vh',
+                alignItems: 'center',
+                marginTop: '5vh 0',
             }}
         >
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-start',
                     padding: 3,
                     borderRadius: 2,
                     maxWidth: 800,
                     width: '100%',
                     bgcolor: '#F7F4FD',
-                    gap: 2,
+                    position: 'relative', // relative로 설정
                 }}
             >
                 <Typography 
                     variant="h6" 
-                    sx={{ fontWeight: 'bold', alignSelf: 'flex-start' }}
+                    sx={{ fontWeight: 'bold', justifyContent:"flex-start"}}
                 >
                     마이펫
                 </Typography>
 
-                <Box 
-                    sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        width: '100%', 
-                        marginTop: 2,
+                {loading ? (
+                    <Typography>로딩 중...</Typography>
+                ) : (
+                    pets.map((pet) => (
+                        <Box 
+                            key={pet.petId} 
+                            sx={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                width: '100%', 
+                                marginTop: 2,
+                            }}
+                        >
+                            <Avatar 
+                                src={pet.photo || ''} 
+                                sx={{ width: 100, height: 100, marginLeft: '1vw' }}
+                            >
+                                {!pet.photo && <PetsIcon sx={{ fontSize: 80 }} />}
+                            </Avatar>
+
+                            <Box sx={{ flexGrow: 1, marginLeft: '2vw' }}>
+                                <Typography variant="h6">{pet.name}</Typography>
+                                <Typography variant="body2" color="text.secondary" paddingTop='15px'>
+                                    {pet.species}
+                                </Typography>
+                            </Box>
+                        </Box>
+                    ))
+                )}
+                {/* 버튼을 감싸는 Box 추가 */}
+                <Box
+                    sx={{
+                        position: 'absolute', // absolute로 설정
+                        top: '50%', // 수직 중앙 정렬
+                        right: '2.5vw', // 오른쪽 여백
+                        transform: 'translateY(-50%)', // 수직 중앙 정렬을 위한 변환
                     }}
                 >
-                    <Avatar 
-                        src={photoPreview} 
-                        sx={{ width: 100, height: 100, marginLeft: '1vw' }}
-                    >
-                        {!formData.photo && <PetsIcon sx={{ fontSize: 80 }} />}
-                    </Avatar>
-
-                    <Box sx={{ flexGrow: 1, marginLeft: '2vw' }}>
-                        <Typography variant="h6">{formData.petname}</Typography>
-                        <Typography variant="body2" color="text.secondary" paddingTop='15px'>
-                            {formData.species}
-                        </Typography>
-                    </Box>
-
                     <Button 
                         onClick={handleMypet} 
                         sx={{
-                            marginRight: '1vw', 
                             width: 48,
                             border: '1px solid #AC92ED',
                             borderRadius: '50px',  

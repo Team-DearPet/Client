@@ -114,7 +114,7 @@ export default function SignUp() {
               marginTop: 2,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              alignItems: 'center', 
             }}
           >
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem', marginTop:'-20px' }}>
@@ -145,17 +145,7 @@ export default function SignUp() {
                   },
                 }}
               />
-              <Button variant="outlined" onClick={checkUsernameAvailability} sx={{
-                  width: '100px',
-                  height: '50px',
-                  bgcolor: '#7B52E1',
-                  color: 'white',
-                  fontSize: '0.8rem',
-                  marginLeft: '10px', 
-                  '&:hover': {
-                    bgcolor: '#6A47B1'
-                  }
-                }}>
+              <Button variant="outlined" onClick={checkUsernameAvailability} sx={{ ml: 2, height: '50px' }}>
                 중복 확인
               </Button>
             </Box>

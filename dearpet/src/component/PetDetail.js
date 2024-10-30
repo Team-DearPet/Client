@@ -92,12 +92,13 @@ const PetDetail = () => {
         try {
             if (isEditMode && editingPetData) {
                 // 수정 모드에서의 처리
-                const response = await axios.put(`http://localhost:8080/api/pets/${editingPetData.petId}`, newPetData, {
+                const response = await axios.patch(`http://localhost:8080/api/pets/${editingPetData.petId}`, newPetData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
                 });
                 setPets(pets.map(pet => pet.petId === editingPetData.petId ? response.data : pet));
+                setEditingPetData(null);
             } else {
                 // 등록 모드에서의 처리
                 const response = await axios.post('http://localhost:8080/api/pets', newPetData, {

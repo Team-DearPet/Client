@@ -1,12 +1,22 @@
-import React from 'react';
+import React , {useState, useEffe}from 'react';
 import { Box, Typography, Card, CardContent, CardMedia, Checkbox, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
+    const [itemPrice, setItemPrice] = useState(item.price / item.quantity);
+    const [totalPrice, setTotalPrice] = useState(item.price);
+    
+    const changeValue = (delta) => {
+        const newQuantity = item.quantity + delta;
+        if (newQuantity < 1) return;
+        handleQuantityChange(item.cartItemId, delta);
+        setTotalPrice(itemPrice*newQuantity);
+    }
+
     return (
         <Card 
-            key={item.id} 
+            key={item.cartItemId} 
             sx={{ 
                 mb: 2, 
                 borderRadius: 2, 
@@ -19,13 +29,13 @@ const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
                     backgroundColor: '#F7F4FD' 
                 }}>
                 <Checkbox
-                    checked={item.checked}
-                    onChange={() => handleCheckboxChange(item.id)}
+                    checked={item.checked || false}
+                    onChange={() => handleCheckboxChange(item.cartItemId)}
                 />
                 <CardMedia
                     component="img"
                     image={item.image}
-                    alt={item.name}
+                    alt={item.productName}
                     sx={{ 
                         width: 100, 
                         height: 100, 
@@ -41,17 +51,17 @@ const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
                         sx={{ 
                             fontSize: '1.2rem' 
                         }}>
-                        {item.name}
+                        {item.productName}
                     </Typography>
-                    <Typography 
+                    {/* <Typography 
                         variant="body2" 
                         color="textSecondary">
                         상품옵션: {item.option}
-                    </Typography>
+                    </Typography> */}
                     <Typography 
                         variant="body2" 
                         color="textSecondary">
-                        상품금액: {item.price.toLocaleString()}원
+                        상품금액: {itemPrice.toLocaleString()}원
                     </Typography>
                 </Box>
                 <Box 
@@ -59,7 +69,7 @@ const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
                         display: 'flex', 
                         alignItems: 'center' 
                     }}>
-                    <IconButton onClick={() => handleQuantityChange(item.id, -1)}>
+                    <IconButton onClick={() => changeValue(-1)}>
                         <RemoveIcon />
                     </IconButton>
                     <Typography 
@@ -69,7 +79,7 @@ const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
                         }}>
                         {item.quantity}
                     </Typography>
-                    <IconButton onClick={() => handleQuantityChange(item.id, 1)}>
+                    <IconButton onClick={() => changeValue(1)}>
                         <AddIcon />
                     </IconButton>
                 </Box>
@@ -80,7 +90,7 @@ const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
                         mr: 3,
                         fontSize: '1.2rem' 
                     }}>
-                    주문금액: {(item.price * item.quantity).toLocaleString()}원
+                    주문금액: {totalPrice.toLocaleString()}원
                 </Typography>
             </CardContent>
         </Card>

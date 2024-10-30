@@ -41,14 +41,32 @@ const Cart = () => {
         }
     }
 
+    const deleteitem = async (id) => {
+        try{
+            const accessToken = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:8080/api/cart/items/${id}`,{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+            if (!response.ok){
+                throw new Error('Failed to delete item')
+            }
+        }catch(error){
+            console.error('Error deleting item',error);
+        }
+    }
+
     useEffect(()=>{
         fetchcart();
     },[])
 
     const getTotalOrderAmount = () => {
         return items
-            .filter(item => item.checked)  // 선택된 항목만 필터링
-            .reduce((sum, item) => sum + (item.price * item.quantity), 0);  // 합산
+            .filter(item => item.checked)
+            .reduce((sum, item) => sum + (item.price * item.quantity), 0);
     };
 
     const handleQuantityChange = async (id, delta) => {
@@ -78,8 +96,16 @@ const Cart = () => {
         );
     };
 
-    const handleDeleteSelected = () => {
-        setItems((prevItems) => prevItems.filter((item) => !item.checked));
+    const handleDeleteSelected = async () => {
+        const selectedItems = items.filter((item) => item.checked);
+        const deletePromises = selectedItems.map((item) => deleteitem(item.cartItemId));
+
+        try {
+            await Promise.all(deletePromises);
+            setItems((prevItems) => prevItems.filter((item) => !item.checked));
+        } catch (error) {
+            console.error('Error deleting selected items:', error);
+        }
     };
 
     const handleSelectAll = (checked) => {

@@ -120,46 +120,34 @@ export default function SignUp() {
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem', marginTop:'-20px' }}>
               아이디
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="id"
-                name="id"
-                autoComplete="id"
-                autoFocus
-                value={id}
-                onChange={(e) => { setId(e.target.value); setIsUsernameChecked(false); }}
-                sx={{
-                  mb: 1,
-                  mt: 1,
-                  '& .MuiInputBase-root': {
-                    border: '1px solid #ccc',
-                    borderRadius: '5px',
-                    padding: '10px',
-                    height: '50px',
-                    '&:focus': {
-                      borderColor: '#B3D9E2',
-                    },
-                  },
-                }}
-              />
-              <Button variant="outlined" onClick={checkUsernameAvailability} sx={{
-                  width: '100px',
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="id"
+              name="id"
+              autoComplete="id"
+              autoFocus
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              sx={{
+                mb: 1,
+                mt: 1,
+                '& .MuiInputBase-root': {
+                  border: '1px solid #ccc',
+                  borderRadius: '5px',
+                  padding: '10px',
                   height: '50px',
-                  bgcolor: '#7B52E1',
-                  color: 'white',
-                  fontSize: '0.8rem',
-                  marginLeft: '11px', 
-                  '&:hover': {
-                    bgcolor: '#6A47B1'
-                  }
-                }}>
-                중복 확인
-              </Button>
-            </Box>
-            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}>
+                  '&:focus': {
+                    borderColor: '#B3D9E2',
+                  },
+                },
+              }}
+            />
+            <Typography
+              variant="body1"
+              sx={{ alignSelf: 'flex-start', mb: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
+            >
               비밀번호
             </Typography>
             <TextField

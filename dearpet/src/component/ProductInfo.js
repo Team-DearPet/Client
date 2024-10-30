@@ -12,8 +12,30 @@ const ProductInfo = ({ item }) => {
     const originalPrice = item.price * (1 + discount/100);
     const finalPrice = item.price;
 
-    const handleAddToCart = () => {
-        alert('장바구니에 상품을 담았습니다.');
+    const handleAddToCart = async (e) => {
+        e.preventDefault();
+        try{const accessToken = localStorage.getItem('token');
+        const productId = item.productId;
+
+        if (!item || !item.productId) {
+            console.error("Invalid product item or product_id");
+            return;
+        }
+
+        const response = await fetch(`http://localhost:8080/api/cart/items?productId=${productId}&quantity=${quantity}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+        if(response.ok){
+            alert('장바구니에 상품을 담았습니다.');
+        }else{
+            console.error('Error adding item');
+        }}catch(error){
+            console.error('Error: ',error);
+        }
     };
 
     

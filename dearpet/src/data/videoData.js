@@ -15,19 +15,19 @@ const videoData = [
         link: "https://www.youtube.com/watch?v=Rk608Cw9_3k"
     },
     {
-        title: "반려동물 골절 응급처치",
-        thumbnail: "https://img.youtube.com/vi/qFbDFpIvXC0/hqdefault.jpg",
-        link: "https://m.blog.naver.com/ds-ah/222384514587"
+        title: "반려동물 필수 구급법",
+        thumbnail: "https://img.youtube.com/vi/oJVPV110v7k/hqdefault.jpg",
+        link: "https://www.youtube.com/watch?v=oJVPV110v7k"
     },
     {
         title: "반려동물 경련과 발작 대처법",
-        thumbnail: "https://img.youtube.com/vi/OvGk9T2M2x4/hqdefault.jpg",
-        link: "https://www.youtube.com/watch?v=OvGk9T2M2x4"
+        thumbnail: "https://img.youtube.com/vi/2YM_LPLIMnQ/hqdefault.jpg",
+        link: "https://www.youtube.com/watch?v=2YM_LPLIMnQ&t=34s"
     },
     {
         title: "반려동물 열사병 응급처치",
-        thumbnail: "https://img.youtube.com/vi/XdpTxHMrYlg/hqdefault.jpg",
-        link: "https://www.youtube.com/watch?v=XdpTxHMrYlg"
+        thumbnail: "https://img.youtube.com/vi/AH5VPyUgn3M/hqdefault.jpg",
+        link: "https://www.youtube.com/watch?v=AH5VPyUgn3M"
     }
 ];
 

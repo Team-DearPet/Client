@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Box, Grid2, Checkbox, Typography, Button } from '@mui/material';
 
 const CartHeader = ({ items, handleSelectAll, handleDeleteSelected }) => {
+
     return (
         <Grid2 
             container 
@@ -17,7 +18,7 @@ const CartHeader = ({ items, handleSelectAll, handleDeleteSelected }) => {
                     alignItems: 'center' 
                 }}>
                 <Checkbox
-                    checked={items.every((item) => item.checked)}
+                    checked={items.length > 0 && items.every((item) => item.checked)}
                     indeterminate={
                         items.some((item) => item.checked) && !items.every((item) => item.checked)
                     }

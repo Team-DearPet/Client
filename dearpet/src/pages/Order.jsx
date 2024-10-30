@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Box, Button } from '@mui/material';
 import BuyerInfo from '../component/BuyerInfo';
 import ShippingInfo from '../component/ShippingInfo';
@@ -6,8 +6,25 @@ import OrderSummary from '../component/OrderSummary';
 import Footer from '../component/Footer';
 
 const Order = () => {
+    const [data, setData] = useState([]);
+    const [buyerPhone, setBuyerPhone] = useState('');
 
-    useEffect(() => { 
+    const fetchUser = async() => {
+        const accessToken = localStorage.getItem('token');
+        const response = await fetch("http://localhost:8080/api/profile",{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        })
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+    }
+
+    useEffect(() => {
+        fetchUser();
         let script = document.querySelector(`script[src="https://cdn.iamport.kr/v1/iamport.js"]`);
         if (!script) {
             script = document.createElement('script');
@@ -18,14 +35,15 @@ const Order = () => {
 
     const onclickPay = () => {
         const { IMP } = window;
-        IMP.init("imp01130807"); 
+        IMP.init("imp85434333"); 
 
         const data = { 
             pg: "html5_inicis",
             pay_method: "card", // 결제 방법 (카드 결제)
-            merchant_uid: "ORD20180131-0000012", // 고유 주문 ID
-            name: "노르웨이 회전 의자", // 상품명
+            merchant_uid: "ORD20180131-0000013", // 고유 주문 ID
+            name: "회전 의자", // 상품명
             amount: 100, // 결제 금액
+            buyer_addr: "부산 남구", // 구매자 배송지
             buyer_email: "gildong@gmail.com", // 구매자 이메일
             buyer_name: "홍길동", // 구매자 이름
             buyer_tel: "010-0000-0000", // 구매자 전화번호
@@ -48,7 +66,7 @@ const Order = () => {
             <h1 style={{ textAlign: 'center' }}>주문서</h1>
             <Container maxWidth={false} sx={{ padding: 3, width: "80%" }}> 
                 <Box sx={{ maxWidth: 800, margin: 'auto', paddingLeft: '20px' }}>
-                    <BuyerInfo />
+                    <BuyerInfo data={data} onPhoneChange={setBuyerPhone}/>
                     <ShippingInfo />
                     <OrderSummary />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

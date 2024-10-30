@@ -151,7 +151,7 @@ export default function SignUp() {
                   bgcolor: '#7B52E1',
                   color: 'white',
                   fontSize: '0.8rem',
-                  marginLeft: '10px', 
+                  marginLeft: '11px', 
                   '&:hover': {
                     bgcolor: '#6A47B1'
                   }

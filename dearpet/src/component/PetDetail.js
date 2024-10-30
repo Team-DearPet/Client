@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const PetDetail = () => {
     const [pets, setPets] = useState([]);
     const [openPetModal, setOpenPetModal] = useState(false);
-    const [isEditMode, setIsEditMode] = useState(false); // 등록/수정 모드 관리
+    const [isEditMode, setIsEditMode] = useState(false); 
     const [photoPreview, setPhotoPreview] = useState(null);
     const [petData, setPetData] = useState({
         name: '',
@@ -21,10 +21,9 @@ const PetDetail = () => {
         healthStatus: '',
     });
 
-    const [editingPetData, setEditingPetData] = useState(null); // 수정할 반려동물 데이터
+    const [editingPetData, setEditingPetData] = useState(null);
 
     useEffect(() => {
-        // 반려동물 데이터 가져오기
         const fetchPets = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/pets', {
@@ -43,7 +42,6 @@ const PetDetail = () => {
 
     const handlePetModalOpen = (pet = null) => {
         if (pet) {
-            // 수정 모드
             setIsEditMode(true);
             setEditingPetData(pet);
             setPetData({
@@ -57,7 +55,6 @@ const PetDetail = () => {
             });
             setPhotoPreview(pet.photo);
         } else {
-            // 등록 모드
             setIsEditMode(false);
             setPetData({
                 name: '',
@@ -76,7 +73,6 @@ const PetDetail = () => {
     const handlePetModalClose = () => setOpenPetModal(false);
 
     const handleRegisterPet = async () => {
-        // 필수 입력 필드 확인
         if (!petData.name || !petData.species || !petData.age || !petData.gender || petData.healthStatus === '' || !petData.weight) {
             alert('모든 필드를 입력해주세요.');
             return;
@@ -91,7 +87,6 @@ const PetDetail = () => {
 
         try {
             if (isEditMode && editingPetData) {
-                // 수정 모드에서의 처리
                 const response = await axios.patch(`http://localhost:8080/api/pets/${editingPetData.petId}`, newPetData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -100,7 +95,6 @@ const PetDetail = () => {
                 setPets(pets.map(pet => pet.petId === editingPetData.petId ? response.data : pet));
                 setEditingPetData(null);
             } else {
-                // 등록 모드에서의 처리
                 const response = await axios.post('http://localhost:8080/api/pets', newPetData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,

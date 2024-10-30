@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Card, Avatar, Rating } from '@mui/material';
 import { Star, StarBorder } from '@mui/icons-material';
+import axios from 'axios';
 
 const ReviewList = ({ product }) => {
     const [reviews, setReviews] = useState([]);
@@ -25,7 +26,7 @@ const ReviewList = ({ product }) => {
             alert("서버 오류 발생");
         }
     };
-
+    
     useEffect(() => {
         if (productId) {
             fetchReviews();
@@ -50,12 +51,12 @@ const ReviewList = ({ product }) => {
                             sx={{ 
                                 marginRight: 2 
                             }}>
-                            {review.userId} {/* 임시 사용자 ID */}
+                            {review.userId}
                         </Avatar>
                         <Typography 
                             variant="body1" 
                             fontWeight="bold">
-                            사용자 {review.userId} {/* 임시 사용자 이름 */}
+                            닉네임 : {review.nickname} 
                         </Typography>
                     </Box>
                     <Rating name="half-rating" value={review.rating} precision={1} readOnly />

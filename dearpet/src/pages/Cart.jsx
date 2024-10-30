@@ -66,7 +66,7 @@ const Cart = () => {
     const getTotalOrderAmount = () => {
         return items
             .filter(item => item.checked)
-            .reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            .reduce((sum, item) => sum + item.price, 0);
     };
 
     const handleQuantityChange = async (id, delta) => {
@@ -83,7 +83,6 @@ const Cart = () => {
         try{
             await changeQuantity(id, newQuantity);
             setItems(updatedItems);
-            // await fetchcart();
         }catch (error){
             console.error('Quantity update failed:', error);
             setItems(items);

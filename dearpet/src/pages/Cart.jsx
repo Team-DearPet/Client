@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import Footer from '../component/Footer';
 import BuyFooter from '../component/BuyFooter';
@@ -7,13 +7,43 @@ import CartItem from '../component/CartItem';
 import petfoodImage from '../images/petfood.png';
 
 const Cart = () => {
-    const [items, setItems] = useState([
-        { id: 1, name: '[하림펫푸드] 강아지 사료', option: '500g', price: 15000, quantity: 2, image: petfoodImage, checked: false },
-        { id: 2, name: '[하림펫푸드] 강아지 사료', option: '500g', price: 15000, quantity: 2, image: petfoodImage, checked: false },
-        { id: 3, name: '[하림펫푸드] 강아지 사료', option: '500g', price: 15000, quantity: 2, image: petfoodImage, checked: false },
-        { id: 5, name: '[하림펫푸드] 강아지 사료', option: '500g', price: 15000, quantity: 2, image: petfoodImage, checked: false },
-        { id: 6, name: '[하림펫푸드] 강아지 사료', option: '500g', price: 15000, quantity: 2, image: petfoodImage, checked: false }
-    ]);
+    const [items, setItems] = useState([]);
+
+    const fetchcart = async () => {
+        const accessToken = localStorage.getItem('token');
+        const response = await fetch("http://localhost:8080/api/cart",{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        })
+        const data = await response.json();
+        console.log(data);
+        setItems(data.items);
+    };
+
+    const changeQuantity = async (id, newQuantity) => {
+        try{
+            const accessToken = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:8080/api/cart/items/${id}?quantity=${newQuantity}`,{
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+            if (!response.ok){
+                throw new Error('Failed to update quantity')
+            }
+        }catch(error){
+            console.error('Error updating quantity',error);
+        }
+    }
+
+    useEffect(()=>{
+        fetchcart();
+    },[])
 
     const getTotalOrderAmount = () => {
         return items
@@ -21,17 +51,30 @@ const Cart = () => {
             .reduce((sum, item) => sum + (item.price * item.quantity), 0);  // 합산
     };
 
-    const handleQuantityChange = (id, delta) => {
-        setItems((prevItems) =>
-            prevItems.map((item) =>
-                item.id === id ? { ...item, quantity: Math.max(item.quantity + delta, 1) } : item
-            )
+    const handleQuantityChange = async (id, delta) => {
+        const newQuantity = items.find(item => item.cartItemId === id).quantity + delta;
+        
+        if (newQuantity < 1) return;
+        
+        const updatedItems = items.map((item) =>
+            item.cartItemId === id
+                ? { ...item, quantity: Math.max(item.quantity + delta, 1) }
+                : item
         );
+        
+        try{
+            await changeQuantity(id, newQuantity);
+            setItems(updatedItems);
+            // await fetchcart();
+        }catch (error){
+            console.error('Quantity update failed:', error);
+            setItems(items);
+        }
     };
 
     const handleCheckboxChange = (id) => {
         setItems((prevItems) =>
-            prevItems.map((item) => (item.id === id ? { ...item, checked: !item.checked } : item))
+            prevItems.map((item) => (item.cartItemId === id ? { ...item, checked: !item.checked } : item))
         );
     };
 
@@ -63,7 +106,7 @@ const Cart = () => {
                     />
                     {items.map((item) => (
                         <CartItem 
-                            key={item.id} 
+                            key={item.cartItemId} 
                             item={item} 
                             handleQuantityChange={handleQuantityChange} 
                             handleCheckboxChange={handleCheckboxChange} 

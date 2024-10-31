@@ -2,14 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import items from '../data/items';
 
-const OrderSummary = () => {
-
-    const productPrice = parseInt(items[1][0].price.replace(/,/g, '').replace('₩', ''), 10);
-    // const shippingCost = 2500;  
-    // const totalPrice = productPrice + shippingCost; 
-    const shippingCost = 2500;  
-    const totalPrice = productPrice + shippingCost;
-
+const OrderSummary = ({orderItems, productPrice, shippingCost, totalPrice}) => {
     const borderBoxStyle = {
         borderBottom: 2,
         borderColor: 'divider',
@@ -40,12 +33,12 @@ const OrderSummary = () => {
             <Typography 
                 variant="body1" 
                 sx={textRightStyle}>
-                [{items[1][0].brand}]{items[1][0].title}
+                {orderItems}
             </Typography>
             <Typography 
                 variant="body2" 
                 sx={textRightStyle}>
-                상품금액 : ₩{items[1][0].price}
+                상품금액 : ₩{productPrice.toLocaleString()}
             </Typography>
             <Box 
                 sx={borderBoxStyle}>

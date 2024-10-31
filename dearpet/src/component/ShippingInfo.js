@@ -1,19 +1,46 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box, TextField, Typography, Button } from '@mui/material';
 import AddressModal from './AddressModal';
 
-const ShippingInfo = () => {
+const ShippingInfo = ( { onAddressChange }) => {
     const [open, setOpen] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState(() => {
-        return localStorage.getItem('selectedAddress') || ''; // 저장된 주소 불러오기
-    });
-
+    const [address, setAddress] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleAddressSelect = (address) => {
-        setSelectedAddress(address);
+    const fetchAddress = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:8080/api/profile/addresses', {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('주소 목록을 가져오는 데 실패했습니다.');
+            }
+    
+            const data = await response.json();
+            const defaultAddr = data.find((addr) => addr.defaultAddress === true);
+            if (defaultAddr) {
+                setAddress(defaultAddr.address);
+                onAddressChange(defaultAddr.address);
+            }
+          } catch (error) {
+            console.error('주소 목록을 가져오는 데 실패했습니다:', error);
+          }
     }
+
+    useEffect(() => {
+        fetchAddress();
+    }, []);
+    
+    const handleAddressChange = (newAddress) => {
+        setAddress(newAddress);
+        onAddressChange(newAddress);
+    };
 
     return (
         <Box mt={4}>
@@ -52,7 +79,7 @@ const ShippingInfo = () => {
                     }}>
                     배송지 변경
                 </Button>
-                <AddressModal open={open} onClose={handleClose} onSelectAddress={handleAddressSelect} />
+                <AddressModal open={open} onClose={handleClose} onAddressChange={handleAddressChange}/>
             </Box>
             {/* 배송주소에 선택된 주소 표시 */}
             <Box mb={2} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -60,7 +87,7 @@ const ShippingInfo = () => {
                 <TextField
                     fullWidth
                     id="배송주소"
-                    value={selectedAddress} // 선택된 주소 반영
+                    value={address} // 선택된 주소 반영
                     variant="outlined"
                     sx={{
                         borderRadius: '16px',

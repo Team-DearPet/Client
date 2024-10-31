@@ -116,7 +116,7 @@ const Cart = () => {
     };
 
     return (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Container>
                 <h1 
                     style={{ 

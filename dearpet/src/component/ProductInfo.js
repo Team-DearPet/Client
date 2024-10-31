@@ -14,6 +14,16 @@ const ProductInfo = ({ item }) => {
     const finalPrice = item.price;
 
     const handleBuyItem = () => {
+        const accessToken = localStorage.getItem('token');
+
+        if( !accessToken ){
+            const userConfirmed = window.confirm("로그인이 필요한 페이지입니다.\n로그인하시겠습니까?");
+            if(userConfirmed){
+                navigate('/login');
+            }
+            return;
+        }
+
         const items = [{
             productName: item.name,
             quantity: quantity,
@@ -24,7 +34,17 @@ const ProductInfo = ({ item }) => {
 
     const handleAddToCart = async (e) => {
         e.preventDefault();
-        try{const accessToken = localStorage.getItem('token');
+        const accessToken = localStorage.getItem('token');
+        
+        if (!accessToken) {
+            const userConfirmed = window.confirm("로그인이 필요한 페이지입니다.\n로그인하시겠습니까?");
+            if (userConfirmed) {
+                navigate('/login'); // 로그인 페이지로 이동
+            }
+            return;
+        }
+        
+        try{
         const productId = item.productId;
 
         if (!item || !item.productId) {
@@ -40,7 +60,10 @@ const ProductInfo = ({ item }) => {
             },
         });
         if(response.ok){
-            alert('장바구니에 상품을 담았습니다.');
+            const userConfirmed = window.confirm("장바구니에 상품을 담았습니다.\n장바구니로 이동하시겠습니까?");
+            if (userConfirmed) {
+                navigate('/cart'); // 장바구니 페이지로 이동
+            }
         }else{
             console.error('Error adding item');
         }}catch(error){
@@ -63,17 +86,23 @@ const ProductInfo = ({ item }) => {
         <Card 
             variant="outlined" 
             sx={{ 
-                padding: 3 
+                paddingTop: 5, 
+                paddingRight: 6, 
+                paddingBottom: 6, 
+                paddingLeft: 6 
             }}>
             <CardContent>
                 <Box 
                     display="flex" 
                     alignItems="center" 
-                    marginBottom={2}>
+                    marginBottom={2}
+                    padding= '3px' >
                     <Typography 
                         variant="h5" 
                         component="div" 
-                        color="textPrimary">
+                        color="textPrimary"
+                        sx={{ fontSize: '1.9rem' }}
+                        >
                         {finalPrice.toLocaleString()}원
                     </Typography>
                     <Box 
@@ -159,7 +188,8 @@ const ProductInfo = ({ item }) => {
                         fontSize: '1.2rem',
                         padding: '12px 80px',
                         border: '1px solid #7B52E1',
-                        boxShadow: 'none'
+                        boxShadow: 'none',
+                        
                     }}
                     onClick={handleAddToCart}>
                     장바구니 담기

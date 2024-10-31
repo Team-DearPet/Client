@@ -30,34 +30,34 @@ const Header = ({ isLoggedIn, setIsLoggedIn }) => {
         <Box display="flex" alignItems="center" gap={2}>
           {isLoggedIn ? (
             <>
-              <Link href="/map" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/map" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 인근병원검색
               </Link>
-              <Link href="/emergency" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/emergency" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 응급처치
               </Link>
-              <Link href="/mypage" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/mypage" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 마이페이지
               </Link>
-              <Link href="/cart" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/cart" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 장바구니
               </Link>
-              <Button onClick={handleLogout} sx={{ fontWeight: 'bold', fontSize: '1rem', color: 'black' }}>
+              <Button onClick={handleLogout} sx={{ fontWeight: '600', fontSize: '0.99rem', color: 'black' }}>
                 로그아웃
               </Button>
             </>
           ) : (
             <>
-              <Link href="/map" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/map" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 인근병원검색
               </Link>
-              <Link href="/emergency" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/emergency" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 응급처치
               </Link>
-              <Link href="/login" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/login" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 로그인
               </Link>
-              <Link href="/signup" underline="none" sx={{ fontWeight: 'bold', color: 'black' }}>
+              <Link href="/signup" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 회원가입
               </Link>
             </>

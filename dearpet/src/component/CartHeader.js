@@ -40,6 +40,7 @@ const CartHeader = ({ items, handleSelectAll, handleDeleteSelected }) => {
             <Button 
                 onClick={handleDeleteSelected} 
                 sx={{ 
+                    paddingRight:'30px',
                     color: 'black', 
                     fontSize: '1.1rem',
                     backgroundColor: 'transparent', 

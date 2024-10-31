@@ -20,33 +20,33 @@ function ProductDetail() {
     const fetchProduct = async () => {
         const accessToken = localStorage.getItem('token');
         try{
-          const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
+        const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
             method: 'GET',
             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
             }
-          });
-          console.log(response.status);
-          if (!response.ok) {
+        });
+        console.log(response.status);
+        if (!response.ok) {
             throw new Error('서버 응답 실패');
-          }
-          const data = await response.json();
-          console.log(data);
-          setProduct(data);
-        } catch (error) {
-          console.error('Error: ', error);
-          setErrorMessage("서버 오류 발생");
         }
-      }
+        const data = await response.json();
+        console.log(data);
+        setProduct(data);
+        } catch (error) {
+        console.error('Error: ', error);
+        setErrorMessage("서버 오류 발생");
+        }
+    }
 
-      useEffect(()=>{
+    useEffect(()=>{
         fetchProduct()
-      },[productId]);
+    },[productId]);
 
-      if (errorMessage) return <p>{errorMessage}</p>;
-      if (!product) return <p>로딩 중...</p>;
-      console.log(product)
+    if (errorMessage) return <p>{errorMessage}</p>;
+    if (!product) return <p>로딩 중...</p>;
+    console.log(product)
     return (
         <div>
             <Container 
@@ -106,7 +106,7 @@ function ProductDetail() {
                 <ProductTabs 
                     activeTab={activeTab} 
                     handleTabChange={handleTabChange}
-                    detail={product.description}
+                    product={product}
                 />
             </Container>
 

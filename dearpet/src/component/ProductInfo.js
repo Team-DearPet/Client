@@ -14,6 +14,16 @@ const ProductInfo = ({ item }) => {
     const finalPrice = item.price;
 
     const handleBuyItem = () => {
+        const accessToken = localStorage.getItem('token');
+
+        if( !accessToken ){
+            const userConfirmed = window.confirm("로그인이 필요한 페이지입니다.\n로그인하시겠습니까?");
+            if(userConfirmed){
+                navigate('/login');
+            }
+            return;
+        }
+
         const items = [{
             productName: item.name,
             quantity: quantity,
@@ -24,7 +34,17 @@ const ProductInfo = ({ item }) => {
 
     const handleAddToCart = async (e) => {
         e.preventDefault();
-        try{const accessToken = localStorage.getItem('token');
+        const accessToken = localStorage.getItem('token');
+        
+        if (!accessToken) {
+            const userConfirmed = window.confirm("로그인이 필요한 페이지입니다.\n로그인하시겠습니까?");
+            if (userConfirmed) {
+                navigate('/login'); // 로그인 페이지로 이동
+            }
+            return;
+        }
+        
+        try{
         const productId = item.productId;
 
         if (!item || !item.productId) {

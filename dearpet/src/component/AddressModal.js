@@ -46,6 +46,10 @@ const AddressModal = ({ open, onClose, onSelectAddress }) => {
         },
       });
       setAddressList(response.data);
+      const defaultAddr = response.data.find((addr) => addr.defaultAddress === true);
+      if (defaultAddr) {
+        setSelectedAddressId(defaultAddr.addressId);
+      }
     } catch (error) {
       console.error('주소 목록을 가져오는 데 실패했습니다:', error);
     }
@@ -74,32 +78,34 @@ const AddressModal = ({ open, onClose, onSelectAddress }) => {
         { address: newAddress }, 
         { headers: { Authorization: `Bearer ${token}` } } 
       ); 
-      setAddressList((prev) => [...prev, response.data]);
-      setAddress(''); 
+      
+      setAddress('');
+      await fetchAddresses();
+
     } catch (error) {
       console.error('주소 추가에 실패했습니다:', error);
     }
   };
 
-  const handleSelect = (addressId) => {
-    setSelectedAddressId(addressId);
-    const selectedAddr = addressList.find(addr => addr.addressId === addressId);
-    if (selectedAddr) {
-      onSelectAddress(selectedAddr.address);
+  const handleSelect = async (addressId) => {
+    try {
+      setSelectedAddressId(addressId);
+      await updateAddressToDefault(addressId);
+    } catch (error) {
+      console.error('기본 배송지 선택 업데이트 실패: ', error);
     }
   };
 
   const updateAddressToDefault = async (addressId) => {
     try {
       const token = localStorage.getItem('token');
-  
-      const selectedAddr = addressList.find(addr => addr.addressId === addressId);
-  
+      const selectedAddr = addressList.find(addr => addr.addressId === Number(addressId));
+
       if (!selectedAddr) {
-        console.error('선택된 주소를 찾을 수 없습니다.');
+        console.error('선택된 주소를 찾을 수 없습니다. addressList:', addressList, 'addressId:', addressId);
         return; 
       }
-  
+
       await axios.patch(`http://localhost:8080/api/profile/addresses/${addressId}`, 
         { 
           defaultAddress: true,
@@ -107,19 +113,10 @@ const AddressModal = ({ open, onClose, onSelectAddress }) => {
         }, 
         { headers: { Authorization: `Bearer ${token}` } } 
       );
-  
-      const updatePromises = addressList.map(async (addr) => {
-        if (addr.addressId !== addressId) {
-          await axios.patch(`http://localhost:8080/api/profile/addresses/${addr.addressId}`, 
-            { defaultAddress: false }, 
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-        }
-      });
-      await Promise.all(updatePromises);
-  
-      await fetchAddresses();
+
+      await fetchAddresses(); // 업데이트된 주소 목록 불러오기
       
+      onSelectAddress(selectedAddr.address); // 선택된 주소 전달
     } catch (error) {
       console.error('주소를 기본 주소로 설정하는 데 실패했습니다:', error);
     }
@@ -187,18 +184,6 @@ const AddressModal = ({ open, onClose, onSelectAddress }) => {
               </Card>
             ))}
           </RadioGroup>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="small"
-            onClick={() => {
-              if (selectedAddressId) {
-                updateAddressToDefault(selectedAddressId);
-              }
-            }}
-          >
-            기본배송지로 설정
-          </Button>
         </Box>
       </DialogContent>
       <DialogActions>

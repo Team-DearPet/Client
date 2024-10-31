@@ -8,7 +8,6 @@ import AddressModal from './AddressModal';
 
 const OrderStatus = () => {
   const [open, setOpen] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState('')
   const navigate = useNavigate();
   const [orderCnts, setOrderCnts] = useState({
     주문접수: 0,
@@ -39,10 +38,6 @@ const OrderStatus = () => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const handleAddressSelect = (address) => {
-        setSelectedAddress(address);
-    }
 
   const handleOrder = () => {
     navigate('/orders');
@@ -95,7 +90,7 @@ const OrderStatus = () => {
               배송지 관리
             </Typography>
           </IconButton>
-          <AddressModal open={open} onClose={handleClose} onSelectAddress={handleAddressSelect} />
+          <AddressModal open={open} onClose={handleClose} />
         </Box>
 
         <Grid2

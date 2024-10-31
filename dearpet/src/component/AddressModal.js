@@ -18,7 +18,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 
-const AddressModal = ({ open, onClose, onSelectAddress }) => {
+const AddressModal = ({ open, onClose }) => {
   const [address, setAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState('');
@@ -114,9 +114,8 @@ const AddressModal = ({ open, onClose, onSelectAddress }) => {
         { headers: { Authorization: `Bearer ${token}` } } 
       );
 
-      await fetchAddresses(); // 업데이트된 주소 목록 불러오기
-      
-      onSelectAddress(selectedAddr.address); // 선택된 주소 전달
+      await fetchAddresses();
+
     } catch (error) {
       console.error('주소를 기본 주소로 설정하는 데 실패했습니다:', error);
     }

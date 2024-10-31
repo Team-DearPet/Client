@@ -40,7 +40,10 @@ const ProductInfo = ({ item }) => {
             },
         });
         if(response.ok){
-            alert('장바구니에 상품을 담았습니다.');
+            const userConfirmed = window.confirm("장바구니에 상품을 담았습니다.\n장바구니로 이동하시겠습니까?");
+            if (userConfirmed) {
+                navigate('/cart'); // 장바구니 페이지로 이동
+            }
         }else{
             console.error('Error adding item');
         }}catch(error){

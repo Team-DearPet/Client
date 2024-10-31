@@ -2,18 +2,10 @@ import React, {useState} from 'react';
 import { Box, TextField, Typography, Button } from '@mui/material';
 import AddressModal from './AddressModal';
 
-const ShippingInfo = () => {
+const ShippingInfo = ( { address }) => {
     const [open, setOpen] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState(() => {
-        return localStorage.getItem('selectedAddress') || ''; // 저장된 주소 불러오기
-    });
-
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const handleAddressSelect = (address) => {
-        setSelectedAddress(address);
-    }
 
     return (
         <Box mt={4}>
@@ -52,7 +44,7 @@ const ShippingInfo = () => {
                     }}>
                     배송지 변경
                 </Button>
-                <AddressModal open={open} onClose={handleClose} onSelectAddress={handleAddressSelect} />
+                <AddressModal open={open} onClose={handleClose} />
             </Box>
             {/* 배송주소에 선택된 주소 표시 */}
             <Box mb={2} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -60,7 +52,7 @@ const ShippingInfo = () => {
                 <TextField
                     fullWidth
                     id="배송주소"
-                    value={selectedAddress} // 선택된 주소 반영
+                    value={address} // 선택된 주소 반영
                     variant="outlined"
                     sx={{
                         borderRadius: '16px',

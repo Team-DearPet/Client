@@ -1,18 +1,43 @@
-import React , {useState, useEffe}from 'react';
+import React , {useState, useEffect }from 'react';
 import { Box, Typography, Card, CardContent, CardMedia, Checkbox, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
+const CartItem = ({ item, totalPrice, handleTotalChange, handleQuantityChange, handleCheckboxChange }) => {
     const [itemPrice, setItemPrice] = useState(item.price / item.quantity);
-    const [totalPrice, setTotalPrice] = useState(item.price);
+    const [itemImage, setItemImage] = useState('');
     
     const changeValue = (delta) => {
         const newQuantity = item.quantity + delta;
         if (newQuantity < 1) return;
         handleQuantityChange(item.cartItemId, delta);
-        setTotalPrice(itemPrice*newQuantity);
+        handleTotalChange(itemPrice*newQuantity);
     }
+
+    const fetchImage = async () => {
+        const accessToken = localStorage.getItem('token');
+        try{
+        const response = await fetch(`http://localhost:8080/api/products/${item.cartItemId}`, {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            }
+        });
+        console.log(response.status);
+        if (!response.ok) {
+            throw new Error('서버 응답 실패');
+        }
+        const data = await response.json();
+        setItemImage(data.image);
+        } catch (error) {
+        console.error('Error: ', error);
+        }
+    }
+
+    useEffect(()=>{
+        fetchImage()
+    },[]);
 
     return (
         <Card 
@@ -34,7 +59,7 @@ const CartItem = ({ item, handleQuantityChange, handleCheckboxChange }) => {
                 />
                 <CardMedia
                     component="img"
-                    image={item.image}
+                    image={itemImage}
                     alt={item.productName}
                     sx={{ 
                         width: 100, 

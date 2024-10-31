@@ -4,10 +4,10 @@ import Footer from '../component/Footer';
 import BuyFooter from '../component/BuyFooter';
 import CartHeader from '../component/CartHeader';
 import CartItem from '../component/CartItem';
-import petfoodImage from '../images/petfood.png';
 
 const Cart = () => {
     const [items, setItems] = useState([]);
+    const [prices, setPrices] = useState([]);
 
     const fetchcart = async () => {
         const accessToken = localStorage.getItem('token');
@@ -19,8 +19,12 @@ const Cart = () => {
             },
         })
         const data = await response.json();
-        console.log(data);
         setItems(data.items);
+        const prices = data.items.map(item => ({
+            itemId: item.cartItemId, // cartItemId
+            price: item.price         // 가격
+        }))
+        setPrices(prices);
     };
 
     const changeQuantity = async (id, newQuantity) => {
@@ -63,10 +67,21 @@ const Cart = () => {
         fetchcart();
     },[])
 
+    const handleTotalChange = (itemId, newPrice) => {
+        setPrices((prevPrices) =>
+            prevPrices.map((price) =>
+                price.itemId === itemId ? { ...price, price: newPrice } : price
+            )
+        );
+    };
+
     const getTotalOrderAmount = () => {
         return items
             .filter(item => item.checked)
-            .reduce((sum, item) => sum + item.price, 0);
+            .reduce((sum, item) => {
+                const itemPrice = prices.find(price => price.itemId === item.cartItemId)?.price || 0;
+                return sum + itemPrice;
+            }, 0);
     };
 
     const getCheckedItems = () => {
@@ -136,7 +151,9 @@ const Cart = () => {
                     {items.map((item) => (
                         <CartItem 
                             key={item.cartItemId} 
-                            item={item} 
+                            item={item}
+                            totalPrice={prices.find(price => price.itemId === item.cartItemId)?.price || 0}
+                            handleTotalChange={(newPrice)=>handleTotalChange(item.cartItemId, newPrice)} 
                             handleQuantityChange={handleQuantityChange} 
                             handleCheckboxChange={handleCheckboxChange} 
                         />

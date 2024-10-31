@@ -5,6 +5,10 @@ import axios from 'axios';
 
 const ReviewList = ({ product }) => {
     const [reviews, setReviews] = useState([]);
+    const [formData, setFormData] = useState({
+        photo: '',
+        nickname: '',
+    });
     const productId = product.productId;
 
     const fetchReviews = async () => {
@@ -33,6 +37,26 @@ const ReviewList = ({ product }) => {
         }
     }, [productId]);
 
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+            const response = await axios.get('http://localhost:8080/api/profile', {
+                headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰 저장소에서 가져오기
+            },
+            });
+            setFormData((prev) => ({
+                ...prev,
+                nickname: response.data.nickname,
+                photo: response.data.photo || '',
+            }));
+        } catch (error) {
+            console.error('Failed to fetch user profile:', error);
+        }
+        };
+        fetchUserProfile();
+    }, []);
+
     return (
         <Box>
             {reviews.map((review) => (
@@ -56,7 +80,7 @@ const ReviewList = ({ product }) => {
                         <Typography 
                             variant="body1" 
                             fontWeight="bold">
-                            닉네임 : {review.nickname} 
+                            {review.nickname} 
                         </Typography>
                     </Box>
                     <Rating name="half-rating" value={review.rating} precision={1} readOnly />

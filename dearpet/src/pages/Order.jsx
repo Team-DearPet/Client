@@ -39,33 +39,8 @@ const Order = () => {
         setUser(data);
     }
 
-    const fetchAddress = async () => {
-        try {
-            const token = localStorage.getItem('token'); // JWT 토큰 가져오기
-            const response = await fetch('http://localhost:8080/api/profile/addresses', {
-                method: 'GET',
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('주소 목록을 가져오는 데 실패했습니다.');
-            }
-    
-            const data = await response.json();
-            const defaultAddr = data.find((addr) => addr.defaultAddress === true);
-            if (defaultAddr) {
-                setAddress(defaultAddr.address); // 기본 배송지 주소를 상태에 설정
-            }
-          } catch (error) {
-            console.error('주소 목록을 가져오는 데 실패했습니다:', error);
-          }
-    }
-
     useEffect(() => {
         fetchUser();
-        fetchAddress();
         let script = document.querySelector(`script[src="https://cdn.iamport.kr/v1/iamport.js"]`);
         if (!script) {
             script = document.createElement('script');
@@ -84,13 +59,13 @@ const Order = () => {
             merchant_uid: `ORD-${Date.now()}`, // 고유 주문 ID
             name: orderItems, // 상품명
             amount: 100, // 결제 금액 (실제로는 totalPrice로 바꾸기)
-            buyer_addr: "부산 남구", // 구매자 배송지
+            buyer_addr: address, // 구매자 배송지
             buyer_email: user.email, // 구매자 이메일
             buyer_name: user.username, // 구매자 이름
             buyer_tel: buyerPhone, // 구매자 전화번호
             // m_redirect_url: "http://localhost:3000/orderscomplete"
         };
-
+        console.log(data);
         IMP.request_pay(data, (rsp) => { // 결제 요청
             if (rsp.success) {
                 console.log("결제 성공:", rsp);
@@ -109,7 +84,7 @@ const Order = () => {
             <Container maxWidth={false} sx={{ padding: 3, width: "80%" }}> 
                 <Box sx={{ maxWidth: 800, margin: 'auto', paddingLeft: '20px' }}>
                     <BuyerInfo data={user} onPhoneChange={setBuyerPhone}/>
-                    <ShippingInfo address={address}/>
+                    <ShippingInfo onAddressChange={setAddress}/>
                     <OrderSummary orderItems={orderItems} productPrice={productPrice} shippingCost={shippingCost} totalPrice={totalPrice}/>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button

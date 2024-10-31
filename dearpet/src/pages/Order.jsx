@@ -4,9 +4,11 @@ import BuyerInfo from '../component/BuyerInfo';
 import ShippingInfo from '../component/ShippingInfo';
 import OrderSummary from '../component/OrderSummary';
 import Footer from '../component/Footer';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import $ from 'jquery';
 
 const Order = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const items = JSON.parse(decodeURIComponent(queryParams.get('items') || '[]'));
@@ -23,6 +25,7 @@ const Order = () => {
     },0); //상품금액
     const shippingCost = 2500; //배송비
     const totalPrice = productPrice + shippingCost; //총주문금액
+    const merchantUid = `merchant_${Date.now()}_${Math.floor(Math.random() * 10000)}`; // 고유 주문 번호 생성
 
 
     //주문서에 넣을 유저정보 가져옴
@@ -39,6 +42,7 @@ const Order = () => {
         setUser(data);
     }
 
+
     useEffect(() => {
         fetchUser();
         let script = document.querySelector(`script[src="https://cdn.iamport.kr/v1/iamport.js"]`);
@@ -49,33 +53,83 @@ const Order = () => {
         }
     }, []);
 
-    const onclickPay = () => {
-        const { IMP } = window;
-        IMP.init("imp85434333"); // 고객사식별코드
-
-        const data = { 
-            pg: "html5_inicis",
-            pay_method: "card", // 결제 방법 (카드 결제)
-            merchant_uid: `ORD-${Date.now()}`, // 고유 주문 ID
-            name: orderItems, // 상품명
-            amount: 100, // 결제 금액 (실제로는 totalPrice로 바꾸기)
-            buyer_addr: address, // 구매자 배송지
-            buyer_email: user.email, // 구매자 이메일
-            buyer_name: user.username, // 구매자 이름
-            buyer_tel: buyerPhone, // 구매자 전화번호
-            // m_redirect_url: "http://localhost:3000/orderscomplete"
-        };
-        console.log(data);
-        IMP.request_pay(data, (rsp) => { // 결제 요청
-            if (rsp.success) {
-                console.log("결제 성공:", rsp);
-                alert("결제가 완료되었습니다.");
-                window.location.href = "http://localhost:3000/orderscomplete";
-            } else {
-                console.error("결제 실패:", rsp);
-                alert("결제가 실패하였습니다. " + rsp.error_msg);
-            }
+    const proceedPay = () => {
+        const accessToken = localStorage.getItem('token');
+        $.ajax({
+            url: "http://localhost:8080/api/prepayment/prepare",
+            type: "POST",
+            async: true,
+            dataType: "json",
+            contentType: "application/json",
+            headers: {
+                'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
+            },
+            data: JSON.stringify({
+                merchantUid: merchantUid,
+                expectedAmount: 100
+            }),
+            success: function (data) {
+                if (data.status === "CONFIRMED") {
+                    requestPay(data);
+                } else {
+                    alert("결제 준비 중 문제가 발생했습니다.");
+                }
+            },
+            error: function () {
+                alert("결제 준비 요청 중 오류가 발생했습니다.");
+            },
         });
+    };
+    const requestPay = (data) => {
+        const accessToken = localStorage.getItem('token');
+        const { IMP } = window;
+        IMP.init("imp01130807");
+        IMP.request_pay(
+        {
+          pg: "html5_inicis",
+          pay_method: "card", // 결제 방법 (카드 결제)
+          merchant_uid: merchantUid, // 고유 주문 ID
+          name: orderItems, // 상품명
+          amount: 100, // 결제 금액 (실제로는 totalPrice로 바꾸기)
+          buyer_addr: address, // 구매자 배송지
+          buyer_email: user.email, // 구매자 이메일
+          buyer_name: user.username, // 구매자 이름
+          buyer_tel: buyerPhone, // 구매자 전화번호
+        },
+        function (rsp) {
+            if (rsp.success) {
+              // 결제 성공 시 검증 요청
+              $.ajax({
+                url: "http://localhost:8080/api/prepayment/validate",
+                method: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
+                },
+                data: JSON.stringify({
+                  impUid: rsp.imp_uid,
+                  merchantUid: rsp.merchant_uid,
+                }),
+                success: function (validateData) {
+                  alert("결제가 성공적으로 완료되었습니다!");
+                  succeedPay(rsp.imp_uid, merchantUid)
+                },
+                error: function () {
+                  alert("결제 검증 요청 중 오류가 발생했습니다.");
+                },
+              });
+            } else {
+              // 결제 실패 시 메시지 출력
+              var msg = "결제에 실패하였습니다.\n" + rsp.error_msg;
+              alert(msg);
+            }
+          }
+    )
+    };
+    const succeedPay = (impUid, merchantUid) => {
+        // 결제 완료 후의 후속 작업을 여기에 추가
+        navigate('/orderscomplete')
     }
 
     return (
@@ -99,7 +153,7 @@ const Order = () => {
                                     backgroundColor: '#7B52E1' 
                                 }
                             }}
-                            onClick={onclickPay} // 결제하기 버튼 클릭 시 결제 요청
+                            onClick={proceedPay} // 결제하기 버튼 클릭 시 결제 요청
                         >
                             결제하기
                         </Button>

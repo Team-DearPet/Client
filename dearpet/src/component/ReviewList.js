@@ -1,40 +1,43 @@
-import React from 'react';
-import { Box, Typography, Card, Avatar } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, Card, Avatar, Rating } from '@mui/material';
 import { Star, StarBorder } from '@mui/icons-material';
+import axios from 'axios';
 
-const reviews = [
-    {
-        id: 1,
-        username: '춤추는 다람쥐',
-        rating: 4,
-        comment: '저희 아이가 좋아해요!',
-    },
-    {
-        id: 2,
-        username: '행복한 강아지',
-        rating: 5,
-        comment: '정말 좋아요! 재구매 의사 있습니다.',
-    },
-];
+const ReviewList = ({ product }) => {
+    const [reviews, setReviews] = useState([]);
+    const productId = product.productId;
 
-const ReviewList = () => {
-    const renderStars = (rating) => {
-        return (
-            <Box 
-                display="flex" 
-                alignItems="center">
-                {[...Array(5)].map((_, index) => (
-                    index < rating ? <Star key={index} /> : <StarBorder key={index} />
-                ))}
-            </Box>
-        );
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/reviews?productId=${productId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                throw new Error('서버 응답 실패');
+            }
+            const data = await response.json();
+            console.log(data);
+            setReviews(data);
+        } catch (error) {
+            console.error('Error: ', error);
+            alert("서버 오류 발생");
+        }
     };
+    
+    useEffect(() => {
+        if (productId) {
+            fetchReviews();
+        }
+    }, [productId]);
 
     return (
         <Box>
             {reviews.map((review) => (
                 <Card 
-                    key={review.id} 
+                    key={review.reviewId} 
                     variant="outlined" 
                     sx={{ 
                         marginBottom: 2, 
@@ -48,20 +51,15 @@ const ReviewList = () => {
                             sx={{ 
                                 marginRight: 2 
                             }}>
-                            {review.username.charAt(0)}
+                            {review.userId}
                         </Avatar>
                         <Typography 
                             variant="body1" 
                             fontWeight="bold">
-                            {review.username}
+                            닉네임 : {review.nickname} 
                         </Typography>
                     </Box>
-                    <Typography 
-                        variant="body2" 
-                        color="textSecondary">
-                        별점
-                    </Typography>
-                    {renderStars(review.rating)}
+                    <Rating name="half-rating" value={review.rating} precision={1} readOnly />
                     <Typography 
                         variant="body2" 
                         sx={{ 

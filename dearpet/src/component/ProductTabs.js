@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 import ReviewList from './ReviewList';
 
-const ProductTabs = ({ activeTab, handleTabChange, detail }) => {
+const ProductTabs = ({ activeTab, handleTabChange, product }) => {
     return (
         <Box marginTop={5}>
             <Tabs 
@@ -26,7 +26,7 @@ const ProductTabs = ({ activeTab, handleTabChange, detail }) => {
                     }}>
                 </Tab>
                 <Tab 
-                    label="리뷰(20)" 
+                    label="리뷰" 
                     value="review"
                     sx={{ 
                         '&.Mui-selected': { 
@@ -45,8 +45,8 @@ const ProductTabs = ({ activeTab, handleTabChange, detail }) => {
                     boxShadow: 3, 
                     marginTop: 2 
                 }}>
-                {activeTab === 'detail' && <Typography>{detail}</Typography>}
-                {activeTab === 'review' && <ReviewList />}
+                {activeTab === 'detail' && <Typography>{product.description}</Typography>}
+                {activeTab === 'review' && <ReviewList product={product} />}
             </Box>
         </Box>
     );

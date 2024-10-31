@@ -11,6 +11,10 @@ const PetDetail = () => {
     const [openPetModal, setOpenPetModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false); 
     const [photoPreview, setPhotoPreview] = useState(null);
+    const [selectedPet, setSelectedPet] = useState(null);
+    const [openPetDetail, setOpenPetDetail] = useState(false);
+    const [healthAdvice, setHealthAdvice] = useState('정보를 가져오는 중입니다...');
+    const [loading, setLoading] = useState(true);
     const [petData, setPetData] = useState({
         name: '',
         species: '',
@@ -22,6 +26,18 @@ const PetDetail = () => {
     });
 
     const [editingPetData, setEditingPetData] = useState(null);
+    
+    const handlePetDetailOpen = async (pet) => {
+        setSelectedPet(pet);
+        setOpenPetDetail(true);
+        try {
+            const advice = await getHealthAdvice(pet.petId);
+            setHealthAdvice(advice); 
+        } catch (error) {
+            alert('건강 조언을 가져오는 데 실패했습니다.');
+        }
+    };
+    const handlePetDetailClose = () => setOpenPetDetail(false);
 
     useEffect(() => {
         const fetchPets = async () => {
@@ -39,6 +55,26 @@ const PetDetail = () => {
 
         fetchPets();
     }, []);
+
+    useEffect(() => {
+        const fetchHealthAdvice = async () => {
+            if (selectedPet) {
+                setLoading(true); 
+                try {
+                    const advice = await getHealthAdvice(selectedPet.id);
+                    setHealthAdvice(advice);
+                } catch (error) {
+                    setHealthAdvice("건강 조언을 가져오는 데 문제가 발생했습니다.");
+                } finally {
+                    setLoading(false); 
+                }
+            }
+        };
+
+        if (openPetDetail) {
+            fetchHealthAdvice(); 
+        }
+    }, [openPetDetail, selectedPet]);
 
     const handlePetModalOpen = (pet = null) => {
         if (pet) {
@@ -102,7 +138,6 @@ const PetDetail = () => {
                 });
                 setPets([...pets, response.data]);
             }
-
             handlePetModalClose();
         } catch (error) {
             console.error(error);
@@ -131,7 +166,22 @@ const PetDetail = () => {
             alert('반려동물 삭제에 실패했습니다.');
         }
     };
-
+    const getHealthAdvice = async (petId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/pets/advice`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                params: {
+                    petId: petId, // 필요한 경우 petId를 전달
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching health advice:", error);
+            throw error; // 에러를 다시 던져서 처리할 수 있도록
+        }
+    };
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ maxWidth: 800, width: '100%', display: 'flex', justifyContent: 'space-between'}}>
@@ -153,6 +203,16 @@ const PetDetail = () => {
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>중성화</span> {pet.neutered ? 'O' : 'X'}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>몸무게</span> {pet.weight} kg</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>건강상태</span> {pet.healthStatus}</Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginLeft: 15}}>
+                        <Button 
+                            onClick={(e) => { 
+                                e.stopPropagation(); 
+                                handlePetDetailOpen(pet); 
+                            }}
+                        >
+                            펫 맞춤 데이터 보러가기 &gt;
+                        </Button>
+                        </Box>
                     </CardContent>
                     <Avatar src={photoPreview} sx={{ width: 100, height: 100, marginRight: '20px' }}>
                         {!photoPreview && <PetsIcon sx={{ fontSize: 80 }}/>}
@@ -202,6 +262,38 @@ const PetDetail = () => {
                     <Button fullWidth variant="contained" onClick={handleRegisterPet} sx={{ bgcolor: '#7B52E1', color: 'white', '&:hover': { bgcolor: '#6A47B1' } }}>
                         {isEditMode ? '수정하기' : '등록하기'}
                     </Button>
+                </Box>
+            </Modal>
+            <Modal open={openPetDetail} onClose={handlePetDetailClose}>
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: '8px',
+                    width: '80%',
+                    maxWidth: '600px',
+                    minHeight: '10vh',
+                    overflow: 'hidden', 
+                }}>
+                    <h3 style={{ textAlign: 'center'}}>{selectedPet ? `${selectedPet.name}는 어떤 특성이 있나요?` : ''}</h3>
+                    <IconButton 
+                      onClick={handlePetDetailClose} 
+                      sx={{ 
+                      position: 'absolute', 
+                      top: 8, 
+                      right: 8 
+                      }}
+                  >
+                      <CloseIcon />
+                  </IconButton>
+                    <Typography sx={{ fontWeight: 'bold'}}>우리 {selectedPet ? selectedPet.name : ''}는...</Typography>
+                    <Box sx={{ minHeight:'10vh', borderRadius:'5px', bgcolor:'#f8f8f8', display:'flex', justifyContent:'center', alignItems:'center', overflowY: 'auto',}}>
+                      <Typography>{loading ? '정보를 가져오는 중입니다...' : healthAdvice}</Typography>
+                    </Box>
                 </Box>
             </Modal>
         </Box>

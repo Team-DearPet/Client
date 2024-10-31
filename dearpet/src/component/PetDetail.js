@@ -13,7 +13,8 @@ const PetDetail = () => {
     const [photoPreview, setPhotoPreview] = useState(null);
     const [selectedPet, setSelectedPet] = useState(null);
     const [openPetDetail, setOpenPetDetail] = useState(false);
-    const [healthAdvice, setHealthAdvice] = useState('');
+    const [healthAdvice, setHealthAdvice] = useState('정보를 가져오는 중입니다...');
+    const [loading, setLoading] = useState(true);
     const [petData, setPetData] = useState({
         name: '',
         species: '',
@@ -28,14 +29,13 @@ const PetDetail = () => {
     
     const handlePetDetailOpen = async (pet) => {
         setSelectedPet(pet);
+        setOpenPetDetail(true);
         try {
-            const advice = await getHealthAdvice(pet.petId); // API 호출
-            setHealthAdvice(advice); // 상태에 건강 조언 저장
+            const advice = await getHealthAdvice(pet.petId);
+            setHealthAdvice(advice); 
         } catch (error) {
-            // 에러 처리 (예: 사용자에게 알림)
             alert('건강 조언을 가져오는 데 실패했습니다.');
         }
-        setOpenPetDetail(true);
     };
     const handlePetDetailClose = () => setOpenPetDetail(false);
 
@@ -55,6 +55,26 @@ const PetDetail = () => {
 
         fetchPets();
     }, []);
+
+    useEffect(() => {
+        const fetchHealthAdvice = async () => {
+            if (selectedPet) {
+                setLoading(true); 
+                try {
+                    const advice = await getHealthAdvice(selectedPet.id);
+                    setHealthAdvice(advice);
+                } catch (error) {
+                    setHealthAdvice("건강 조언을 가져오는 데 문제가 발생했습니다.");
+                } finally {
+                    setLoading(false); 
+                }
+            }
+        };
+
+        if (openPetDetail) {
+            fetchHealthAdvice(); 
+        }
+    }, [openPetDetail, selectedPet]);
 
     const handlePetModalOpen = (pet = null) => {
         if (pet) {
@@ -186,7 +206,7 @@ const PetDetail = () => {
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginLeft: 15}}>
                         <Button 
                             onClick={(e) => { 
-                                e.stopPropagation(); // 카드 클릭 이벤트가 발생하지 않도록 막음
+                                e.stopPropagation(); 
                                 handlePetDetailOpen(pet); 
                             }}
                         >
@@ -255,9 +275,9 @@ const PetDetail = () => {
                     p: 4,
                     borderRadius: '8px',
                     width: '80%',
-                    maxWidth: '500px',
-                    maxHeight: '80vh', // 최대 높이 설정
-                    overflow: 'hidden', // 넘치는 내용을 숨김
+                    maxWidth: '600px',
+                    minHeight: '10vh',
+                    overflow: 'hidden', 
                 }}>
                     <h3 style={{ textAlign: 'center'}}>{selectedPet ? `${selectedPet.name}는 어떤 특성이 있나요?` : ''}</h3>
                     <IconButton 
@@ -271,8 +291,8 @@ const PetDetail = () => {
                       <CloseIcon />
                   </IconButton>
                     <Typography sx={{ fontWeight: 'bold'}}>우리 {selectedPet ? selectedPet.name : ''}는...</Typography>
-                    <Box sx={{ height:'40vh', borderRadius:'5px', bgcolor:'#f8f8f8', display:'flex', justifyContent:'center', alignItems:'center', overflowY: 'auto',}}>
-                      <Typography>{healthAdvice || "정보를 가져오는 중입니다..."}</Typography>
+                    <Box sx={{ minHeight:'10vh', borderRadius:'5px', bgcolor:'#f8f8f8', display:'flex', justifyContent:'center', alignItems:'center', overflowY: 'auto',}}>
+                      <Typography>{loading ? '정보를 가져오는 중입니다...' : healthAdvice}</Typography>
                     </Box>
                 </Box>
             </Modal>

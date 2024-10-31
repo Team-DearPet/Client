@@ -16,17 +16,12 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
 
 const AddressModal = ({ open, onClose, onSelectAddress }) => {
   const [address, setAddress] = useState('');
-  const [addressList, setAddressList] = useState(() => {
-    // 로컬 스토리지에서 저장된 주소를 가져옴
-    const savedAddresses = localStorage.getItem('addressList');
-    return savedAddresses ? JSON.parse(savedAddresses) : [];
-  });
-  const [selectedAddress, setSelectedAddress] = useState(() => {
-    return localStorage.getItem('selectedAddress') || ''; // 저장된 주소 불러오기
-  });
+  const [addressList, setAddressList] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState('');
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -42,46 +37,119 @@ const AddressModal = ({ open, onClose, onSelectAddress }) => {
     };
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('addressList', JSON.stringify(addressList));
-  }, [addressList]);
+  const fetchAddresses = async () => {
+    try {
+      const token = localStorage.getItem('token'); // JWT 토큰 가져오기
+      const response = await axios.get('http://localhost:8080/api/profile/addresses', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAddressList(response.data);
+    } catch (error) {
+      console.error('주소 목록을 가져오는 데 실패했습니다:', error);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem('selectedAddress', selectedAddress);
-  }, [selectedAddress]);
+    if (open) {
+      fetchAddresses();
+    }
+  }, [open]);
 
   const handleAddressSearch = () => {
-    // Daum 우편번호 서비스 호출
     new window.daum.Postcode({
       oncomplete: function (data) {
         const fullAddress = data.address;
         addAddressToList(fullAddress);
+        setSelectedAddressId(fullAddress);
       },
     }).open();
   };
 
-  const addAddressToList = (newAddress) => {
-    setAddressList((prev) => [...prev, newAddress]);
+  const addAddressToList = async (newAddress) => {
+    try {
+      const token = localStorage.getItem('token'); 
+      const response = await axios.post('http://localhost:8080/api/profile/addresses', 
+        { address: newAddress }, 
+        { headers: { Authorization: `Bearer ${token}` } } 
+      ); 
+      setAddressList((prev) => [...prev, response.data]);
+      setAddress(''); 
+    } catch (error) {
+      console.error('주소 추가에 실패했습니다:', error);
+    }
   };
 
-  const handleSelect = (address) => {
-    setSelectedAddress(address);
-    onSelectAddress(address); // 부모로 선택된 주소 전달
+  const handleSelect = (addressId) => {
+    setSelectedAddressId(addressId);
+    const selectedAddr = addressList.find(addr => addr.addressId === addressId);
+    if (selectedAddr) {
+      onSelectAddress(selectedAddr.address);
+    }
   };
 
-  const removeAddress = (index) => {
-    const updatedList = addressList.filter((_, i) => i !== index);
-    setAddressList(updatedList);
-    if (selectedAddress === addressList[index]) {
-      setSelectedAddress(''); // 선택된 주소가 삭제될 경우 초기화
+  const updateAddressToDefault = async (addressId) => {
+    try {
+      const token = localStorage.getItem('token');
+  
+      const selectedAddr = addressList.find(addr => addr.addressId === addressId);
+  
+      if (!selectedAddr) {
+        console.error('선택된 주소를 찾을 수 없습니다.');
+        return; 
+      }
+  
+      await axios.patch(`http://localhost:8080/api/profile/addresses/${addressId}`, 
+        { 
+          defaultAddress: true,
+          address: selectedAddr.address 
+        }, 
+        { headers: { Authorization: `Bearer ${token}` } } 
+      );
+  
+      const updatePromises = addressList.map(async (addr) => {
+        if (addr.addressId !== addressId) {
+          await axios.patch(`http://localhost:8080/api/profile/addresses/${addr.addressId}`, 
+            { defaultAddress: false }, 
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        }
+      });
+      await Promise.all(updatePromises);
+  
+      await fetchAddresses();
+      
+    } catch (error) {
+      console.error('주소를 기본 주소로 설정하는 데 실패했습니다:', error);
+    }
+  };
+  
+
+  const removeAddress = async (addressId) => {
+    const confirmDelete = window.confirm('이 주소를 삭제하시겠습니까?');
+    if (confirmDelete) {
+      try {
+        const token = localStorage.getItem('token'); 
+        await axios.delete(`http://localhost:8080/api/profile/addresses/${addressId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }); 
+        const updatedList = addressList.filter((addr) => addr.addressId !== addressId);
+        setAddressList(updatedList);
+        if (selectedAddressId === addressId) {
+          setSelectedAddressId(''); 
+        }
+      } catch (error) {
+        console.error('주소 삭제에 실패했습니다:', error);
+      }
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle sx={{textAlign:'center'}}>배송지 관리</DialogTitle>
+      <DialogTitle sx={{ textAlign: 'center' }}>배송지 관리</DialogTitle>
       <DialogContent>
-      <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
           <TextField
             fullWidth
             label="배송지 입력"
@@ -91,35 +159,46 @@ const AddressModal = ({ open, onClose, onSelectAddress }) => {
             sx={{ marginRight: 1 }}
           />
           <Button variant="contained" sx={{
-                width: '200px',
-                height: '55px',
-                bgcolor: '#7B52E1',
-                color: 'white',
-                '&:hover': {
-                    bgcolor: '#6A47B1'
-                }
-            }} onClick={handleAddressSearch}>
+            width: '200px',
+            height: '55px',
+            bgcolor: '#7B52E1',
+            color: 'white',
+            '&:hover': {
+              bgcolor: '#6A47B1'
+            }
+          }} onClick={handleAddressSearch}>
             우편번호 찾기
           </Button>
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <Typography variant="subtitle1">배송지 선택</Typography>
-          <RadioGroup value={selectedAddress} onChange={(e) => handleSelect(e.target.value)}>
+          <RadioGroup value={selectedAddressId} onChange={(e) => handleSelect(e.target.value)}>
             {addressList.map((addr, index) => (
               <Card key={index} variant="outlined" sx={{ marginTop: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
                   <FormControlLabel
-                    control={<Radio />}
-                    label={addr}
-                    value={addr}
+                    control={<Radio value={addr.addressId} />} 
+                    label={addr.address}
                   />
                 </CardContent>
-                <IconButton onClick={() => removeAddress(index)}>
+                <IconButton onClick={() => removeAddress(addr.addressId)}>
                   <CloseIcon />
                 </IconButton>
               </Card>
             ))}
           </RadioGroup>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() => {
+              if (selectedAddressId) {
+                updateAddressToDefault(selectedAddressId);
+              }
+            }}
+          >
+            기본배송지로 설정
+          </Button>
         </Box>
       </DialogContent>
       <DialogActions>

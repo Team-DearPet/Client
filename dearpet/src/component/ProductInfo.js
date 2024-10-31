@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardActions, Typography, Box, Button, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 const ProductInfo = ({ item }) => {
     const [quantity, setQuantity] = useState(1); // 기본 수량 1
+    const navigate = useNavigate();
 
     // 가격 계산 로직
     const discount = item.discount || 0;
     const originalPrice = item.price * (1 + discount/100);
     const finalPrice = item.price;
+
+    const handleBuyItem = () => {
+        const items = [{
+            productName: item.name,
+            quantity: quantity,
+            price: item.price * quantity,
+        }];
+        navigate(`/order?items=${encodeURIComponent(JSON.stringify(items))}`);
+    }
 
     const handleAddToCart = async (e) => {
         e.preventDefault();
@@ -131,8 +141,8 @@ const ProductInfo = ({ item }) => {
                 sx={{ 
                     justifyContent: 'space-between' 
                 }}>
-                <Link to="/order">
                     <Button
+                        onClick={handleBuyItem}
                         variant="contained"
                         sx={{ 
                             backgroundColor: '#7B52E1', 
@@ -142,7 +152,6 @@ const ProductInfo = ({ item }) => {
                         }}>
                         구매하기
                     </Button>
-                </Link>
                 <Button 
                     sx={{
                         backgroundColor: '#FFFFFF',

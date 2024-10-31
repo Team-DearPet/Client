@@ -60,6 +60,7 @@ const Category = () => {
               transform: 'scale(1.05)',
             },
             padding: 2,
+            
           }}
         >
           <CardMedia

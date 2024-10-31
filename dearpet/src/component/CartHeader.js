@@ -1,22 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import { Box, Grid2, Checkbox, Typography, Button } from '@mui/material';
+import React from 'react';
+import { Box, Checkbox, Typography, Button } from '@mui/material';
 
 const CartHeader = ({ items, handleSelectAll, handleDeleteSelected }) => {
-
     return (
-        <Grid2 
-            container 
-            alignItems="center" 
-            sx={{ 
-                mb: 2 
-            }}>
-            <Grid2 
-                item 
-                xs={6} 
-                sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center' 
-                }}>
+        <Box 
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between', // 양쪽 끝에 요소 배치
+                alignItems: 'center',
+                mb: 2,
+                padding: '0 10px', // 좌우 여백 추가
+                width: '100%', // 전체 너비 사용
+                minWidth: '300px', // 최소 너비 설정
+            }}
+        >
+            <Box 
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
                 <Checkbox
                     checked={items.length > 0 && items.every((item) => item.checked)}
                     indeterminate={
@@ -27,42 +30,35 @@ const CartHeader = ({ items, handleSelectAll, handleDeleteSelected }) => {
                 <Typography 
                     variant="subtitle1"
                     sx={{ 
-                        fontSize: '1.1rem' 
-                    }}>
+                        fontSize: '1.1rem',
+                        whiteSpace: 'nowrap' // 텍스트 줄바꿈 방지
+                    }}
+                >
                     전체 선택({items.filter((item) => item.checked).length}/{items.length})
                 </Typography>
-            </Grid2>
-            <Grid2 
-                item 
-                xs={6} 
+            </Box>
+            <Button 
+                onClick={handleDeleteSelected} 
                 sx={{ 
-                    textAlign: 'right',
-                    marginLeft: '60px' 
-                }}>
-                <Button 
-                    onClick={handleDeleteSelected} 
-                    sx={{ 
-                        color: 'black', 
-                        marginLeft: 100,
-                        fontSize: '1.1rem',
-                        backgroundColor: 'transparent', 
-                        boxShadow: 'none', 
-                        '&:hover': { 
-                            backgroundColor: 'transparent' 
-                        }, 
-                        '&:active': { 
-                            backgroundColor: 'transparent' 
-                        }, 
-                        '&:focus': { 
-                            backgroundColor: 'transparent' 
-                        } 
-                    }}>
-                    선택 삭제
-                </Button>
-            </Grid2>
-        </Grid2>
+                    color: 'black', 
+                    fontSize: '1.1rem',
+                    backgroundColor: 'transparent', 
+                    boxShadow: 'none', 
+                    '&:hover': { 
+                        backgroundColor: 'transparent' 
+                    }, 
+                    '&:active': { 
+                        backgroundColor: 'transparent' 
+                    }, 
+                    '&:focus': { 
+                        backgroundColor: 'transparent' 
+                    } 
+                }}
+            >
+                선택 삭제
+            </Button>
+        </Box>
     );
 };
 
 export default CartHeader;
-

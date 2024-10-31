@@ -46,8 +46,8 @@ const ShippingInfo = () => {
                         borderRadius: '50px', 
                         border: '2px solid #D1C4E9',
                         '&:hover': { 
-                            backgroundColor: '#F3E5F5', 
-                            border: '2px solid #B39DDB' 
+                            backgroundColor: '#D1C4E9', 
+                            border: '2px solid #D1C4E9' 
                         }
                     }}>
                     배송지 변경

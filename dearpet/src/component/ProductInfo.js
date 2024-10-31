@@ -86,17 +86,23 @@ const ProductInfo = ({ item }) => {
         <Card 
             variant="outlined" 
             sx={{ 
-                padding: 3 
+                paddingTop: 5, 
+                paddingRight: 6, 
+                paddingBottom: 6, 
+                paddingLeft: 6 
             }}>
             <CardContent>
                 <Box 
                     display="flex" 
                     alignItems="center" 
-                    marginBottom={2}>
+                    marginBottom={2}
+                    padding= '3px' >
                     <Typography 
                         variant="h5" 
                         component="div" 
-                        color="textPrimary">
+                        color="textPrimary"
+                        sx={{ fontSize: '1.9rem' }}
+                        >
                         {finalPrice.toLocaleString()}원
                     </Typography>
                     <Box 
@@ -182,7 +188,8 @@ const ProductInfo = ({ item }) => {
                         fontSize: '1.2rem',
                         padding: '12px 80px',
                         border: '1px solid #7B52E1',
-                        boxShadow: 'none'
+                        boxShadow: 'none',
+                        
                     }}
                     onClick={handleAddToCart}>
                     장바구니 담기

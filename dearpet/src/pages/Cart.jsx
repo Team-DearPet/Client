@@ -69,6 +69,10 @@ const Cart = () => {
             .reduce((sum, item) => sum + item.price, 0);
     };
 
+    const getCheckedItems = () => {
+        return items.filter(item => item.checked);
+    };
+
     const handleQuantityChange = async (id, delta) => {
         const newQuantity = items.find(item => item.cartItemId === id).quantity + delta;
         
@@ -139,7 +143,7 @@ const Cart = () => {
                     ))}
                 </Box>
             </Container>
-            <BuyFooter orderAmount={getTotalOrderAmount()} />
+            <BuyFooter orderItems={getCheckedItems()} orderAmount={getTotalOrderAmount()} />
             <Footer />
         </div>
     );

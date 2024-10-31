@@ -11,6 +11,8 @@ const PetDetail = () => {
     const [openPetModal, setOpenPetModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false); 
     const [photoPreview, setPhotoPreview] = useState(null);
+    const [selectedPet, setSelectedPet] = useState(null);
+    const [openPetDetail, setOpenPetDetail] = useState(false);
     const [petData, setPetData] = useState({
         name: '',
         species: '',
@@ -22,6 +24,12 @@ const PetDetail = () => {
     });
 
     const [editingPetData, setEditingPetData] = useState(null);
+    
+    const handlePetDetailOpen = (pet) => {
+        setSelectedPet(pet);
+        setOpenPetDetail(true);
+    };
+    const handlePetDetailClose = () => setOpenPetDetail(false);
 
     useEffect(() => {
         const fetchPets = async () => {
@@ -102,7 +110,6 @@ const PetDetail = () => {
                 });
                 setPets([...pets, response.data]);
             }
-
             handlePetModalClose();
         } catch (error) {
             console.error(error);
@@ -153,6 +160,16 @@ const PetDetail = () => {
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>중성화</span> {pet.neutered ? 'O' : 'X'}</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>몸무게</span> {pet.weight} kg</Typography>
                         <Typography><span style={{ color: 'gray', marginRight: '13px' }}>건강상태</span> {pet.healthStatus}</Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginLeft: 15}}>
+                        <Button 
+                            onClick={(e) => { 
+                                e.stopPropagation(); // 카드 클릭 이벤트가 발생하지 않도록 막음
+                                handlePetDetailOpen(pet); 
+                            }}
+                        >
+                            펫 맞춤 데이터 보러가기 &gt;
+                        </Button>
+                        </Box>
                     </CardContent>
                     <Avatar src={photoPreview} sx={{ width: 100, height: 100, marginRight: '20px' }}>
                         {!photoPreview && <PetsIcon sx={{ fontSize: 80 }}/>}
@@ -202,6 +219,36 @@ const PetDetail = () => {
                     <Button fullWidth variant="contained" onClick={handleRegisterPet} sx={{ bgcolor: '#7B52E1', color: 'white', '&:hover': { bgcolor: '#6A47B1' } }}>
                         {isEditMode ? '수정하기' : '등록하기'}
                     </Button>
+                </Box>
+            </Modal>
+            <Modal open={openPetDetail} onClose={handlePetDetailClose}>
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: '8px',
+                    width: '80%',
+                    maxWidth: '500px'
+                }}>
+                    <h3 style={{ textAlign: 'center'}}>{selectedPet ? `${selectedPet.name}는 어떤 특성이 있나요?` : ''}</h3>
+                    <IconButton 
+                      onClick={handlePetDetailClose} 
+                      sx={{ 
+                      position: 'absolute', 
+                      top: 8, 
+                      right: 8 
+                      }}
+                  >
+                      <CloseIcon />
+                  </IconButton>
+                    <Typography sx={{ fontWeight: 'bold'}}>우리 {selectedPet ? selectedPet.name : ''}는...</Typography>
+                    <Box sx={{ height:'20vh', borderRadius:'5px', bgcolor:'#f8f8f8', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                      <Typography>펫 맞춤 데이터</Typography>
+                    </Box>
                 </Box>
             </Modal>
         </Box>

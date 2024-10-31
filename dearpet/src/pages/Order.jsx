@@ -29,6 +29,7 @@ const Order = () => {
             buyer_email: "gildong@gmail.com", // 구매자 이메일
             buyer_name: "홍길동", // 구매자 이름
             buyer_tel: "010-0000-0000", // 구매자 전화번호
+            buyer_addr: "경기도 남양주시",
             m_redirect_url: "http://localhost:3000/orderscomplete"
         };
 

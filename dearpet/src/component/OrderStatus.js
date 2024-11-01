@@ -86,7 +86,7 @@ const OrderStatus = () => {
             }}
           >
             <LocationOnOutlinedIcon />
-            <Typography variant="button" sx={{ textTransform: 'none' }}>
+            <Typography variant="button" sx={{ textTransform: 'none', paddingRight: '10px' }}>
               배송지 관리
             </Typography>
           </IconButton>

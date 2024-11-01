@@ -53,10 +53,16 @@ const CartItem = ({ item, totalPrice, handleTotalChange, handleQuantityChange, h
                     alignItems: 'center', 
                     backgroundColor: '#F7F4FD' 
                 }}>
-                <Checkbox
-                    checked={item.checked || false}
-                    onChange={() => handleCheckboxChange(item.cartItemId)}
-                />
+            <Checkbox
+                checked={item.checked || false}
+                onChange={() => handleCheckboxChange(item.cartItemId)}
+                sx={{
+                    color: '#6A47B1',
+                    '&.Mui-checked': {
+                        color: '#6A47B1',
+                    },
+                }}
+            />
                 <CardMedia
                     component="img"
                     image={itemImage}
@@ -64,7 +70,8 @@ const CartItem = ({ item, totalPrice, handleTotalChange, handleQuantityChange, h
                     sx={{ 
                         width: 100, 
                         height: 100, 
-                        mr: 2 
+                        mr: 3,
+                        ml: 2
                     }}
                 />
                 <Box 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Box, Typography, Paper } from '@mui/material';
 import '../style/OrderHistory.css';
 import ReviewModal from '../component/ReviewModal';
+import Footer from '../component/Footer';
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([
@@ -88,92 +89,95 @@ const OrderHistory = () => {
   };
 
   return (
-    <Box>
-      <h1 style={{ textAlign: 'center' }}>주문내역</h1>
-      <Box className="order-history-container">
-
-        <div className="order-status-container">
-          {['배송중', '배송완료', '취소/반품'].map((status) => (
-            <div className="order-status-item" key={status}>
-              <Typography sx={{ fontWeight: 'bold' }}>{status}</Typography>
-              <Typography sx={{ color: 'gray' }}>{statusCounts[status]}</Typography>
-            </div>
-          ))}
-        </div>
-
-        {orders.map((order, orderIndex) => (
-          <Box key={order.id} className="order-item">
-            <Typography variant="subtitle1" className="order-date">
-              {order.date}
-              <Button
-                variant="contained"
-                className='DeleteButton'
-                disabled={order.status === '구매확정'}
-                onClick={() => handleCancel(orderIndex)}
-              >
-                구매취소
-              </Button>
-            </Typography>
-            <Paper className="order-paper">
-              {order.items.map((item, itemIndex) => (
-                <div key={itemIndex}>
-                  <div className="order-image-placeholder" />
-                  <div className="order-details">
-                    <Box gap={1} sx={{display:'flex'}}>
-                      <Typography className="order-status">{order.status}</Typography>
-                      <Typography
-                        className="order-delivery"
-                        sx={{
-                          textDecoration: order.status === '취소/반품' ? 'line-through' : 'none',
-                        }}
-                      >
-                        • {item.deliveryDate}
+    <div>
+      <Box>
+        <h1 style={{ textAlign: 'center' }}>주문내역</h1>
+        <Box className="order-history-container">
+  
+          <div className="order-status-container">
+            {['배송중', '배송완료', '취소/반품'].map((status) => (
+              <div className="order-status-item" key={status}>
+                <Typography sx={{ fontWeight: 'bold' }}>{status}</Typography>
+                <Typography sx={{ color: 'gray' }}>{statusCounts[status]}</Typography>
+              </div>
+            ))}
+          </div>
+  
+          {orders.map((order, orderIndex) => (
+            <Box key={order.id} className="order-item">
+              <Typography variant="subtitle1" className="order-date">
+                {order.date}
+                <Button
+                  variant="contained"
+                  className='DeleteButton'
+                  disabled={order.status === '구매확정'}
+                  onClick={() => handleCancel(orderIndex)}
+                >
+                  구매취소
+                </Button>
+              </Typography>
+              <Paper className="order-paper">
+                {order.items.map((item, itemIndex) => (
+                  <div key={itemIndex}>
+                    <div className="order-image-placeholder" />
+                    <div className="order-details">
+                      <Box gap={1} sx={{display:'flex'}}>
+                        <Typography className="order-status">{order.status}</Typography>
+                        <Typography
+                          className="order-delivery"
+                          sx={{
+                            textDecoration: order.status === '취소/반품' ? 'line-through' : 'none',
+                          }}
+                        >
+                          • {item.deliveryDate}
+                        </Typography>
+                      </Box>
+                      <Typography className="order-price">{item.price.toLocaleString()}원</Typography>
+                      <Typography className="order-product">
+                        {item.name} <br/> {item.option} {item.quantity}개
                       </Typography>
-                    </Box>
-                    <Typography className="order-price">{item.price.toLocaleString()}원</Typography>
-                    <Typography className="order-product">
-                      {item.name} <br/> {item.option} {item.quantity}개
-                    </Typography>
-                  </div>
-                  <div className="order-button-container">
-                    <div>
-                      <Button className="order-button" style={{marginTop:"-240px"}} >
-                        문의하기
-                      </Button>
                     </div>
-                    <div>
-                      {item.reviewed ? (
-                        <Button
-                          onClick={() => handleReviewDelete(item)}
-                          className="order-button"
-                          style={{marginTop:"-120px"}}
-                        >
-                          리뷰삭제
+                    <div className="order-button-container">
+                      <div>
+                        <Button className="order-button" style={{marginTop:"-240px"}} >
+                          문의하기
                         </Button>
-                      ) : (
-                        <Button
-                          onClick={() => handleOpenReview(item)}
-                          className="order-button"
-                          style={{marginTop:"-120px"}}
-                        >
-                          리뷰작성
-                        </Button>
-                      )}
+                      </div>
+                      <div>
+                        {item.reviewed ? (
+                          <Button
+                            onClick={() => handleReviewDelete(item)}
+                            className="order-button"
+                            style={{marginTop:"-120px"}}
+                          >
+                            리뷰삭제
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => handleOpenReview(item)}
+                            className="order-button"
+                            style={{marginTop:"-120px"}}
+                          >
+                            리뷰작성
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </Paper>
-          </Box>
-        ))}
+                ))}
+              </Paper>
+            </Box>
+          ))}
+        </Box>
+        <ReviewModal
+          open={reviewModalOpen}
+          item={selectedItem}
+          onClose={() => setReviewModalOpen(false)}
+          onSubmit={handleReviewSubmit}
+        />
       </Box>
-      <ReviewModal
-        open={reviewModalOpen}
-        item={selectedItem}
-        onClose={() => setReviewModalOpen(false)}
-        onSubmit={handleReviewSubmit}
-      />
-    </Box>
+      <Footer />
+    </div>
   );
 };
 

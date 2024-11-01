@@ -101,7 +101,22 @@ const ReviewModal = ({ open, item, onClose, onSubmit }) => {
               value={review}
               onChange={(e) => setReview(e.target.value)}
               fullWidth
-              sx={{ marginTop: 2 }}
+              sx={{
+                marginTop: 2,
+                '& .MuiOutlinedInput-root': {
+                  '&:hover fieldset': {
+                    borderColor: '#6A47B1',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#6A47B1',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  '&.Mui-focused': {
+                    color: '#6A47B1',
+                  },
+                },
+              }}
             />
 
             <Box sx={{display: 'flex', justifyContent: 'center'}}>

@@ -20,13 +20,22 @@ const CartHeader = ({ items, handleSelectAll, handleDeleteSelected }) => {
                     alignItems: 'center',
                 }}
             >
-                <Checkbox
-                    checked={items.length > 0 && items.every((item) => item.checked)}
-                    indeterminate={
-                        items.some((item) => item.checked) && !items.every((item) => item.checked)
-                    }
-                    onChange={(e) => handleSelectAll(e.target.checked)}
-                />
+            <Checkbox
+                checked={items.length > 0 && items.every((item) => item.checked)}
+                indeterminate={
+                    items.some((item) => item.checked) && !items.every((item) => item.checked)
+                }
+                onChange={(e) => handleSelectAll(e.target.checked)}
+                sx={{
+                    color: '#6A47B1',
+                    '&.Mui-checked': {
+                        color: '#6A47B1',
+                    },
+                    '&.MuiCheckbox-indeterminate': {
+                        color: '#6A47B1',
+                    },
+                }}
+            />
                 <Typography 
                     variant="subtitle1"
                     sx={{ 

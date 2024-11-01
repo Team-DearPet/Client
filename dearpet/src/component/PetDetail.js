@@ -173,13 +173,13 @@ const PetDetail = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
                 params: {
-                    petId: petId, // 필요한 경우 petId를 전달
+                    petId: petId,
                 },
             });
             return response.data;
         } catch (error) {
             console.error("Error fetching health advice:", error);
-            throw error; // 에러를 다시 던져서 처리할 수 있도록
+            throw error;
         }
     };
     return (
@@ -209,6 +209,7 @@ const PetDetail = () => {
                                 e.stopPropagation(); 
                                 handlePetDetailOpen(pet); 
                             }}
+                            sx={{ color: '#6A47B1' }}
                         >
                             펫 맞춤 데이터 보러가기 &gt;
                         </Button>
@@ -245,21 +246,129 @@ const PetDetail = () => {
                                 <input type="file" hidden onChange={handlePhotoUpload} />
                             </IconButton>
                         </Box>
-                        <TextField label="이름" value={petData.name} onChange={(e) => setPetData({ ...petData, name: e.target.value })} />
+                        <TextField label="이름" value={petData.name} onChange={(e) => setPetData({ ...petData, name: e.target.value })} 
+                            sx={{ 
+                                marginBottom: 2,
+                                '& .MuiOutlinedInput-root': {
+                                    '&:hover fieldset': {
+                                        borderColor: '#6A47B1',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#6A47B1',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    '&.Mui-focused': {
+                                        color: '#6A47B1',
+                                    },
+                                },
+                            }}/>
                     </Box>
-                    <TextField fullWidth label="종" value={petData.species} onChange={(e) => setPetData({ ...petData, species: e.target.value })} sx={{ marginBottom: 2 }} />
-                    <TextField fullWidth label="나이" type="number" value={petData.age} onChange={(e) => setPetData({ ...petData, age: e.target.value })} sx={{ marginBottom: 2 }} />
-                    <FormControl fullWidth sx={{ marginBottom: 2 }}>
+                    <TextField fullWidth label="종" value={petData.species} onChange={(e) => setPetData({ ...petData, species: e.target.value })} 
+                        sx={{ 
+                            marginBottom: 2,
+                            '& .MuiOutlinedInput-root': {
+                                '&:hover fieldset': {
+                                    borderColor: '#6A47B1',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#6A47B1',
+                                },
+                            },
+                            '& .MuiInputLabel-root': {
+                                '&.Mui-focused': {
+                                    color: '#6A47B1',
+                                },
+                            },
+                        }} />
+                    <TextField fullWidth label="나이" type="number" value={petData.age} onChange={(e) => setPetData({ ...petData, age: e.target.value })} 
+                        sx={{ 
+                            marginBottom: 2,
+                            '& .MuiOutlinedInput-root': {
+                                '&:hover fieldset': {
+                                    borderColor: '#6A47B1',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#6A47B1',
+                                },
+                            },
+                            '& .MuiInputLabel-root': {
+                                '&.Mui-focused': {
+                                    color: '#6A47B1',
+                                },
+                            },
+                        }}
+                    />
+                    <FormControl fullWidth 
+                    sx={{ 
+                        marginBottom: 2,
+                        '& .MuiOutlinedInput-root': {
+                            '&:hover fieldset': {
+                                borderColor: '#6A47B1',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#6A47B1',
+                            },
+                        },
+                        '& .MuiInputLabel-root': {
+                            '&.Mui-focused': {
+                                color: '#6A47B1',
+                            },
+                        },
+                    }}>
                         <InputLabel>성별</InputLabel>
                         <Select value={petData.gender} onChange={(e) => setPetData({ ...petData, gender: e.target.value })}>
                             <MenuItem value="MALE">남아</MenuItem>
                             <MenuItem value="FEMALE">여아</MenuItem>
                         </Select>
                     </FormControl>
-                    <FormControlLabel control={<Checkbox checked={petData.neutered} onChange={(e) => setPetData({ ...petData, neutered: e.target.checked })} />} label="중성화 여부" sx={{ marginBottom: 2 }} />
-                    <TextField fullWidth label="몸무게" value={petData.weight} onChange={(e) => setPetData({ ...petData, weight: e.target.value })} sx={{ marginBottom: 2 }} />
-                    <TextField fullWidth label="건강상태" value={petData.healthStatus} onChange={(e) => setPetData({ ...petData, healthStatus: e.target.value })} sx={{ marginBottom: 2 }} />
-                    <Button fullWidth variant="contained" onClick={handleRegisterPet} sx={{ bgcolor: '#7B52E1', color: 'white', '&:hover': { bgcolor: '#6A47B1' } }}>
+                    <FormControlLabel control={<Checkbox checked={petData.neutered} 
+                        onChange={(e) => setPetData({ ...petData, neutered: e.target.checked })} 
+                        sx={{
+                            color: '#6A47B1',
+                            '&.Mui-checked': {
+                                color: '#6A47B1',
+                            },
+                            '&:hover': {
+                                backgroundColor: 'rgba(106, 71, 177, 0.04)',
+                            },
+                        }}
+                        />} label="중성화 여부" sx={{ marginBottom: 2 }} />
+                    <TextField fullWidth label="몸무게" value={petData.weight} onChange={(e) => setPetData({ ...petData, weight: e.target.value })} 
+                    sx={{ 
+                        marginBottom: 2,
+                        '& .MuiOutlinedInput-root': {
+                            '&:hover fieldset': {
+                                borderColor: '#6A47B1',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#6A47B1',
+                            },
+                        },
+                        '& .MuiInputLabel-root': {
+                            '&.Mui-focused': {
+                                color: '#6A47B1',
+                            },
+                        },
+                    }} />
+                    <TextField fullWidth label="건강상태" value={petData.healthStatus} onChange={(e) => setPetData({ ...petData, healthStatus: e.target.value })} 
+                    sx={{ 
+                        marginBottom: 2,
+                        '& .MuiOutlinedInput-root': {
+                            '&:hover fieldset': {
+                                borderColor: '#6A47B1',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#6A47B1',
+                            },
+                        },
+                        '& .MuiInputLabel-root': {
+                            '&.Mui-focused': {
+                                color: '#6A47B1',
+                            },
+                        },
+                    }} />
+                    <Button fullWidth variant="contained" onClick={handleRegisterPet} sx={{ pt: '15px', pb: '15px', bgcolor: '#7B52E1', color: 'white', '&:hover': { bgcolor: '#6A47B1' } }}>
                         {isEditMode ? '수정하기' : '등록하기'}
                     </Button>
                 </Box>
@@ -281,18 +390,18 @@ const PetDetail = () => {
                 }}>
                     <h3 style={{ textAlign: 'center'}}>{selectedPet ? `${selectedPet.name}는 어떤 특성이 있나요?` : ''}</h3>
                     <IconButton 
-                      onClick={handlePetDetailClose} 
-                      sx={{ 
-                      position: 'absolute', 
-                      top: 8, 
-                      right: 8 
-                      }}
-                  >
-                      <CloseIcon />
-                  </IconButton>
-                    <Typography sx={{ fontWeight: 'bold'}}>우리 {selectedPet ? selectedPet.name : ''}는...</Typography>
+                        onClick={handlePetDetailClose} 
+                        sx={{ 
+                        position: 'absolute', 
+                        top: 8, 
+                        right: 8 
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                        <Typography sx={{ fontWeight: 'bold'}}>우리 {selectedPet ? selectedPet.name : ''}는...</Typography>
                     <Box sx={{ minHeight:'10vh', borderRadius:'5px', bgcolor:'#f8f8f8', display:'flex', justifyContent:'center', alignItems:'center', overflowY: 'auto',}}>
-                      <Typography>{loading ? '정보를 가져오는 중입니다...' : healthAdvice}</Typography>
+                        <Typography>{loading ? '정보를 가져오는 중입니다...' : healthAdvice}</Typography>
                     </Box>
                 </Box>
             </Modal>

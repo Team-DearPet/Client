@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Container, Typography, Box, IconButton, Card, CardContent, CardMedia, Grid, Modal  } from '@mui/material';
+import { Container, Typography, Box, IconButton, Card, CardContent, CardMedia, Grid, Modal } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import '../style/Emergency.css';
 import SearchBar from "../component/SearchBar";
@@ -59,7 +59,10 @@ export default function Emergency() {
                     width: '80%',
                     maxWidth: '1300px',
                     margin: '0 auto', 
-                    padding: '10px' 
+                    paddingTop: '10px',
+                    paddingBottom: '10px',
+                    paddingLeft: '40px',
+                    paddingRight: '40px',
                 }}
             >
                 <Box 
@@ -70,7 +73,11 @@ export default function Emergency() {
                         zIndex: 1, 
                         padding: '5px 10px', 
                         backgroundColor: '#F7F4FD',
-                        borderRadius: '5px' 
+                        borderRadius: '5px',
+                        paddingTop: '10px',
+                        paddingBottom: '10px',
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
                     }}
                 >
                     <Typography variant="h6" style={{fontWeight:"bold"}}>
@@ -108,7 +115,11 @@ export default function Emergency() {
                                 marginLeft: '15px', 
                                 cursor: 'pointer', 
                                 width: '300px', 
-                                height: 'auto'
+                                height: 'auto',
+                                transition: 'transform 0.3s ease, background-color 0.3s ease',
+                                '&:hover': {
+                                    transform: 'scale(1.05)', // 크기 확대
+                                },
                             }} 
                             onClick={() => window.open(video.link, '_blank')}
                         >
@@ -148,7 +159,10 @@ export default function Emergency() {
                     width: '80%',
                     maxWidth: '1300px',
                     margin: '0 auto',
-                    padding: '10px'
+                    paddingTop: '10px',
+                    paddingBottom: '30px',
+                    paddingLeft: '40px',
+                    paddingRight: '40px',
                 }}
             >
                 <Box
@@ -159,7 +173,11 @@ export default function Emergency() {
                         zIndex: 1,
                         padding: '5px 10px',
                         backgroundColor: '#F7F4FD',
-                        borderRadius: '5px'
+                        borderRadius: '5px',
+                        paddingTop: '10px',
+                        paddingBottom: '10px',
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
                     }}
                 >
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>
@@ -171,14 +189,25 @@ export default function Emergency() {
                             검색 결과가 없습니다.
                         </Typography>
                     ) : (
-                <Grid container spacing={3} sx={{ paddingTop: '60px' }}>
+                <Grid container spacing={3} sx={{ paddingTop: '60px', justifyContent: 'center' }}>
                     {filteredGuides.map((guide, index) => (
                         <Grid item xs={12} sm={6} md={3} key={index}>
-                            <Card sx={{ height: '100%' }} onClick={() => handleOpen(guide)}>
+                            <Card
+                                sx={{
+                                    height: '100%',
+                                    transition: 'transform 0.3s ease, background-color 0.3s ease', 
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(211, 211, 211, 0.3)', 
+                                        cursor: 'pointer',
+                                        transform: 'scale(1.05)', 
+                                    },
+                                }}
+                                onClick={() => handleOpen(guide)}
+                            >
                                 <CardMedia
                                     component="img"
                                     height="140"
-                                    image={emergencyDefault}
+                                    image={guide.image}
                                     alt={guide.title}
                                 />
                                 <CardContent>

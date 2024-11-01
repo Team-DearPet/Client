@@ -115,7 +115,11 @@ export default function Emergency() {
                                 marginLeft: '15px', 
                                 cursor: 'pointer', 
                                 width: '300px', 
-                                height: 'auto'
+                                height: 'auto',
+                                transition: 'transform 0.3s ease, background-color 0.3s ease',
+                                '&:hover': {
+                                    transform: 'scale(1.05)', // 크기 확대
+                                },
                             }} 
                             onClick={() => window.open(video.link, '_blank')}
                         >

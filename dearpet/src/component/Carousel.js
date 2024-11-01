@@ -30,7 +30,7 @@ const Carousel = () => {
       <Slider {...settings}>
         {items.map((item, index) => (
           <Link to={item.link}>
-            <Card key={index} sx={{ maxWidth: '100%' }}>
+            <Card key={index} sx={{ maxWidth: '100%', boxShadow: 'none' }}>
               <CardMedia
                 component="img"
                 height="auto"

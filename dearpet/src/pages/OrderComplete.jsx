@@ -1,11 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Typography, Button, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import '../style/OrderComplete.css';
 import Footer from "../component/Footer";
+import axios from 'axios';
 
 export default function OrderComplete() {
+
+    const location = useLocation();
+    const { impUid } = location.state || {}; // location state에서 impUid 가져오기
+    const [paymentInfo, setPaymentInfo] = useState(null);
+
+    useEffect(() => {
+        if (impUid) {
+            // API에서 결제 세부 정보 가져오기
+            const accessToken = localStorage.getItem('token'); // 토큰 가져오기
+            axios.get(`http://localhost:8080/api/payments/${impUid}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
+                }
+            })
+            .then(response => {
+                setPaymentInfo(response.data); // 결제 정보 상태에 저장
+            })
+            .catch(error => {
+                console.error("결제 세부 정보 가져오는 중 오류 발생:", error);
+            });
+        }
+    }, [impUid]);
+
+    // 결제 정보가 로드되지 않았을 경우 로딩 상태 표시
+    if (!paymentInfo) {
+        return <div>로딩 중...</div>;
+    }
+
+    const { buyerName, buyerTel, buyerAddr, cardName, amount, paidAt } = paymentInfo;
     return (
         <div style={{ minHeight: '100vh' }}>
             <h1 style={{ textAlign: 'center' }}>주문완료</h1>
@@ -14,7 +44,7 @@ export default function OrderComplete() {
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '20px 0' }}>
                         <CheckCircleIcon style={{ fontSize: '70px', color: '#DC0044', marginTop: "50px" }} />
                         <Typography style={{ marginTop: "20px", fontSize: "2rem", fontWeight: "500", color: "black" }} variant="h6">구매가 완료되었습니다</Typography>
-                        <Typography style={{ marginTop: "50px", fontSize: "1.5rem", fontWeight: "500", color: "black" }}>ooo님이 구매하신 상품은 2024.10.21부터 배송될 예정이에요!</Typography>
+                        <Typography style={{ marginTop: "50px", fontSize: "1.5rem", fontWeight: "500", color: "black" }}>{buyerName}님이 구매하신 상품은 {new Date(paidAt).toLocaleDateString()} 에 주문 완료됐습니다!</Typography>
                         <Typography style={{ marginBottom: "50px", fontSize: "1.5rem", fontWeight: "500", color: "black" }}>구매내역은 마이페이지 '구매내역'에서 하실 수 있습니다.</Typography>
                     </Box>
                 </Box>
@@ -42,11 +72,11 @@ export default function OrderComplete() {
                         }}
                     >
                         <div className="info">
-                            <Typography variant="h6">주문 정보</Typography>
+                            <Typography variant="h6" >주문 정보</Typography>
                             <Typography variant="subtitle1" gutterBottom>배송지 정보</Typography>
-                            <Typography>000</Typography>
-                            <Typography>010-1234-5678</Typography>
-                            <Typography>[00000] 서울 00구 00로</Typography>
+                            <Typography>{buyerName}</Typography>
+                            <Typography>{buyerTel}</Typography>
+                            <Typography>{buyerAddr} </Typography>
                         </div>
                     </Box>
 
@@ -64,9 +94,9 @@ export default function OrderComplete() {
                     >
                         <Typography variant="h6">결제 정보</Typography>
                         <Typography variant="subtitle1" gutterBottom>결제 방식</Typography>
-                        <Typography>카카오페이</Typography>
-                        <Typography>결제 금액</Typography>
-                        <Typography>총 32,500원</Typography>
+                        <Typography>{cardName}</Typography>
+                        <Typography style={{marginTop:"20px"}}>결제 금액</Typography>
+                        <Typography style={{fontSize:"1.3rem"}}>총 {amount}원</Typography>
                     </Box>
                 </Box>
 

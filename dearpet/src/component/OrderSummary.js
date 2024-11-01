@@ -38,7 +38,7 @@ const OrderSummary = ({orderItems, productPrice, shippingCost, totalPrice}) => {
             <Typography 
                 variant="body2" 
                 sx={textRightStyle}>
-                상품금액 : ₩{productPrice.toLocaleString()}
+                상품금액 : {productPrice.toLocaleString()}원
             </Typography>
             <Box 
                 sx={borderBoxStyle}>
@@ -46,7 +46,7 @@ const OrderSummary = ({orderItems, productPrice, shippingCost, totalPrice}) => {
             <Typography 
                 variant="body2" 
                 sx={textRightStyle}>
-                배송비 : ₩ {shippingCost.toLocaleString()}
+                배송비 : {shippingCost.toLocaleString()}원
             </Typography>
             <Box 
                 sx={borderBoxStyle}>
@@ -58,7 +58,7 @@ const OrderSummary = ({orderItems, productPrice, shippingCost, totalPrice}) => {
                     textAlign: 'right',
                     fontSize: '1.6rem' 
                 }}>
-                합계 : ₩ {totalPrice.toLocaleString()}
+                합계 : {totalPrice.toLocaleString()}원
             </Typography>
         </Box>
     );

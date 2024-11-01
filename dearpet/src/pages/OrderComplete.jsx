@@ -35,7 +35,7 @@ export default function OrderComplete() {
         return <div>로딩 중...</div>;
     }
 
-    const { buyerName, buyerTel, buyerAddr, cardName, amount, paidAt } = paymentInfo;
+    const { buyerName, buyerTel, buyerAddr, cardName, amount, paidAt, name } = paymentInfo;
     return (
         <div style={{ minHeight: '100vh' }}>
             <h1 style={{ textAlign: 'center' }}>주문완료</h1>
@@ -73,7 +73,8 @@ export default function OrderComplete() {
                     >
                         <div className="info">
                             <Typography variant="h6" >주문 정보</Typography>
-                            <Typography variant="subtitle1" gutterBottom>배송지 정보</Typography>
+                            <Typography>{name}</Typography>
+                            <Typography variant="h6" gutterBottom style={{marginTop:"10px"}}>배송지 정보</Typography>
                             <Typography>{buyerName}</Typography>
                             <Typography>{buyerTel}</Typography>
                             <Typography>{buyerAddr} </Typography>

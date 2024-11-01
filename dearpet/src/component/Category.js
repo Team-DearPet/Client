@@ -22,7 +22,6 @@ const Category = () => {
                 throw new Error('서버 응답 실패');
             }
             const data = await response.json();
-            console.log(data);
             setProducts(data);
         } catch (error) {
             console.error('Error: ', error);
@@ -115,7 +114,7 @@ const Category = () => {
                                     width: '100%',
                                 }}
                             >
-                                {product.price}원
+                                {product.price.toLocaleString()}원
                             </Typography>
                         </CardContent>
                     </Card>
@@ -151,7 +150,7 @@ const Category = () => {
                         aria-label="Category tabs"
                         sx={{
                           '& .Mui-selected': {
-                              color: '#6A47B1', // 선택된 탭의 텍스트 색상을 보라색으로 설정
+                              color: '#6A47B1 !important', // 선택된 탭의 텍스트 색상을 보라색으로 설정
                               fontWeight: '500',
                           },
                           '& .MuiTabs-indicator': {

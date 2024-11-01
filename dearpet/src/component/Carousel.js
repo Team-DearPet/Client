@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import banner1 from '../images/banner1.jpg';
 import banner2 from '../images/banner2.jpg';
 import banner3 from '../images/banner3.jpg';
+import banner4 from '../images/banner4.jpg';
 import mainImage from "../images/main2.png"
 
 const Carousel = () => {
@@ -23,6 +24,7 @@ const Carousel = () => {
     {image: banner1, link: '/map'},
     {image: banner2, link: '/emergency'},
     {image: banner3, link: '#'},
+    {image: banner4, link: '#'}
   ];
 
   return (

@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
+import { Button, CssBaseline, TextField, Typography, Container, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../style/Login.css'; 
 import boneLogo from '../images/bone.png';
@@ -14,7 +9,7 @@ const theme = createTheme({
   typography: {
     allVariants: {
       color: '#000',
-      fontWeight: 'normal', 
+      fontWeight: 'normal',
     },
   },
   components: {
@@ -24,7 +19,7 @@ const theme = createTheme({
           backgroundColor: '#000',
           color: '#fff',
           '&:hover': {
-            backgroundColor: '#333', 
+            backgroundColor: '#333',
           },
         },
         outlined: {
@@ -32,7 +27,24 @@ const theme = createTheme({
           borderColor: '#000',
           '&:hover': {
             borderColor: '#333',
-            backgroundColor: '#f5f5f5', 
+            backgroundColor: '#f5f5f5',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#ccc',
+            },
+            '&:hover fieldset': {
+              borderColor: '#7B52E1',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#7B52E1',
+            },
           },
         },
       },
@@ -43,10 +55,19 @@ const theme = createTheme({
 export default function Login({ setIsLoggedIn, setUserId }) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
   const navigate = useNavigate();
 
-  // 로컬 로그인 처리
+  const openDialog = (message) => {
+    setDialogMessage(message);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -74,23 +95,19 @@ export default function Login({ setIsLoggedIn, setUserId }) {
 
         navigate("/");
       } else {
-        const errorText = await response.text();
-        setErrorMessage("로그인에 실패했습니다. 다시 시도해 주세요."); 
-        console.error('Login failed:', errorText);
+        openDialog("로그인에 실패했습니다. 다시 시도해 주세요.");
       }
       
     } catch (error) {
       console.error('Error:', error);
-      setErrorMessage("서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+      openDialog("서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
     }
   };
 
-  // Google 로그인 핸들러
   const handleGoogleLogin = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/google";
   };
 
-  // Kakao 로그인 핸들러
   const handleKakaoLogin = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
   };
@@ -112,10 +129,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
             flexDirection: 'column',
             alignItems: 'center', 
           }}>
-            <Typography
-              variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 0, fontWeight: 'bold', textShadow: 'none', marginTop:'-40px', fontSize:'1.5rem' }}
-            >
+            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem', marginTop: '-20px' }}>
               아이디
             </Typography>
             <TextField
@@ -128,22 +142,9 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               autoFocus
               value={id}
               onChange={(e) => setId(e.target.value)}
-              sx={{
-                mb: 1,
-                '& .MuiInputBase-root': {
-                  border: '1px solid #ccc',
-                  borderRadius: '5px',
-                  padding: '10px',
-                  height: '50px',
-                  '&:focus': {
-                    borderColor: '#7B52E1',
-                  },
-                }}}
-              />
-            <Typography
-              variant="body1"
-              sx={{ alignSelf: 'flex-start', mb: 0, fontWeight: 'bold', textShadow: 'none', fontSize:'1.5rem' }}
-            >
+              sx={{ mb: 1, mt: 1 }}
+            />
+            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
               비밀번호
             </Typography>
             <TextField
@@ -156,18 +157,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              sx={{
-                mb: 2,
-                '& .MuiInputBase-root': {
-                  border: '1px solid #ccc',
-                  borderRadius: '5px',
-                  padding: '10px',
-                  height: '50px',
-                  '&:focus': {
-                    borderColor: '#7B52E1',
-                  },
-                },
-              }}
+              sx={{ mb: 2, mt: 1 }}
             />
             <Button
               type="submit"
@@ -184,7 +174,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               style={{height:"50px"}}
-              onClick={handleGoogleLogin} // Google 로그인 핸들러
+              onClick={handleGoogleLogin}
               startIcon={<img
                 className='icon-image'
                 src={require('../images/Google.jpg')}
@@ -200,7 +190,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               fullWidth
               variant="outlined"
               style={{height:"50px"}}
-              onClick={handleKakaoLogin} // Kakao 로그인 핸들러
+              onClick={handleKakaoLogin}
               startIcon={<img
                 className='icon-image'
                 src={require('../images/kakao.jpg')}
@@ -220,6 +210,22 @@ export default function Login({ setIsLoggedIn, setUserId }) {
           </Box>
         </Container>
       </ThemeProvider>
+
+      <Dialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>알림</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{dialogMessage}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
+          <Button onClick={handleDialogClose} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

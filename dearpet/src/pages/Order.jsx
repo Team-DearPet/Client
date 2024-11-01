@@ -62,7 +62,7 @@ const Order = () => {
             return;
         }
         $.ajax({
-            url: "http://localhost:8080/api/prepayment/prepare",
+            url: "http://localhost:8080/api/verification/prepare",
             type: "POST",
             async: true,
             dataType: "json",
@@ -107,7 +107,7 @@ const Order = () => {
             if (rsp.success) {
               // 결제 성공 시 검증 요청
               $.ajax({
-                url: "http://localhost:8080/api/prepayment/validate",
+                url: "http://localhost:8080/api/verification/confirm",
                 method: "POST",
                 dataType: "json",
                 contentType: "application/json",

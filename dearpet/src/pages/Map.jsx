@@ -203,9 +203,9 @@ function NearbyAnimalHospitals() {
                   alt="병원 아이콘" 
                   style={{ width: '30px', height: '30px', marginRight: '10px' }} 
                 />
-                <h3 style={{ fontWeight: "bold" }}>{hospital.name}</h3>
+                <h3 style={{ fontWeight: "500" }}>{hospital.name}</h3>
               </div>
-              <p style={{ fontWeight: "bold" }}>
+              <p style={{ fontWeight: "500" }}>
                 주소: {hospital.address}
                 <IconButton 
                   onClick={() => copyToClipboard(hospital.address)} 
@@ -215,13 +215,13 @@ function NearbyAnimalHospitals() {
                 </IconButton>
                 </p>
               {hospital.openingHours.length > 0 ? (
-                <p style={{ fontWeight: "bold", marginTop: "10px" }}>
+                <p style={{ fontWeight: "500", marginTop: "10px" }}>
                   영업시간: {getTodayOpeningHours(hospital.openingHours)}
                 </p>
               ) : (
-                <p style={{ fontWeight: "bold", marginTop: "10px" }}>영업시간: 정보 없음</p>
+                <p style={{ fontWeight: "500", marginTop: "10px" }}>영업시간: 정보 없음</p>
               )}
-              <p style={{ fontWeight: "bold" }}>
+              <p style={{ fontWeight: "500" }}>
                 전화번호: {hospital.phone}
                 <IconButton 
                   onClick={() => copyToClipboard(hospital.phone)} 
@@ -243,6 +243,7 @@ function NearbyAnimalHospitals() {
                       textDecoration: 'none',
                       borderRadius: '5px',
                       fontSize: '15px',
+                      fontWeight: "500",
                       textAlign: 'center',
                     }}
                   >

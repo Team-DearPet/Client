@@ -131,9 +131,9 @@ function NearbyAnimalHospitals() {
           <div className="icon-legend" style={{ position: 'absolute', top: '170px', left: '370px', padding: '10px', border: "none", zIndex: 100 }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
               <img src={hospitalIconOpen} alt="진료 중" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-              <span style={{ fontWeight: 'bold' }}>진료 중</span>
+              <span style={{ fontWeight: '500' }}>진료 중</span>
               <img src={hospitalIconClosed} alt="진료 중 아님" style={{ width: '20px', height: '20px', marginLeft: '8px' }} />
-              <span style={{ fontWeight: 'bold' }}>진료 마감</span>
+              <span style={{ fontWeight: '500' }}>진료 마감</span>
             </div>
           </div>
           <GoogleMap
@@ -205,7 +205,7 @@ function NearbyAnimalHospitals() {
                 />
                 <h3 style={{ fontWeight: "500" }}>{hospital.name}</h3>
               </div>
-              <p style={{ fontWeight: "500" }}>
+              <p style={{ fontWeight: "500"  }}>
                 주소: {hospital.address}
                 <IconButton 
                   onClick={() => copyToClipboard(hospital.address)} 

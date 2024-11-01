@@ -103,7 +103,7 @@ const UserDetail = () => {
       alert('프로필 업데이트에 실패했습니다.');
     } finally {
       localStorage.removeItem('token');
-      navigate('/login'); // 로그인 페이지로 리다이렉트
+      navigate('/login');
     }
   };
   
@@ -178,6 +178,21 @@ const UserDetail = () => {
                 name="nickname"
                 value={formData.nickname}
                 onChange={handleChange}
+                sx={{ 
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#6A47B1',
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: '#6A47B1',
+                        },
+                    },
+                    '& .MuiInputLabel-root': {
+                        '&.Mui-focused': {
+                            color: '#6A47B1',
+                        },
+                    },
+                }}
               />
             </Box>
           </Box>
@@ -192,6 +207,21 @@ const UserDetail = () => {
               value={formData.username}
               onChange={handleChange}
               error={!isIdValid}
+              sx={{ 
+                '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                },
+                '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                        color: '#6A47B1',
+                    },
+                },
+              }}
             />
             <Button 
               sx={{
@@ -217,6 +247,21 @@ const UserDetail = () => {
             name="currentPassword"
             value={formData.currentPassword}
             onChange={handleChange}
+            sx={{ 
+                '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                },
+                '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                        color: '#6A47B1',
+                    },
+                },
+            }}
           />
 
           <TextField
@@ -227,6 +272,21 @@ const UserDetail = () => {
             name="newPassword"
             value={formData.newPassword}
             onChange={handleChange}
+            sx={{ 
+                '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                },
+                '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                        color: '#6A47B1',
+                    },
+                },
+            }}
           />
 
           <TextField
@@ -243,6 +303,21 @@ const UserDetail = () => {
                 ? '비밀번호가 일치하지 않습니다.' 
                 : ''
             }
+            sx={{ 
+                '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                },
+                '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                        color: '#6A47B1',
+                    },
+                },
+            }}
           />
 
           <TextField
@@ -253,9 +328,24 @@ const UserDetail = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            sx={{ 
+                '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#6A47B1',
+                    },
+                },
+                '& .MuiInputLabel-root': {
+                    '&.Mui-focused': {
+                        color: '#6A47B1',
+                    },
+                },
+            }}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ pt:'0px', mb: '15px', mr:'10px', ml:'' }}>
           <Button onClick={handleSave} sx={{ 
             bgcolor: '#7B52E1',
             color: 'white',
@@ -265,7 +355,7 @@ const UserDetail = () => {
           }}>
             수정
           </Button>
-          <Button onClick={handleClose} color="secondary">취소</Button>
+          <Button onClick={handleClose} sx={{color:'#6A47B1', '&:hover': { bgcolor: 'rgba(106, 71, 177, 0.1)' }}}>취소</Button>
         </DialogActions>
       </Dialog>
     </Box>

@@ -27,12 +27,10 @@ function ProductDetail() {
             'Authorization': `Bearer ${accessToken}`,
             }
         });
-        console.log(response.status);
         if (!response.ok) {
             throw new Error('서버 응답 실패');
         }
         const data = await response.json();
-        console.log(data);
         setProduct(data);
         } catch (error) {
         console.error('Error: ', error);

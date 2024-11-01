@@ -63,7 +63,10 @@ export default function OrderComplete() {
                         sx={{
                             width: '15%',
                             minHeight: '150px',
-                            padding: '20px',
+                            paddingTop: '20px',
+                            paddingBottom: '20px',
+                            paddingRight: '20px',
+                            paddingLeft: '30px',
                             backgroundColor: '#fff',
                             border: '3px solid #E0D7F8',
                             borderRadius: '20px',
@@ -85,7 +88,10 @@ export default function OrderComplete() {
                         sx={{
                             width: '15%',
                             minHeight: '150px',
-                            padding: '20px',
+                            paddingTop: '20px',
+                            paddingBottom: '20px',
+                            paddingRight: '20px',
+                            paddingLeft: '30px',
                             backgroundColor: '#fff',
                             border: '3px solid #E0D7F8',
                             borderRadius: '20px',

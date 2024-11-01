@@ -12,10 +12,10 @@ const Order = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const items = JSON.parse(decodeURIComponent(queryParams.get('items') || '[]'));
-    console.log(items);
-    const [user, setUser] = useState([]);
-    const [buyerPhone, setBuyerPhone] = useState('');
-    const [address, setAddress] = useState('');
+    const [user, setUser] = useState([]); //유저정보
+    const [buyerPhone, setBuyerPhone] = useState(''); //연락처
+    const [address, setAddress] = useState(''); //주소
+    const [requirements, setRequirements] = useState('') //요청사항
     const accessToken = localStorage.getItem('token');
     const orderItems = items.length > 1 
         ? `${items[0].productName} 외 ${items.length - 1}건` 
@@ -38,7 +38,6 @@ const Order = () => {
             },
         })
         const data = await response.json();
-        console.log(data);
         setUser(data);
     }
 
@@ -54,7 +53,14 @@ const Order = () => {
     }, []);
 
     const proceedPay = () => {
-        const accessToken = localStorage.getItem('token');
+        if (!buyerPhone) {
+            alert("연락처를 입력해 주세요.");
+            return;
+        }
+        if (!address) {
+            alert("배송지를 설정해 주세요.");
+            return;
+        }
         $.ajax({
             url: "http://localhost:8080/api/prepayment/prepare",
             type: "POST",
@@ -80,6 +86,7 @@ const Order = () => {
             },
         });
     };
+
     const requestPay = (data) => {
         const accessToken = localStorage.getItem('token');
         const { IMP } = window;
@@ -113,6 +120,7 @@ const Order = () => {
                 }),
                 success: function (validateData) {
                   alert("결제가 성공적으로 완료되었습니다!");
+                  console.log(validateData);
                   succeedPay(rsp.imp_uid, merchantUid)
                 },
                 error: function () {
@@ -129,6 +137,7 @@ const Order = () => {
     };
     const succeedPay = (impUid, merchantUid) => {
         // 결제 완료 후의 후속 작업을 여기에 추가
+        console.log(requirements);
         navigate('/orderscomplete')
     }
 
@@ -138,7 +147,7 @@ const Order = () => {
             <Container maxWidth={false} sx={{ padding: 3, width: "80%" }}> 
                 <Box sx={{ maxWidth: 800, margin: 'auto', paddingLeft: '20px' }}>
                     <BuyerInfo data={user} onPhoneChange={setBuyerPhone}/>
-                    <ShippingInfo onAddressChange={setAddress}/>
+                    <ShippingInfo onAddressChange={setAddress} onRequireChange={setRequirements}/>
                     <OrderSummary orderItems={orderItems} productPrice={productPrice} shippingCost={shippingCost} totalPrice={totalPrice}/>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button

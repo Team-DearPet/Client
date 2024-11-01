@@ -135,11 +135,40 @@ const Order = () => {
           }
     )
     };
-    const succeedPay = (impUid, merchantUid) => {
-        // 결제 완료 후의 후속 작업을 여기에 추가
-        console.log(requirements);
-        navigate('/orderscomplete')
-    }
+    const succeedPay = (impUid, merchantUid, amount, cardName) => {
+        // 요청 데이터 확인을 위한 콘솔 로그
+        console.log('Sending payment data:', {
+            impUid: impUid,
+            merchantUid: merchantUid
+        });
+    
+        fetch("http://localhost:8080/api/payments/save", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
+            },
+            body: JSON.stringify({
+                impUid: impUid,
+                merchantUid: merchantUid
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to save payment information');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert("결제 정보가 성공적으로 저장되었습니다!");
+            console.log(data);
+            navigate('/orderscomplete', { state: { impUid: impUid } });
+        })
+        .catch(error => {
+            console.error('Error saving payment information:', error);
+            alert("결제 정보 저장 중 오류가 발생했습니다.");
+        });
+    };
 
     return (
         <div>

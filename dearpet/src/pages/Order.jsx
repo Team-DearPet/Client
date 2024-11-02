@@ -101,19 +101,19 @@ const Order = () => {
         IMP.init("imp01130807");
         IMP.request_pay(
         {
-          pg: "html5_inicis",
-          pay_method: "card",
-          merchant_uid: merchantUid,
-          name: orderItems,
-          amount: 100,
-          buyer_addr: address,
-          buyer_email: user.email,
-          buyer_name: user.username,
-          buyer_tel: buyerPhone,
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: merchantUid,
+            name: orderItems,
+            amount: 100,
+            buyer_addr: address,
+            buyer_email: user.email,
+            buyer_name: user.username,
+            buyer_tel: buyerPhone,
         },
         function (rsp) {
             if (rsp.success) {
-              $.ajax({
+                $.ajax({
                 url: "http://localhost:8080/api/verification/confirm",
                 method: "POST",
                 dataType: "json",
@@ -122,20 +122,20 @@ const Order = () => {
                     'Authorization': `Bearer ${accessToken}`,
                 },
                 data: JSON.stringify({
-                  impUid: rsp.imp_uid,
-                  merchantUid: rsp.merchant_uid,
+                    impUid: rsp.imp_uid,
+                    merchantUid: rsp.merchant_uid,
                 }),
                 success: function (validateData) {
-                  openDialog("결제가 성공적으로 완료되었습니다!", () => succeedPay(rsp.imp_uid, merchantUid));
+                    openDialog("결제가 성공적으로 완료되었습니다!", () => succeedPay(rsp.imp_uid, merchantUid));
                 },
                 error: function () {
-                  openDialog("결제 검증 요청 중 오류가 발생했습니다.");
+                    openDialog("결제 검증 요청 중 오류가 발생했습니다.");
                 },
-              });
+            });
             } else {
-              openDialog("결제에 실패하였습니다.\n" + rsp.error_msg);
+                openDialog("결제에 실패하였습니다.\n" + rsp.error_msg);
             }
-          }
+        }
     )
     };
 
@@ -201,7 +201,7 @@ const Order = () => {
                 <DialogContent>
                     <DialogContentText>{dialogMessage}</DialogContentText>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions sx={{ mr: '15px', mb: '15px' }}>
                     <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
                     <Button onClick={() => { handleDialogClose(); if (dialogAction) dialogAction(); }} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
                 </DialogActions>

@@ -242,7 +242,7 @@ export default function SignUp() {
         <DialogContent>
           <DialogContentText>{dialogMessage}</DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ mr: '15px', mb: '15px' }}>
           <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
           <Button onClick={() => { handleDialogClose(); if (dialogAction) dialogAction(); }} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
         </DialogActions>

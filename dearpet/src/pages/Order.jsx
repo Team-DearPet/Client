@@ -12,6 +12,7 @@ const Order = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const items = JSON.parse(decodeURIComponent(queryParams.get('items') || '[]'));
+    console.log(items)
     const [user, setUser] = useState([]); //유저정보
     const [buyerPhone, setBuyerPhone] = useState(''); //연락처
     const [address, setAddress] = useState(''); //주소
@@ -161,6 +162,7 @@ const Order = () => {
         })
         .then(data => {
             alert("결제 정보가 성공적으로 저장되었습니다!");
+            cartCheckout(impUid);//장바구니에 주문한 상품 삭제 및 주문 생성
             console.log(data);
             navigate('/orderscomplete', { state: { impUid: impUid } });
         })
@@ -169,6 +171,35 @@ const Order = () => {
             alert("결제 정보 저장 중 오류가 발생했습니다.");
         });
     };
+
+    const cartCheckout = async (impUid) => {
+        try {
+            const cartItemIds = items.map(item => item.cartItemId);
+    
+            const baseUrl = `http://localhost:8080/api/cart/checkout?impUid=${impUid}`;
+            
+            // 선택한 아이템 param에 추가
+            const params = cartItemIds.map(id => `cartItemIds=${id}`).join('&');
+            
+            const url = `${baseUrl}&${params}`;
+    
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to add order');
+            }
+    
+        } catch (error) {
+            console.log('Error adding order', error);
+        }
+    }
+    
 
     return (
         <div>

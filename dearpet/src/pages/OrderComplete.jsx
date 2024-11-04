@@ -23,6 +23,7 @@ export default function OrderComplete() {
             })
             .then(response => {
                 setPaymentInfo(response.data); // 결제 정보 상태에 저장
+                console.log(response.data);
             })
             .catch(error => {
                 console.error("결제 세부 정보 가져오는 중 오류 발생:", error);
@@ -61,7 +62,7 @@ export default function OrderComplete() {
                 >
                     <Box
                         sx={{
-                            width: '15%',
+                            width: '18%',
                             minHeight: '150px',
                             paddingTop: '20px',
                             paddingBottom: '20px',
@@ -75,18 +76,18 @@ export default function OrderComplete() {
                         }}
                     >
                         <div className="info">
-                            <Typography variant="h6" >주문 정보</Typography>
-                            <Typography>{name}</Typography>
-                            <Typography variant="h6" gutterBottom style={{marginTop:"10px"}}>배송지 정보</Typography>
-                            <Typography>{buyerName}</Typography>
-                            <Typography>{buyerTel}</Typography>
-                            <Typography>{buyerAddr} </Typography>
+                            <Typography variant="h5" >주문 정보</Typography>
+                            <Typography style={{marginBottom:"20px"}}>주문 상품 : {name}</Typography>
+                            <Typography variant="h5">결제 정보</Typography>
+                        <Typography variant="subtitle1">결제 방식 : {cardName}</Typography>
+                        <Typography>결제 금액 : 총 {amount}원</Typography>
+                        {/* <Typography style={{fontSize:"1.3rem"}}>총 {amount}원</Typography> */}
                         </div>
                     </Box>
 
                     <Box
                         sx={{
-                            width: '15%',
+                            width: '18%',
                             minHeight: '150px',
                             paddingTop: '20px',
                             paddingBottom: '20px',
@@ -97,13 +98,16 @@ export default function OrderComplete() {
                             borderRadius: '20px',
                             textAlign: 'left',
                             flexShrink: 0,
+                            alignItems: 'center',
+                            display: 'flex'
                         }}
                     >
-                        <Typography variant="h6">결제 정보</Typography>
-                        <Typography variant="subtitle1" gutterBottom>결제 방식</Typography>
-                        <Typography>{cardName}</Typography>
-                        <Typography style={{marginTop:"20px"}}>결제 금액</Typography>
-                        <Typography style={{fontSize:"1.3rem"}}>총 {amount}원</Typography>
+                        <Box>
+                            <Typography variant="h5" >배송지 정보</Typography>
+                            <Typography>성함 : {buyerName}</Typography>
+                            <Typography>전화번호 : {buyerTel}</Typography>
+                            <Typography>주소 : {buyerAddr} </Typography>
+                        </Box>
                     </Box>
                 </Box>
 

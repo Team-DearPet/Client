@@ -24,7 +24,6 @@ const CartItem = ({ item, totalPrice, handleTotalChange, handleQuantityChange, h
             'Authorization': `Bearer ${accessToken}`,
             }
         });
-        console.log(response.status);
         if (!response.ok) {
             throw new Error('서버 응답 실패');
         }

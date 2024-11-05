@@ -6,13 +6,12 @@ import OrderSummary from '../component/OrderSummary';
 import Footer from '../component/Footer';
 import { useNavigate, useLocation } from 'react-router-dom';
 import $ from 'jquery';
+import useStore from '../data/store';
 
 const Order = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const items = JSON.parse(decodeURIComponent(queryParams.get('items') || '[]'));
-    console.log(items)
+    const items = useStore(state => state.orderItems);
+    const setOrderItems = useStore(state => state.setOrderItems);
     const [user, setUser] = useState([]); //유저정보
     const [buyerPhone, setBuyerPhone] = useState(''); //연락처
     const [address, setAddress] = useState(''); //주소
@@ -170,6 +169,7 @@ const Order = () => {
 
     const cartCheckout = async (impUid) => {
         try {
+            setOrderItems([])
             const cartItemIds = items?.map(item => item.cartItemId).filter(id => id !== undefined);
 
             const baseUrl = `http://localhost:8080/api/orders/checkout?impUid=${impUid}`;
@@ -184,7 +184,6 @@ const Order = () => {
                     price: items[0].price
                 }
             };
-            console.log(JSON.stringify(requestBody));
     
             const response = await fetch(url, {
                 method: "POST",
@@ -200,7 +199,7 @@ const Order = () => {
             }
     
         } catch (error) {
-            console.log('Error adding order', error);
+            console.error('Error adding order', error);
         }
     }
 

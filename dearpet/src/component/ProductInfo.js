@@ -3,6 +3,7 @@ import { Card, CardContent, CardActions, Typography, Box, Button, IconButton, Di
 import { useNavigate } from 'react-router-dom';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import useStore from '../data/store';
 
 const ProductInfo = ({ item }) => {
     const [quantity, setQuantity] = useState(1); // 기본 수량 1
@@ -10,6 +11,7 @@ const ProductInfo = ({ item }) => {
     const [dialogMessage, setDialogMessage] = useState('');
     const [dialogAction, setDialogAction] = useState(null);
     const navigate = useNavigate();
+    const setOrderItems = useStore(state => state.setOrderItems);
 
     const discount = item.discount || 0;
     const originalPrice = item.price * (1 + discount / 100);
@@ -37,7 +39,8 @@ const ProductInfo = ({ item }) => {
             quantity,
             price: item.price * quantity,
         }];
-        navigate(`/order?items=${encodeURIComponent(JSON.stringify(items))}`);
+        setOrderItems(items)
+        navigate('/order');
     };
 
     const handleAddToCart = async (e) => {

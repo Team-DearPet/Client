@@ -23,7 +23,6 @@ export default function OrderComplete() {
             })
             .then(response => {
                 setPaymentInfo(response.data); // 결제 정보 상태에 저장
-                console.log(response.data);
             })
             .catch(error => {
                 console.error("결제 세부 정보 가져오는 중 오류 발생:", error);

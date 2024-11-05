@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, CssBaseline, TextField, Typography, Container, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Button, CssBaseline, TextField, Typography, Container, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Select, MenuItem, FormControl } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../style/SignUp.css';
 import boneLogo from '../images/bone.png';
@@ -55,7 +55,9 @@ const theme = createTheme({
 export default function SignUp() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [emailFront, setEmailFront] = useState("");
+  const [emailBack, setEmailBack] = useState("");
+  const [selectedDomain, setSelectedDomain] = useState("custom");
   const [nickname, setNickname] = useState("");
   const [isUsernameChecked, setIsUsernameChecked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -114,6 +116,15 @@ export default function SignUp() {
     validatePassword(newPassword);
   };
 
+  const handleEmailBackChange = (e) => {
+    setSelectedDomain(e.target.value);
+    if (e.target.value !== "custom") {
+      setEmailBack(e.target.value);
+    } else {
+      setEmailBack("");
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -132,10 +143,15 @@ export default function SignUp() {
       return;
     }
 
+    if (!emailFront || !emailBack) {
+      openDialog("이메일을 올바르게 입력해주세요.");
+      return;
+    }
+
     const userData = {
       username: id,
       password: password,
-      email: email,
+      email: `${emailFront}@${emailBack}`,
       nickname: nickname,
     };
 
@@ -268,18 +284,43 @@ export default function SignUp() {
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
               이메일
             </Typography>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="email"
-              type="email"
-              id="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              sx={{ mb: 1, mt: 1 }}
-            />
+            <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="emailFront"
+                type="text"
+                id="emailFront"
+                value={emailFront}
+                onChange={(e) => setEmailFront(e.target.value)}
+                placeholder="이메일 앞부분"
+              />
+              <Typography sx={{ mt: 3 }}>@</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="emailBack"
+                type="text"
+                id="emailBack"
+                value={emailBack}
+                onChange={(e) => setEmailBack(e.target.value)}
+                placeholder="도메인"
+                disabled={selectedDomain !== "custom"}
+              />
+              <FormControl sx={{ mt: 2 }}>
+                <Select
+                  value={selectedDomain}
+                  onChange={handleEmailBackChange}
+                >
+                  <MenuItem value="gmail.com">gmail.com</MenuItem>
+                  <MenuItem value="naver.com">naver.com</MenuItem>
+                  <MenuItem value="nate.com">nate.com</MenuItem>
+                  <MenuItem value="custom">직접 입력</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
             <Button
               type="submit"
               fullWidth

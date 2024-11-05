@@ -23,6 +23,12 @@ const UserDetail = () => {
   const [photoPreview, setPhotoPreview] = useState(null);
   const [isIdValid, setIsIdValid] = useState(true);
   const [isIdChecked, setIsIdChecked] = useState(false);
+  const [originalFormData, setOriginalFormData] = useState({
+    photo: '',
+    nickname: '',
+    username: '',
+    email: '',
+  });
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -32,13 +38,14 @@ const UserDetail = () => {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        setFormData((prev) => ({
-          ...prev,
+        const userData = {
           nickname: response.data.nickname,
           username: response.data.username,
           email: response.data.email,
           photo: response.data.photo || '',
-        }));
+        };
+        setFormData((prev) => ({ ...prev, ...userData }));
+        setOriginalFormData(userData); // 원본 데이터를 설정
       } catch (error) {
         console.error('Failed to fetch user profile:', error);
       }
@@ -77,10 +84,17 @@ const UserDetail = () => {
   };
 
   const handleSave = async () => {
-    if (!isIdChecked && formData.username) {
+    // 아이디가 변경된 경우에는 중복 확인 여부 체크
+    if (formData.username !== originalFormData.username && !isIdChecked) {
       alert("아이디 중복 확인을 해야 합니다.");
       return;
     }
+
+    // 새 비밀번호와 새 비밀번호 확인이 일치하는지 확인
+  if (formData.newPassword !== formData.confirmNewPassword) {
+    alert('새 비밀번호와 비밀번호 확인이 일치하지 않습니다!');
+    return;
+  }
   
     const updatedData = { 
       nickname: formData.nickname,

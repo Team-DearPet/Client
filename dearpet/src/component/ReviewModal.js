@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Box, Typography, Button, TextField, IconButton, Rating } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import axios from 'axios';
 
-const ReviewFormModal = ({ open, item, onClose, onSubmit, existingReview }) => {
-  const [images, setImages] = useState(existingReview ? existingReview.images || [] : []);
-  const [reviewText, setReviewText] = useState(existingReview ? existingReview.comment || '' : '');
-  const [reviewRating, setReviewRating] = useState(existingReview ? existingReview.rating || 0 : 0);
-  const [isEditMode, setIsEditMode] = useState(!!existingReview);
-
-  useEffect(() => {
-    if (existingReview) {
-      setReviewText(existingReview.comment);
-      setReviewRating(existingReview.rating);
-      setImages(existingReview.images || []);
-      setIsEditMode(true);
-    }
-  }, [existingReview]);
+const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
+  const [images, setImages] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState(0);
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -30,41 +20,24 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit, existingReview }) => {
   };
 
   const handleReviewSubmit = async () => {
+    console.log(item.productId);
     try {
       const token = localStorage.getItem('token');
-      const reviewData = {
-        productId: item.productId,
-        rating: reviewRating,
-        comment: reviewText,
-        image: images[0] || '',
-      };
-
-      let response;
-      if (isEditMode) {
-        response = await axios.patch(
-          `http://localhost:8080/api/reviews/${existingReview.reviewId}`,
-          reviewData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-      } else {
-        response = await axios.post(
-          `http://localhost:8080/api/products/${item.productId}/reviews`,
-          reviewData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-        setIsEditMode(true);
-      }
-
+      const response = await axios.post(
+        `http://localhost:8080/api/products/${item.productId}/reviews`,
+        {
+          productId: item.productId,
+          rating: reviewRating,
+          comment: reviewText,
+          image: images[0] || '',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       onSubmit(item, response.data);
       setReviewText('');
       setImages([]);
@@ -97,7 +70,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit, existingReview }) => {
           <CloseIcon />
         </IconButton>
         <Typography variant="h6" sx={{ textAlign: 'center', marginBottom: 2 }}>
-          {isEditMode ? '리뷰 수정' : '리뷰 등록'}
+          리뷰 등록
         </Typography>
 
         {item && (
@@ -181,7 +154,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit, existingReview }) => {
                   },
                 }}
               >
-                {isEditMode ? '수정하기' : '등록하기'}
+                등록
               </Button>
             </Box>
           </>

@@ -40,10 +40,10 @@ const theme = createTheme({
               borderColor: '#ccc',
             },
             '&:hover fieldset': {
-              borderColor: '#7B52E1', // 마우스를 올렸을 때 보라색
+              borderColor: '#7B52E1',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#7B52E1', // 클릭되었을 때 보라색
+              borderColor: '#7B52E1',
             },
           },
         },
@@ -62,6 +62,13 @@ export default function SignUp() {
   const [dialogMessage, setDialogMessage] = useState('');
   const [dialogAction, setDialogAction] = useState(null);
   const navigate = useNavigate();
+
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    hasLowerCase: false,
+    hasNumber: false,
+    hasSpecialChar: false,
+    isMinLength: false,
+  });
 
   const openDialog = (message, action) => {
     setDialogMessage(message);
@@ -87,11 +94,41 @@ export default function SignUp() {
     }
   };
 
+  const validatePassword = (password) => {
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const isMinLength = password.length >= 8;
+
+    setPasswordCriteria({
+      hasLowerCase,
+      hasNumber,
+      hasSpecialChar,
+      isMinLength,
+    });
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    validatePassword(newPassword);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!isUsernameChecked) {
       openDialog("아이디 중복 확인을 해주세요.");
+      return;
+    }
+
+    if (
+      !passwordCriteria.hasLowerCase ||
+      !passwordCriteria.hasNumber ||
+      !passwordCriteria.hasSpecialChar ||
+      !passwordCriteria.isMinLength
+    ) {
+      openDialog("비밀번호가 형식에 맞지 않습니다.");
       return;
     }
 
@@ -184,9 +221,35 @@ export default function SignUp() {
               id="password"
               autoComplete="current-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               sx={{ mb: 1, mt: 1 }}
             />
+            <Box sx={{ alignSelf: 'flex-start', mt: 1 }}>
+              <Typography
+                variant="body2"
+                sx={{ color: passwordCriteria.hasLowerCase ? 'green' : 'red' }}
+              >
+                영어 소문자 포함
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: passwordCriteria.hasNumber ? 'green' : 'red' }}
+              >
+                숫자 포함
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: passwordCriteria.hasSpecialChar ? 'green' : 'red' }}
+              >
+                특수문자 포함
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: passwordCriteria.isMinLength ? 'green' : 'red' }}
+              >
+                8자리 이상
+              </Typography>
+            </Box>
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
               닉네임
             </Typography>

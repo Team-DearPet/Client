@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Box, Typography, Avatar, IconButton, Button, TextField, Dialog, DialogContent, DialogActions 
+  Box, Typography, Avatar, Button, TextField, Dialog, DialogContent, DialogActions, DialogTitle, DialogContentText 
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import CloseIcon from '@mui/icons-material/Close';
 
 const UserDetail = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [dialogAction, setDialogAction] = useState(null);
   const [formData, setFormData] = useState({
     photo: '',
     nickname: '',
@@ -46,6 +47,16 @@ const UserDetail = () => {
     fetchUserProfile();
   }, []);
 
+  const openDialog = (message, action) => {
+    setDialogMessage(message);
+    setDialogAction(() => action);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -66,19 +77,19 @@ const UserDetail = () => {
       setIsIdChecked(true);
 
       if (isAvailable) {
-        alert("사용 가능한 아이디입니다.");
+        openDialog("사용 가능한 아이디입니다.");
       } else {
-        alert("이미 사용 중인 아이디입니다.");
+        openDialog("이미 사용 중인 아이디입니다.");
       }
     } catch (error) {
       console.error("아이디 중복 확인 오류:", error);
-      alert("아이디 중복 확인에 실패했습니다.");
+      openDialog("아이디 중복 확인에 실패했습니다.");
     }
   };
 
   const handleSave = async () => {
     if (!isIdChecked && formData.username) {
-      alert("아이디 중복 확인을 해야 합니다.");
+      openDialog("아이디 중복 확인을 해야 합니다.");
       return;
     }
   
@@ -97,13 +108,13 @@ const UserDetail = () => {
         },
       });
   
-      alert('회원정보가 변경되었습니다!');
+      openDialog('회원정보가 변경되었습니다!', () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+      });
     } catch (error) {
       console.error('프로필 업데이트 오류:', error);
-      alert('프로필 업데이트에 실패했습니다.');
-    } finally {
-      localStorage.removeItem('token');
-      navigate('/login');
+      openDialog('프로필 업데이트에 실패했습니다.');
     }
   };
   
@@ -345,7 +356,7 @@ const UserDetail = () => {
             }}
           />
         </DialogContent>
-        <DialogActions sx={{ pt:'0px', mb: '15px', mr:'10px', ml:'' }}>
+        <DialogActions sx={{ pt:'0px', mb: '15px', mr:'10px' }}>
           <Button onClick={handleSave} sx={{ 
             bgcolor: '#7B52E1',
             color: 'white',
@@ -356,6 +367,17 @@ const UserDetail = () => {
             수정
           </Button>
           <Button onClick={handleClose} sx={{color:'#6A47B1', '&:hover': { bgcolor: 'rgba(106, 71, 177, 0.1)' }}}>취소</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="xs" fullWidth>
+        <DialogTitle>알림</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{dialogMessage}</DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ mr: '15px', mb: '15px' }}>
+          <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
+          <Button onClick={() => { handleDialogClose(); if (dialogAction) dialogAction(); }} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
         </DialogActions>
       </Dialog>
     </Box>

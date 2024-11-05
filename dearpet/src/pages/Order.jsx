@@ -163,7 +163,6 @@ const Order = () => {
         .then(data => {
             alert("결제 정보가 성공적으로 저장되었습니다!");
             cartCheckout(impUid);//장바구니에 주문한 상품 삭제 및 주문 생성
-            console.log(data);
             navigate('/orderscomplete', { state: { impUid: impUid } });
         })
         .catch(error => {
@@ -197,6 +196,28 @@ const Order = () => {
     
         } catch (error) {
             console.log('Error adding order', error);
+        }
+    }
+
+    const addRequireEta = async(orderId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/orders/${orderId}/requirement`, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+                body:{
+                    requirement: requirements
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to add requirement');
+            }
+    
+        } catch (error) {
+            console.log('Error adding requirement', error);
         }
     }
     

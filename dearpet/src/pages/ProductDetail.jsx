@@ -44,7 +44,6 @@ function ProductDetail() {
 
     if (errorMessage) return <p>{errorMessage}</p>;
     if (!product) return <p>로딩 중...</p>;
-    console.log(product)
     return (
         <div>
             <Container 

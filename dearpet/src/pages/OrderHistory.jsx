@@ -3,9 +3,11 @@ import { Button, Box, Typography, Paper } from '@mui/material';
 import '../style/OrderHistory.css';
 import ReviewModal from '../component/ReviewModal';
 import Footer from '../component/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   const fetchOrders = async () => {
     try {
@@ -191,7 +193,7 @@ useEffect(()=>{fetchOrders()},[])
                     </div>
                     <div className="order-button-container">
                       <div>
-                        <Button className="order-button" style={{marginTop:"-240px"}} >
+                        <Button onClick={()=> navigate(`/detail/${item.productId}`)}className="order-button" style={{marginTop:"-240px"}} >
                           문의하기
                         </Button>
                       </div>

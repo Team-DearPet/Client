@@ -63,14 +63,16 @@ export default function SignUp() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
   const [dialogAction, setDialogAction] = useState(null);
-  const navigate = useNavigate();
-
-  const [passwordCriteria, setPasswordCriteria] = useState({
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [sentVerificationCode, setSentVerificationCode] = useState("");
+  const [passwordValidations, setPasswordValidations] = useState({
     hasLowerCase: false,
     hasNumber: false,
     hasSpecialChar: false,
-    isMinLength: false,
+    isLongEnough: false,
   });
+  const navigate = useNavigate();
 
   const openDialog = (message, action) => {
     setDialogMessage(message);
@@ -96,32 +98,57 @@ export default function SignUp() {
     }
   };
 
-  const validatePassword = (password) => {
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const isMinLength = password.length >= 8;
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
 
-    setPasswordCriteria({
-      hasLowerCase,
-      hasNumber,
-      hasSpecialChar,
-      isMinLength,
+    setPasswordValidations({
+      hasLowerCase: /[a-z]/.test(value),
+      hasNumber: /\d/.test(value),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+      isLongEnough: value.length >= 8,
     });
   };
 
-  const handlePasswordChange = (e) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    validatePassword(newPassword);
+  const handleEmailBackChange = (e) => {
+    const value = e.target.value;
+    setSelectedDomain(value);
+    setEmailBack(value !== "custom" ? value : "");
   };
 
-  const handleEmailBackChange = (e) => {
-    setSelectedDomain(e.target.value);
-    if (e.target.value !== "custom") {
-      setEmailBack(e.target.value);
+  const handleEmailVerification = async () => {
+    if (!emailFront || !emailBack) {
+      openDialog("이메일을 올바르게 입력해주세요.");
+      return;
+    }
+    const fullEmail = `${emailFront}@${emailBack}`;
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/send-verification-code", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: fullEmail }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setSentVerificationCode(data.verificationCode);
+        openDialog("인증번호가 발송되었습니다. 이메일을 확인해주세요.");
+      } else {
+        openDialog("인증번호 발송에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("이메일 인증번호 발송 오류:", error);
+    }
+  };
+
+  const handleVerificationCodeCheck = () => {
+    if (verificationCode === sentVerificationCode) {
+      setIsEmailVerified(true);
+      openDialog("이메일 인증이 완료되었습니다.");
     } else {
-      setEmailBack("");
+      openDialog("인증번호가 일치하지 않습니다.");
     }
   };
 
@@ -133,18 +160,13 @@ export default function SignUp() {
       return;
     }
 
-    if (
-      !passwordCriteria.hasLowerCase ||
-      !passwordCriteria.hasNumber ||
-      !passwordCriteria.hasSpecialChar ||
-      !passwordCriteria.isMinLength
-    ) {
-      openDialog("비밀번호가 형식에 맞지 않습니다.");
+    if (!isEmailVerified) {
+      openDialog("이메일 인증을 완료해주세요.");
       return;
     }
 
-    if (!emailFront || !emailBack) {
-      openDialog("이메일을 올바르게 입력해주세요.");
+    if (!Object.values(passwordValidations).every(Boolean)) {
+      openDialog("비밀번호가 유효하지 않습니다. 모든 조건을 충족시켜 주세요.");
       return;
     }
 
@@ -193,6 +215,7 @@ export default function SignUp() {
               alignItems: 'center', 
             }}
           >
+            {/* 아이디 입력 및 중복 확인 */}
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem', marginTop:'-20px' }}>
               아이디
             </Typography>
@@ -225,6 +248,8 @@ export default function SignUp() {
                 중복 확인
               </Button>
             </Box>
+
+            {/* 비밀번호 입력 */}
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
               비밀번호
             </Typography>
@@ -240,32 +265,22 @@ export default function SignUp() {
               onChange={handlePasswordChange}
               sx={{ mb: 1, mt: 1 }}
             />
-            <Box sx={{ alignSelf: 'flex-start', mt: 1 }}>
-              <Typography
-                variant="body2"
-                sx={{ color: passwordCriteria.hasLowerCase ? 'green' : 'red' }}
-              >
-                영어 소문자 포함
+            <Box sx={{ width: '100%', mt: 1, mb: 2 }}>
+              <Typography variant="caption" sx={{ color: passwordValidations.hasLowerCase ? 'green' : 'red' }}>
+                영문 소문자 포함
               </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: passwordCriteria.hasNumber ? 'green' : 'red' }}
-              >
+              <Typography variant="caption" sx={{ color: passwordValidations.hasNumber ? 'green' : 'red', ml: 2 }}>
                 숫자 포함
               </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: passwordCriteria.hasSpecialChar ? 'green' : 'red' }}
-              >
+              <Typography variant="caption" sx={{ color: passwordValidations.hasSpecialChar ? 'green' : 'red', ml: 2 }}>
                 특수문자 포함
               </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: passwordCriteria.isMinLength ? 'green' : 'red' }}
-              >
+              <Typography variant="caption" sx={{ color: passwordValidations.isLongEnough ? 'green' : 'red', ml: 2 }}>
                 8자리 이상
               </Typography>
             </Box>
+
+            {/* 닉네임 입력 */}
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
               닉네임
             </Typography>
@@ -274,13 +289,14 @@ export default function SignUp() {
               required
               fullWidth
               name="nickname"
-              type="text"
               id="nickname"
-              autoComplete="nickname"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
+              placeholder="닉네임을 입력하세요"
               sx={{ mb: 1, mt: 1 }}
             />
+
+            {/* 이메일 입력 및 인증 */}
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
               이메일
             </Typography>
@@ -322,15 +338,55 @@ export default function SignUp() {
               </FormControl>
             </Box>
             <Button
+              variant="outlined"
+              onClick={handleEmailVerification}
+              sx={{
+                mt: 1,
+                mb: 2,
+                width: '100%',
+                bgcolor: '#7B52E1',
+                color: 'white',
+                '&:hover': { bgcolor: '#6A47B1' },
+              }}
+            >
+              인증번호 발송
+            </Button>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="verificationCode"
+              type="text"
+              id="verificationCode"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              placeholder="인증번호 입력"
+              sx={{ mb: 1, mt: 1 }}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleVerificationCodeCheck}
+              sx={{
+                width: '100%',
+                bgcolor: '#7B52E1',
+                color: 'white',
+                '&:hover': { bgcolor: '#6A47B1' },
+              }}
+            >
+              인증번호 확인
+            </Button>
+
+            {/* 회원가입 버튼 */}
+            <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               className="signup-button"
               onClick={handleSubmit}
-              style={{backgroundColor:'#7B52E1', height:"50px"}}
+              style={{ backgroundColor: '#7B52E1', height: '50px' }}
             >
-              <div style={{ fontWeight: '500', fontSize:"1.2rem"}}>회원가입</div>
+              <div style={{ fontWeight: '500', fontSize: '1.2rem' }}>회원가입</div>
             </Button>
           </Box>
         </Container>

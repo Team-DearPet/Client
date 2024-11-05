@@ -4,9 +4,11 @@ import Footer from '../component/Footer';
 import BuyFooter from '../component/BuyFooter';
 import CartHeader from '../component/CartHeader';
 import CartItem from '../component/CartItem';
+import useStore from '../data/store';
 
 const Cart = () => {
     const [items, setItems] = useState([]);
+    const setOrderItems = useStore(state => state.setOrderItems);
     const [prices, setPrices] = useState([]);
 
     const fetchcart = async () => {
@@ -109,9 +111,12 @@ const Cart = () => {
     };
 
     const handleCheckboxChange = (id) => {
-        setItems((prevItems) =>
-            prevItems.map((item) => (item.cartItemId === id ? { ...item, checked: !item.checked } : item))
+        const updatedItems = items.map((item) => 
+            item.cartItemId === id ? { ...item, checked: !item.checked } : item
         );
+        setItems(updatedItems);
+        const checkedItems = updatedItems.filter(item => item.checked);
+        setOrderItems(checkedItems);
     };
 
     const handleDeleteSelected = async () => {
@@ -121,13 +126,18 @@ const Cart = () => {
         try {
             await Promise.all(deletePromises);
             setItems((prevItems) => prevItems.filter((item) => !item.checked));
+            setOrderItems([]);
         } catch (error) {
             console.error('Error deleting selected items:', error);
         }
     };
 
     const handleSelectAll = (checked) => {
-        setItems((prevItems) => prevItems.map((item) => ({ ...item, checked })));
+        const updatedItems = items.map(item => ({ ...item, checked }));
+        setItems(updatedItems);
+        
+        const checkedItems = updatedItems.filter(item => item.checked);
+        setOrderItems(checkedItems);
     };
 
     return (
@@ -160,7 +170,7 @@ const Cart = () => {
                     ))}
                 </Box>
             </Container>
-            <BuyFooter orderItems={getCheckedItems()} orderAmount={getTotalOrderAmount()} />
+            <BuyFooter orderAmount={getTotalOrderAmount()} />
             <Footer />
         </div>
     );

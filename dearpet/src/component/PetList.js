@@ -17,7 +17,6 @@ const PetList = () => {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
                 });
-                console.log(response.data);
                 setPets(Array.isArray(response.data) ? response.data : []); // 응답 데이터가 배열인지 확인
             } catch (error) {
                 console.error('Error fetching pets:', error);

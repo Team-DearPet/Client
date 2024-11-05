@@ -57,6 +57,7 @@ const ShippingInfo = ( { onAddressChange, onRequireChange }) => {
         onRequireChange(newRequire);
     };
 
+    
     return (
         <Box mt={4}>
             <Box 

@@ -8,6 +8,13 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
   const [images, setImages] = useState([]);
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(0);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingPetData, setEditingPetData] = useState(null);
+  const [reviewData, setReviewData ] = useState({
+    rating: '',
+    comment: '',
+    image: '',
+  });
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -70,7 +77,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
           <CloseIcon />
         </IconButton>
         <Typography variant="h6" sx={{ textAlign: 'center', marginBottom: 2 }}>
-          리뷰 등록
+          {isEditMode ? '리뷰 수정' : '리뷰 등록'}
         </Typography>
 
         {item && (
@@ -154,7 +161,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
                   },
                 }}
               >
-                등록
+                {isEditMode ? '수정' : '등록'}
               </Button>
             </Box>
           </>

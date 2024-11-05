@@ -53,7 +53,23 @@ const OrderHistory = () => {
               }
   
               const productData = await productResponse.json();
-              return { ...item, name: productData.name, image: productData.image };
+
+              const reviewResponse = await fetch(`http://localhost:8080/api/products/${item.productId}/has-reviewed`,{
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${accessToken}`,
+                },
+              })
+
+              if (!reviewResponse.ok) {
+                throw new Error('Failed to fetch product details');
+              }
+
+              const reviewed = await reviewResponse.json()
+
+
+              return { ...item, name: productData.name, image: productData.image, reviewed: reviewed };
             })
           );
   
@@ -73,7 +89,8 @@ useEffect(()=>{fetchOrders()},[])
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [statusCounts, setStatusCounts] = useState({'배송중': 0, '배송완료': 0, '취소/반품': 0});
-  
+  const [hasReviewed, setHasReviewed] = useState(false);
+
   const handleCancel = (orderIndex) => {
     const newOrders = [...orders];
     newOrders[orderIndex].status = '취소/반품';
@@ -202,7 +219,7 @@ useEffect(()=>{fetchOrders()},[])
                             className="order-button"
                             style={{marginTop:"-120px"}}
                           >
-                            리뷰삭제
+                            리뷰수정
                           </Button>
                         ) : (
                           <Button

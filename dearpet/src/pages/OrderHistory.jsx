@@ -10,8 +10,8 @@ const OrderHistory = () => {
       id: 1,
       date: '2024.10.18',
       items: [
-        { name: '[하림펫푸드] 강아지 사료', productId: 1, price: 15000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '500g', reviewed: false, review: '' },
-        { name: '[바잇미] 롤케이크 노즈워크 매트 장난감', productId: 2, price: 10000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '', reviewed: false, review: '' }
+        { name: '비마이펫 리리 외장칩', productId: 1, price: 14900, quantity: 1, deliveryDate: '10/21 배송 예정', option: '', reviewed: false, review: '' },
+        { name: '비마이펫 가죽 외장칩', productId: 2, price: 23000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '', reviewed: false, review: '' }
       ],
       status: '주문완료',
       totalprice: 25000,
@@ -20,9 +20,9 @@ const OrderHistory = () => {
       id: 2,
       date: '2024.10.12',
       items: [
-        { name: '[하림펫푸드] 강아지 사료', price: 15000, quantity: 1, deliveryDate: '10/14 배송 완료', option: '500g', reviewed: false, review: '' },
-        { name: '[바잇미] 롤케이크 노즈워크 매트 장난감', price: 10000, quantity: 1, deliveryDate: '10/14 배송 완료', option: '', reviewed: false, review: '' }
-      ],
+        { name: '비마이펫 리리 외장칩',  productId: 1, price: 15000, quantity: 1, deliveryDate: '10/14 배송 완료', option: '', reviewed: false, review: '' },
+        { name: '비마이펫 메탈 외장칩',  productId: 3, price: 10000, quantity: 1, deliveryDate: '10/14 배송 완료', option: '', reviewed: false, review: '' }
+      ], 
       status: '구매확정',
       totalprice: 25000,
     },
@@ -67,7 +67,7 @@ const OrderHistory = () => {
       prevOrders.map((order) => ({
         ...order,
         items: order.items.map((i) =>
-          i === item ? { ...i, reviewed: true, review } : i
+          i.productId === item.productId ? { ...i, reviewed: true, review } : i
         ),
       }))
     );
@@ -81,7 +81,7 @@ const OrderHistory = () => {
         prevOrders.map((order) => ({
           ...order,
           items: order.items.map((i) =>
-            i === item ? { ...i, reviewed: false, review: '' } : i
+            i.productId === item.productId ? { ...i, reviewed: false, review: '' } : i
           ),
         }))
       );
@@ -123,14 +123,14 @@ const OrderHistory = () => {
                     <div className="order-details">
                       <Box gap={1} sx={{display:'flex'}}>
                         <Typography className="order-status">{order.status}</Typography>
-                        <Typography
+                        {/* <Typography
                           className="order-delivery"
                           sx={{
                             textDecoration: order.status === '취소/반품' ? 'line-through' : 'none',
                           }}
                         >
                           • {item.deliveryDate}
-                        </Typography>
+                        </Typography> */}
                       </Box>
                       <Typography className="order-price">{item.price.toLocaleString()}원</Typography>
                       <Typography className="order-product">

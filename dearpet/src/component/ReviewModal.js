@@ -1,33 +1,87 @@
-import React, { useState } from 'react';
-import { Modal, Box, Typography, Button, TextField, IconButton, Rating, Stack } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Modal, Box, Typography, Button, TextField, IconButton, Rating } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import axios from 'axios';
 
-const ReviewModal = ({ open, item, onClose, onSubmit }) => {
-  const [images, setImages] = useState([]);
-  const [review, setReview] = useState('');
+const ReviewFormModal = ({ open, item, onClose, onSubmit, existingReview }) => {
+  const [images, setImages] = useState(existingReview ? existingReview.images || [] : []);
+  const [reviewText, setReviewText] = useState(existingReview ? existingReview.comment || '' : '');
+  const [reviewRating, setReviewRating] = useState(existingReview ? existingReview.rating || 0 : 0);
+  const [isEditMode, setIsEditMode] = useState(!!existingReview);
+
+  useEffect(() => {
+    if (existingReview) {
+      setReviewText(existingReview.comment);
+      setReviewRating(existingReview.rating);
+      setImages(existingReview.images || []);
+      setIsEditMode(true);
+    }
+  }, [existingReview]);
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => [...prevImages, ...newImages]);
+    const newImagePreviews = files.map((file) => URL.createObjectURL(file));
+    setImages((prevImages) => [...prevImages, ...newImagePreviews]);
   };
 
   const handleImageRemove = (image) => {
     setImages((prevImages) => prevImages.filter((img) => img !== image));
   };
 
-  const handleSubmit = () => {
-    onSubmit(item, review);
-    setReview('');
-    setImages([]); 
+  const handleReviewSubmit = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const reviewData = {
+        productId: item.productId,
+        rating: reviewRating,
+        comment: reviewText,
+        image: images[0] || '',
+      };
+
+      let response;
+      if (isEditMode) {
+        response = await axios.patch(
+          `http://localhost:8080/api/reviews/${existingReview.reviewId}`,
+          reviewData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+      } else {
+        response = await axios.post(
+          `http://localhost:8080/api/products/${item.productId}/reviews`,
+          reviewData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        setIsEditMode(true);
+      }
+
+      onSubmit(item, response.data);
+      setReviewText('');
+      setImages([]);
+      setReviewRating(0);
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      if (error.response) {
+        console.error('Response error data:', error.response.data);
+      }
+    }
   };
 
   return (
     <Modal open={open} onClose={onClose}>
       <Box
         sx={{
-          width: 400,
+          width: 450,
           padding: 4,
           margin: 'auto',
           marginTop: '10%',
@@ -42,24 +96,22 @@ const ReviewModal = ({ open, item, onClose, onSubmit }) => {
         >
           <CloseIcon />
         </IconButton>
-        <Box
-          sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            marginBottom: 2 
-          }}
-        >
-          <h3 style={{ margin: 0 }}>리뷰 등록</h3>
-        </Box>
+        <Typography variant="h6" sx={{ textAlign: 'center', marginBottom: 2 }}>
+          {isEditMode ? '리뷰 수정' : '리뷰 등록'}
+        </Typography>
 
         {item && (
           <>
-            <Typography sx={{ fontWeight: 'bold' }}>{item.name}</Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1 }}>
+            <Typography sx={{ fontWeight: 'bold', marginBottom: 2 }}>{item.name}</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography sx={{ fontWeight: 'bold' }}>별점</Typography>
-                <Rating name="half-rating" defaultValue={0} precision={1} />
+                <Typography>별점</Typography>
+                <Rating
+                  name="reviewRating"
+                  value={reviewRating}
+                  onChange={(event, newValue) => setReviewRating(newValue)}
+                  precision={1}
+                />
               </Box>
               <Button
                 variant="outlined"
@@ -67,11 +119,9 @@ const ReviewModal = ({ open, item, onClose, onSubmit }) => {
                 startIcon={<AddPhotoAlternateIcon />}
                 sx={{
                   borderColor: '#AC92ED !important',
-                  marginTop: 1,
                   color: '#AC92ED',
-                  bgcolor: 'white',
                   '&:hover': {
-                    bgcolor: '#E0D7F8',
+                    backgroundColor: '#E0D7F8',
                   },
                 }}
               >
@@ -80,13 +130,13 @@ const ReviewModal = ({ open, item, onClose, onSubmit }) => {
               </Button>
             </Box>
 
-            <Box sx={{ display: 'flex', flexWrap: 'wrap'}}>
-              {images.map((image) => (
-                <Box key={image} sx={{ position: 'relative', margin: 1 }}>
-                  <img src={image} alt="review" style={{ width: 50, height: 50 }} />
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', marginTop: 2 }}>
+              {images.map((image, index) => (
+                <Box key={index} sx={{ position: 'relative', margin: 1 }}>
+                  <img src={image} alt={`review-${index}`} style={{ width: 50, height: 50 }} />
                   <IconButton
                     onClick={() => handleImageRemove(image)}
-                    sx={{ position: 'absolute', bottom: -15, right: -15 }}
+                    sx={{ position: 'absolute', top: -10, right: -10 }}
                   >
                     <CloseIcon fontSize="small" />
                   </IconButton>
@@ -98,8 +148,8 @@ const ReviewModal = ({ open, item, onClose, onSubmit }) => {
               label="리뷰 내용"
               multiline
               rows={4}
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
               fullWidth
               sx={{
                 marginTop: 2,
@@ -119,22 +169,26 @@ const ReviewModal = ({ open, item, onClose, onSubmit }) => {
               }}
             />
 
-            <Box sx={{display: 'flex', justifyContent: 'center'}}>
-            <Button sx={{
-              marginTop: '10px', 
-              bgcolor: '#7B52E1',
-              color: 'white',
-              '&:hover': {
-                  bgcolor: '#6A47B1'
-              }
-              }} onClick={handleSubmit}>등록</Button>
-          </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
+              <Button
+                variant="contained"
+                onClick={handleReviewSubmit}
+                sx={{
+                  backgroundColor: '#7B52E1',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: '#6A47B1',
+                  },
+                }}
+              >
+                {isEditMode ? '수정하기' : '등록하기'}
+              </Button>
+            </Box>
           </>
         )}
       </Box>
     </Modal>
-
   );
 };
 
-export default ReviewModal;
+export default ReviewFormModal;

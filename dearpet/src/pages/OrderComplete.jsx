@@ -45,7 +45,7 @@ export default function OrderComplete() {
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '20px 0' }}>
                         <CheckCircleIcon style={{ fontSize: '70px', color: '#DC0044', marginTop: "50px" }} />
                         <Typography style={{ marginTop: "20px", fontSize: "2rem", fontWeight: "500", color: "black" }} variant="h6">구매가 완료되었습니다</Typography>
-                        <Typography style={{ marginTop: "50px", fontSize: "1.5rem", fontWeight: "500", color: "black" }}>{buyerName}님이 구매하신 상품은 {new Date(paidAt).toLocaleDateString()} 에 주문 완료됐습니다!</Typography>
+                        <Typography style={{ marginTop: "50px", fontSize: "1.5rem", fontWeight: "500", color: "black" }}>{buyerName}님이 구매하신 상품은 {new Date(paidAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}에 주문 완료됐습니다!</Typography>
                         <Typography style={{ marginBottom: "50px", fontSize: "1.5rem", fontWeight: "500", color: "black" }}>구매내역은 마이페이지 '구매내역'에서 하실 수 있습니다.</Typography>
                     </Box>
                 </Box>

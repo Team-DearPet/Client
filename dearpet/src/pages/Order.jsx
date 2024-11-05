@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Button } from '@mui/material';
+import { Container, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import BuyerInfo from '../component/BuyerInfo';
 import ShippingInfo from '../component/ShippingInfo';
 import OrderSummary from '../component/OrderSummary';
@@ -17,31 +17,29 @@ const Order = () => {
     const [buyerPhone, setBuyerPhone] = useState(''); //연락처
     const [address, setAddress] = useState(''); //주소
     const [requirements, setRequirements] = useState('') //요청사항
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
+    const [dialogAction, setDialogAction] = useState(null);
     const accessToken = localStorage.getItem('token');
     const orderItems = items.length > 1 
         ? `${items[0].productName} 외 ${items.length - 1}건` 
-        : items[0]?.productName; //상품명
-    const productPrice = items.reduce((total, item)=> {
-        return total + item.price;
-    },0); //상품금액
-    const shippingCost = 2500; //배송비
-    const totalPrice = productPrice + shippingCost; //총주문금액
-    const merchantUid = `merchant_${Date.now()}_${Math.floor(Math.random() * 10000)}`; // 고유 주문 번호 생성
+        : items[0]?.productName;
+    const productPrice = items.reduce((total, item) => total + item.price, 0);
+    const shippingCost = 2500;
+    const totalPrice = productPrice + shippingCost;
+    const merchantUid = `merchant_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
-
-    //주문서에 넣을 유저정보 가져옴
-    const fetchUser = async() => {
-        const response = await fetch("http://localhost:8080/api/profile",{
+    const fetchUser = async () => {
+        const response = await fetch("http://localhost:8080/api/profile", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`,
             },
-        })
+        });
         const data = await response.json();
         setUser(data);
-    }
-
+    };
 
     useEffect(() => {
         fetchUser();
@@ -53,13 +51,23 @@ const Order = () => {
         }
     }, []);
 
+    const openDialog = (message, action) => {
+        setDialogMessage(message);
+        setDialogAction(() => action);
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+    };
+
     const proceedPay = () => {
         if (!buyerPhone) {
-            alert("연락처를 입력해 주세요.");
+            openDialog("연락처를 입력해 주세요.");
             return;
         }
         if (!address) {
-            alert("배송지를 설정해 주세요.");
+            openDialog("배송지를 설정해 주세요.");
             return;
         }
         $.ajax({
@@ -69,7 +77,7 @@ const Order = () => {
             dataType: "json",
             contentType: "application/json",
             headers: {
-                'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
+                'Authorization': `Bearer ${accessToken}`,
             },
             data: JSON.stringify({
                 merchantUid: merchantUid,
@@ -79,11 +87,11 @@ const Order = () => {
                 if (data.status === "CONFIRMED") {
                     requestPay(data);
                 } else {
-                    alert("결제 준비 중 문제가 발생했습니다.");
+                    openDialog("결제 준비 중 문제가 발생했습니다.");
                 }
             },
             error: function () {
-                alert("결제 준비 요청 중 오류가 발생했습니다.");
+                openDialog("결제 준비 요청 중 오류가 발생했습니다.");
             },
         });
     };
@@ -94,60 +102,50 @@ const Order = () => {
         IMP.init("imp01130807");
         IMP.request_pay(
         {
-          pg: "html5_inicis",
-          pay_method: "card", // 결제 방법 (카드 결제)
-          merchant_uid: merchantUid, // 고유 주문 ID
-          name: orderItems, // 상품명
-          amount: 100, // 결제 금액 (실제로는 totalPrice로 바꾸기)
-          buyer_addr: address, // 구매자 배송지
-          buyer_email: user.email, // 구매자 이메일
-          buyer_name: user.username, // 구매자 이름
-          buyer_tel: buyerPhone, // 구매자 전화번호
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: merchantUid,
+            name: orderItems,
+            amount: 100,
+            buyer_addr: address,
+            buyer_email: user.email,
+            buyer_name: user.username,
+            buyer_tel: buyerPhone,
         },
         function (rsp) {
             if (rsp.success) {
-              // 결제 성공 시 검증 요청
-              $.ajax({
+                $.ajax({
                 url: "http://localhost:8080/api/verification/confirm",
                 method: "POST",
                 dataType: "json",
                 contentType: "application/json",
                 headers: {
-                    'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
+                    'Authorization': `Bearer ${accessToken}`,
                 },
                 data: JSON.stringify({
-                  impUid: rsp.imp_uid,
-                  merchantUid: rsp.merchant_uid,
+                    impUid: rsp.imp_uid,
+                    merchantUid: rsp.merchant_uid,
                 }),
                 success: function (validateData) {
-                  alert("결제가 성공적으로 완료되었습니다!");
-                  console.log(validateData);
-                  succeedPay(rsp.imp_uid, merchantUid)
+                    openDialog("결제가 성공적으로 완료되었습니다!", () => succeedPay(rsp.imp_uid, merchantUid));
                 },
                 error: function () {
-                  alert("결제 검증 요청 중 오류가 발생했습니다.");
+                    openDialog("결제 검증 요청 중 오류가 발생했습니다.");
                 },
-              });
+            });
             } else {
-              // 결제 실패 시 메시지 출력
-              var msg = "결제에 실패하였습니다.\n" + rsp.error_msg;
-              alert(msg);
+                openDialog("결제에 실패하였습니다.\n" + rsp.error_msg);
             }
-          }
+        }
     )
     };
-    const succeedPay = (impUid, merchantUid, amount, cardName) => {
-        // 요청 데이터 확인을 위한 콘솔 로그
-        console.log('Sending payment data:', {
-            impUid: impUid,
-            merchantUid: merchantUid
-        });
-    
+
+    const succeedPay = (impUid, merchantUid) => {
         fetch("http://localhost:8080/api/payments/save", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
+                'Authorization': `Bearer ${accessToken}`,
             },
             body: JSON.stringify({
                 impUid: impUid,
@@ -161,13 +159,12 @@ const Order = () => {
             return response.json();
         })
         .then(data => {
-            alert("결제 정보가 성공적으로 저장되었습니다!");
             cartCheckout(impUid);//장바구니에 주문한 상품 삭제 및 주문 생성
-            navigate('/orderscomplete', { state: { impUid: impUid } });
+            openDialog("결제 정보가 성공적으로 저장되었습니다!", () => navigate('/orderscomplete', { state: { impUid: impUid } }));
         })
         .catch(error => {
             console.error('Error saving payment information:', error);
-            alert("결제 정보 저장 중 오류가 발생했습니다.");
+            openDialog("결제 정보 저장 중 오류가 발생했습니다.");
         });
     };
 
@@ -243,7 +240,7 @@ const Order = () => {
                                     backgroundColor: '#7B52E1' 
                                 }
                             }}
-                            onClick={proceedPay} // 결제하기 버튼 클릭 시 결제 요청
+                            onClick={proceedPay}
                         >
                             결제하기
                         </Button>
@@ -251,6 +248,17 @@ const Order = () => {
                 </Box>
             </Container>
             <Footer />
+
+            <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="xs" fullWidth>
+                <DialogTitle>알림</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{dialogMessage}</DialogContentText>
+                </DialogContent>
+                <DialogActions sx={{ mr: '15px', mb: '15px' }}>
+                    <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
+                    <Button onClick={() => { handleDialogClose(); if (dialogAction) dialogAction(); }} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

@@ -22,7 +22,6 @@ const ReviewList = ({ product }) => {
                 throw new Error('서버 응답 실패');
             }
             const data = await response.json();
-            console.log(data);
             setReviews(data);
         } catch (error) {
             console.error('Error: ', error);

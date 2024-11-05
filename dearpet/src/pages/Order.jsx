@@ -6,13 +6,12 @@ import OrderSummary from '../component/OrderSummary';
 import Footer from '../component/Footer';
 import { useNavigate, useLocation } from 'react-router-dom';
 import $ from 'jquery';
+import useStore from '../data/store';
 
 const Order = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const items = JSON.parse(decodeURIComponent(queryParams.get('items') || '[]'));
-    console.log(items)
+    const items = useStore(state => state.orderItems);
+    const setOrderItems = useStore(state => state.setOrderItems);
     const [user, setUser] = useState([]); //유저정보
     const [buyerPhone, setBuyerPhone] = useState(''); //연락처
     const [address, setAddress] = useState(''); //주소
@@ -170,21 +169,29 @@ const Order = () => {
 
     const cartCheckout = async (impUid) => {
         try {
-            const cartItemIds = items.map(item => item.cartItemId);
-    
-            const baseUrl = `http://localhost:8080/api/cart/checkout?impUid=${impUid}`;
-            
-            // 선택한 아이템 param에 추가
-            const params = cartItemIds.map(id => `cartItemIds=${id}`).join('&');
-            
-            const url = `${baseUrl}&${params}`;
+            setOrderItems([])
+            const cartItemIds = items?.map(item => item.cartItemId).filter(id => id !== undefined);
+
+            const baseUrl = `http://localhost:8080/api/orders/checkout?impUid=${impUid}`;
+            const url = cartItemIds.length > 0 
+                ? `${baseUrl}&${cartItemIds.map(id => `cartItemIds=${id}`).join('&')}`
+                : baseUrl;
+            const requestBody = {
+                requirement: requirements,
+                productInfo: {
+                    productId: items[0].productId,
+                    quantity: items[0].quantity,
+                    price: items[0].price
+                }
+            };
     
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
-                }
+                },
+                body: JSON.stringify(requestBody)
             });
     
             if (!response.ok) {
@@ -192,32 +199,9 @@ const Order = () => {
             }
     
         } catch (error) {
-            console.log('Error adding order', error);
+            console.error('Error adding order', error);
         }
     }
-
-    const addRequireEta = async(orderId) => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/orders/${orderId}/requirement`, {
-                method: "PATCH",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                },
-                body:{
-                    requirement: requirements
-                }
-            });
-    
-            if (!response.ok) {
-                throw new Error('Failed to add requirement');
-            }
-    
-        } catch (error) {
-            console.log('Error adding requirement', error);
-        }
-    }
-    
 
     return (
         <div>

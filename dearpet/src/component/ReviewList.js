@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Card, Avatar, Rating } from '@mui/material';
-import { Star, StarBorder } from '@mui/icons-material';
 import axios from 'axios';
 
 const ReviewList = ({ product }) => {
@@ -40,19 +39,19 @@ const ReviewList = ({ product }) => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-            const response = await axios.get('http://localhost:8080/api/profile', {
-                headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰 저장소에서 가져오기
-            },
-            });
-            setFormData((prev) => ({
-                ...prev,
-                nickname: response.data.nickname,
-                photo: response.data.photo || '',
-            }));
-        } catch (error) {
-            console.error('Failed to fetch user profile:', error);
-        }
+                const response = await axios.get('http://localhost:8080/api/profile', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰 저장소에서 가져오기
+                    },
+                });
+                setFormData((prev) => ({
+                    ...prev,
+                    nickname: response.data.nickname,
+                    photo: response.data.photo || '',
+                }));
+            } catch (error) {
+                console.error('Failed to fetch user profile:', error);
+            }
         };
         fetchUserProfile();
     }, []);
@@ -83,14 +82,32 @@ const ReviewList = ({ product }) => {
                             {review.nickname} 
                         </Typography>
                     </Box>
-                    <Rating name="half-rating" value={review.rating} precision={1} readOnly />
-                    <Typography 
-                        variant="body2" 
-                        sx={{ 
-                            marginTop: 1 
-                        }}>
-                        {review.comment}
-                    </Typography>
+                    <Box display="flex" alignItems="center" marginBottom={2}>
+                        {review.image && (
+                            <Box 
+                                component="img" 
+                                src={review.image} 
+                                alt="review" 
+                                sx={{ 
+                                    width: 100, 
+                                    height: 100, 
+                                    marginRight: 2, 
+                                    objectFit: 'cover', 
+                                    borderRadius: 2 
+                                }}
+                            />
+                        )}
+                        <Box>
+                            <Rating name="half-rating" value={review.rating} precision={1} readOnly />
+                            <Typography 
+                                variant="body2" 
+                                sx={{ 
+                                    marginTop: 1 
+                                }}>
+                                {review.comment}
+                            </Typography>
+                        </Box>
+                    </Box>
                 </Card>
             ))}
         </Box>

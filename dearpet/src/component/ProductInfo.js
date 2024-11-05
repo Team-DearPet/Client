@@ -32,6 +32,7 @@ const ProductInfo = ({ item }) => {
         }
 
         const items = [{
+            productId: item.productId,
             productName: item.name,
             quantity,
             price: item.price * quantity,

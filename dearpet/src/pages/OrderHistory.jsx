@@ -1,32 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, Paper } from '@mui/material';
 import '../style/OrderHistory.css';
 import ReviewModal from '../component/ReviewModal';
 import Footer from '../component/Footer';
 
 const OrderHistory = () => {
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      date: '2024.10.18',
-      items: [
-        { name: '[하림펫푸드] 강아지 사료', productId: 1, price: 15000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '500g', reviewed: false, review: '' },
-        { name: '[바잇미] 롤케이크 노즈워크 매트 장난감', productId: 2, price: 10000, quantity: 1, deliveryDate: '10/21 배송 예정', option: '', reviewed: false, review: '' }
-      ],
-      status: '주문완료',
-      totalprice: 25000,
-    },
-    {
-      id: 2,
-      date: '2024.10.12',
-      items: [
-        { name: '[하림펫푸드] 강아지 사료', price: 15000, quantity: 1, deliveryDate: '10/14 배송 완료', option: '500g', reviewed: false, review: '' },
-        { name: '[바잇미] 롤케이크 노즈워크 매트 장난감', price: 10000, quantity: 1, deliveryDate: '10/14 배송 완료', option: '', reviewed: false, review: '' }
-      ],
-      status: '구매확정',
-      totalprice: 25000,
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
+
+  const fetchOrders = async () => {
+    try {
+      const accessToken = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8080/api/orders`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
+  
+      const data = await response.json();
+      const orders = await Promise.all(
+        data.map(async (order) => {
+          const itemsResponse = await fetch(`http://localhost:8080/api/orders/${order.orderId}/items`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+  
+          if (!itemsResponse.ok) {
+            throw new Error('Failed to fetch items');
+          }
+  
+          const itemsData = await itemsResponse.json();
+          const items = await Promise.all(
+            itemsData.map(async (item) => {
+              const productResponse = await fetch(`http://localhost:8080/api/products/${item.productId}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${accessToken}`,
+                },
+              });
+  
+              if (!productResponse.ok) {
+                throw new Error('Failed to fetch product details');
+              }
+  
+              const productData = await productResponse.json();
+              return { ...item, name: productData.name, image: productData.image };
+            })
+          );
+  
+          return { ...order, items };
+        })
+      );
+  
+      setOrders(orders);
+    } catch (error) {
+      console.error('Error fetching orders', error);
+    }
+  };
+  
+
+useEffect(()=>{fetchOrders()},[])
   
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -53,7 +95,7 @@ const OrderHistory = () => {
     setStatusCounts({ 배송중, 배송완료, '취소/반품': 취소반품 });
   };
   
-  React.useEffect(() => {
+  useEffect(() => {
     updateStatusCounts();
   }, [orders]);
 
@@ -103,15 +145,15 @@ const OrderHistory = () => {
             ))}
           </div>
   
-          {orders.map((order, orderIndex) => (
-            <Box key={order.id} className="order-item">
+          {orders.map((order) => (
+            <Box key={order.orderId} className="order-item">
               <Typography variant="subtitle1" className="order-date">
-                {order.date}
+                {new Date(order.date).toLocaleDateString()}
                 <Button
                   variant="contained"
                   className='DeleteButton'
-                  disabled={order.status === '구매확정'}
-                  onClick={() => handleCancel(orderIndex)}
+                  disabled={order.status === 'DELIVERED'}
+                  onClick={() => handleCancel(order.orderId)}
                 >
                   구매취소
                 </Button>
@@ -119,22 +161,32 @@ const OrderHistory = () => {
               <Paper className="order-paper">
                 {order.items.map((item, itemIndex) => (
                   <div key={itemIndex}>
-                    <div className="order-image-placeholder" />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="order-image-placeholder"
+                    />
                     <div className="order-details">
                       <Box gap={1} sx={{display:'flex'}}>
-                        <Typography className="order-status">{order.status}</Typography>
+                        <Typography className="order-status">
+                          {order.status === "PENDING" ? "결제완료" : order.status === "SHIPPED" ? "배송중" : "구매확정"}
+                        </Typography>
                         <Typography
                           className="order-delivery"
                           sx={{
-                            textDecoration: order.status === '취소/반품' ? 'line-through' : 'none',
+                            textDecoration: order.status === 'CANCELLED' ? 'line-through' : 'none',
                           }}
                         >
-                          • {item.deliveryDate}
+                          • {new Date(order.eta).toLocaleDateString("ko-KR", {
+                              month: "2-digit",  // 두 자리 월
+                              day: "2-digit",    // 두 자리 일
+                              weekday: "short"   // 짧은 요일 (월, 화, 수 등)
+                            })} 배송예정
                         </Typography>
                       </Box>
-                      <Typography className="order-price">{item.price.toLocaleString()}원</Typography>
+                      <Typography className="order-price">{(item.price/item.quantity).toLocaleString()}원</Typography>
                       <Typography className="order-product">
-                        {item.name} <br/> {item.option} {item.quantity}개
+                        {item.name} <br/> {item.quantity}개
                       </Typography>
                     </div>
                     <div className="order-button-container">

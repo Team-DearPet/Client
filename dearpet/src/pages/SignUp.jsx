@@ -240,7 +240,7 @@ export default function SignUp() {
               onChange={handlePasswordChange}
               sx={{ mb: 1, mt: 1 }}
             />
-            <Box sx={{ alignSelf: 'flex-start', mt: 1 }}>
+            <Box sx={{ alignSelf: 'flex-start', mt: 1, display: 'flex', flexDirection: 'row', gap: 2}}>
               <Typography
                 variant="body2"
                 sx={{ color: passwordCriteria.hasLowerCase ? 'green' : 'red' }}
@@ -294,7 +294,7 @@ export default function SignUp() {
                 id="emailFront"
                 value={emailFront}
                 onChange={(e) => setEmailFront(e.target.value)}
-                placeholder="이메일 앞부분"
+                placeholder="이메일"
               />
               <Typography sx={{ mt: 3 }}>@</Typography>
               <TextField
@@ -309,7 +309,7 @@ export default function SignUp() {
                 placeholder="도메인"
                 disabled={selectedDomain !== "custom"}
               />
-              <FormControl sx={{ mt: 2 }}>
+              <FormControl sx={{ mt: 2, minWidth: 120 }}>
                 <Select
                   value={selectedDomain}
                   onChange={handleEmailBackChange}
@@ -317,7 +317,7 @@ export default function SignUp() {
                   <MenuItem value="gmail.com">gmail.com</MenuItem>
                   <MenuItem value="naver.com">naver.com</MenuItem>
                   <MenuItem value="nate.com">nate.com</MenuItem>
-                  <MenuItem value="custom">직접 입력</MenuItem>
+                  <MenuItem value="custom">직접입력</MenuItem>
                 </Select>
               </FormControl>
             </Box>

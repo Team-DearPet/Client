@@ -9,6 +9,65 @@ import AddressModal from './AddressModal';
 const OrderStatus = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  const fetchOrderStatus = async () => {
+    try{
+      const accessToken = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8080/api/orders`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
+  
+      const data = await response.json();
+
+      const newOrderCounts = {
+        주문접수: 0,
+        결제완료: 0,
+        상품준비중: 0,
+        배송중: 0,
+        배송완료: 0,
+      };
+
+      const newOrderStatus = {
+        취소: 0,
+        교환: 0,
+        반품: 0,
+        구매확정: 0,
+      };
+
+      data.forEach(order => {
+        switch (order.status) {
+          case 'PENDING':
+            newOrderCounts.결제완료 += 1;
+            break;
+          case 'SHIPPED':
+            newOrderCounts.배송중 += 1;
+            break;
+          case 'DELIVERED':
+            newOrderCounts.배송완료 += 1;
+            newOrderStatus.구매확정 += 1;
+            break;
+          case 'CANCELLED':
+            newOrderStatus.취소 += 1;
+            break;
+          default:
+            break;
+        }
+      });
+  
+      setOrderCnts(newOrderCounts);
+      setOrderStatus(newOrderStatus);
+    }catch(error){
+      console.error('Failed fetching order', error)
+    }
+  }
   const [orderCnts, setOrderCnts] = useState({
     주문접수: 0,
     결제완료: 0,
@@ -16,24 +75,15 @@ const OrderStatus = () => {
     배송중: 0,
     배송완료: 0,
   });
-
-  const [locationData, setLocationData] = useState({
-    postcode: '',
-    roadAddress: '',
-    jibunAddress: '',
-    detailAddress: '',
-    extraAddress: '',
+  const [orderStatus, setOrderStatus] = useState({
+    취소: 0,
+    교환: 0,
+    반품: 0,
+    구매확정: 0,
   });
 
   useEffect(() => {
-    const fetchedData = {
-      주문접수: 0,
-      결제완료: 1,
-      상품준비중: 0,
-      배송중: 0,
-      배송완료: 0,
-    };
-    setOrderCnts(fetchedData);
+    fetchOrderStatus()
   }, []);
 
     const handleOpen = () => setOpen(true);
@@ -145,13 +195,13 @@ const OrderStatus = () => {
             width: '80%',
           }}
         >
-          {['취소', '교환', '반품', '구매확정'].map((label, index) => (
+          {['취소', '교환', '반품', '구매확정'].map((status, index) => (
             <Box key={index} sx={{ textAlign: 'center' }}>
               <Typography variant="body2" color="text.secondary">
-                {label}
+                {status}
               </Typography>
               <Typography variant="body2" fontWeight="bold" color="#BEBFCA">
-                0
+              {orderStatus[status]}
               </Typography>
             </Box>
           ))}

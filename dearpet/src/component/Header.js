@@ -1,18 +1,46 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Box, Link, Button, IconButton } from '@mui/material';
-import { Person } from '@mui/icons-material';
-import {useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { AppBar, Toolbar, Typography, Box, Link, Button, Tooltip } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import boneLogo from '../images/bone.png';
 
 const Header = ({ isLoggedIn, setIsLoggedIn }) => {
-
   const navigate = useNavigate();
+  const [timeLeft, setTimeLeft] = useState(
+    () => parseInt(localStorage.getItem('timeLeft')) || 3600
+  );
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('timeLeft');
     localStorage.setItem('isLoggedIn', false);
     setIsLoggedIn(false);
-    navigate('/');  // 로그아웃 후 메인 페이지로 이동
+    navigate('/');
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          const newTime = prevTime - 1;
+          if (newTime <= 0) {
+            clearInterval(timer);
+            handleLogout();
+            return 0;
+          }
+          localStorage.setItem('timeLeft', newTime);
+          return newTime;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [isLoggedIn]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
 
   return (
@@ -20,7 +48,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn }) => {
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Box sx={{ flex: 1, marginLeft: '10vw' }}>
           <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black' }}>
+            <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color: 'black' }}>
               CarePet
               <img style={{ width: '23px' }} src={boneLogo} alt='로고' />
             </Typography>
@@ -30,6 +58,11 @@ const Header = ({ isLoggedIn, setIsLoggedIn }) => {
         <Box display="flex" alignItems="center" gap={2}>
           {isLoggedIn ? (
             <>
+            <Tooltip title="로그인 유효 시간" arrow>
+              <Typography sx={{ fontWeight: '600', fontSize: '0.9rem', color: 'gray' }}>
+                {formatTime(timeLeft)}
+              </Typography>
+            </Tooltip>
               <Link href="/map" underline="none" sx={{ fontWeight: '600', color: 'black' }}>
                 인근병원검색
               </Link>

@@ -109,7 +109,7 @@ useEffect(()=>{fetchOrders()},[])
       prevOrders.map((order) => ({
         ...order,
         items: order.items.map((i) =>
-          i === item ? { ...i, reviewed: true, review } : i
+          i.productId === item.productId ? { ...i, reviewed: true, review } : i
         ),
       }))
     );
@@ -123,7 +123,7 @@ useEffect(()=>{fetchOrders()},[])
         prevOrders.map((order) => ({
           ...order,
           items: order.items.map((i) =>
-            i === item ? { ...i, reviewed: false, review: '' } : i
+            i.productId === item.productId ? { ...i, reviewed: false, review: '' } : i
           ),
         }))
       );

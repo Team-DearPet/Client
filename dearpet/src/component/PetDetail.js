@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Box, Button, Card, CardContent, Typography, Modal, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Checkbox, FormControlLabel } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, Typography, Modal, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Checkbox, FormControlLabel, Dialog, DialogContent, DialogActions, DialogTitle, DialogContentText } from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import PetsIcon from '@mui/icons-material/Pets';
 import CloseIcon from '@mui/icons-material/Close';
@@ -26,7 +26,17 @@ const PetDetail = () => {
     });
 
     const [editingPetData, setEditingPetData] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
+    const [dialogAction, setDialogAction] = useState(null);
     
+    const handleDialogClose = () => setDialogOpen(false);
+    const openDialog = (message, action) => {
+        setDialogMessage(message);
+        setDialogAction(() => action);
+        setDialogOpen(true);
+    };
+
     const handlePetDetailOpen = async (pet) => {
         setSelectedPet(pet);
         setOpenPetDetail(true);
@@ -34,7 +44,7 @@ const PetDetail = () => {
             const advice = await getHealthAdvice(pet.petId);
             setHealthAdvice(advice); 
         } catch (error) {
-            alert('건강 조언을 가져오는 데 실패했습니다.');
+            openDialog('건강 조언을 가져오는 데 실패했습니다.');
         }
     };
     const handlePetDetailClose = () => setOpenPetDetail(false);
@@ -55,26 +65,6 @@ const PetDetail = () => {
 
         fetchPets();
     }, []);
-
-    useEffect(() => {
-        const fetchHealthAdvice = async () => {
-            if (selectedPet) {
-                setLoading(true); 
-                try {
-                    const advice = await getHealthAdvice(selectedPet.id);
-                    setHealthAdvice(advice);
-                } catch (error) {
-                    setHealthAdvice("건강 조언을 가져오는 데 문제가 발생했습니다.");
-                } finally {
-                    setLoading(false); 
-                }
-            }
-        };
-
-        if (openPetDetail) {
-            fetchHealthAdvice(); 
-        }
-    }, [openPetDetail, selectedPet]);
 
     const handlePetModalOpen = (pet = null) => {
         if (pet) {
@@ -110,16 +100,12 @@ const PetDetail = () => {
 
     const handleRegisterPet = async () => {
         if (!petData.name || !petData.species || !petData.age || !petData.gender || petData.healthStatus === '' || !petData.weight) {
-            alert('모든 필드를 입력해주세요.');
+            openDialog('모든 필드를 입력해주세요.');
             return;
         }
 
         const photoUrl = photoPreview;
-
-        const newPetData = {
-            ...petData,
-            photo: photoUrl,
-        };
+        const newPetData = { ...petData, photo: photoUrl };
 
         try {
             if (isEditMode && editingPetData) {
@@ -141,7 +127,7 @@ const PetDetail = () => {
             handlePetModalClose();
         } catch (error) {
             console.error(error);
-            alert('반려동물 등록/수정에 실패했습니다.');
+            openDialog('반려동물 등록/수정에 실패했습니다.');
         }
     };
 
@@ -163,18 +149,17 @@ const PetDetail = () => {
             setPets(pets.filter(pet => pet.petId !== petId));
         } catch (error) {
             console.error('Failed to delete pet:', error);
-            alert('반려동물 삭제에 실패했습니다.');
+            openDialog('반려동물 삭제에 실패했습니다.');
         }
     };
+
     const getHealthAdvice = async (petId) => {
         try {
             const response = await axios.get(`http://localhost:8080/api/pets/advice`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
-                params: {
-                    petId: petId,
-                },
+                params: { petId: petId },
             });
             return response.data;
         } catch (error) {
@@ -182,6 +167,7 @@ const PetDetail = () => {
             throw error;
         }
     };
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ maxWidth: 800, width: '100%', display: 'flex', justifyContent: 'space-between'}}>
@@ -246,7 +232,7 @@ const PetDetail = () => {
                                 <input type="file" hidden onChange={handlePhotoUpload} />
                             </IconButton>
                         </Box>
-                        <TextField label="이름" value={petData.name} onChange={(e) => setPetData({ ...petData, name: e.target.value })} 
+                        <TextField fullWidth label="이름" value={petData.name} onChange={(e) => setPetData({ ...petData, name: e.target.value })} 
                             sx={{ 
                                 marginBottom: 2,
                                 '& .MuiOutlinedInput-root': {
@@ -405,6 +391,17 @@ const PetDetail = () => {
                     </Box>
                 </Box>
             </Modal>
+
+            <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="xs" fullWidth>
+                <DialogTitle>알림</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{dialogMessage}</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
+                    <Button onClick={() => { handleDialogClose(); if (dialogAction) dialogAction(); }} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

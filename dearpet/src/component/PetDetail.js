@@ -66,6 +66,25 @@ const PetDetail = () => {
         fetchPets();
     }, []);
 
+    useEffect(() => {
+        const fetchHealthAdvice = async () => {
+            if (selectedPet) {
+                setLoading(true); 
+                try {
+                    const advice = await getHealthAdvice(selectedPet.id);
+                    setHealthAdvice(advice);
+                } catch (error) {
+                    setHealthAdvice("건강 조언을 가져오는 데 문제가 발생했습니다.");
+                } finally {
+                    setLoading(false); 
+                }
+            }
+        };
+        if (openPetDetail) {
+            fetchHealthAdvice(); 
+        }
+    }, [openPetDetail, selectedPet]);
+
     const handlePetModalOpen = (pet = null) => {
         if (pet) {
             setIsEditMode(true);
@@ -161,7 +180,10 @@ const PetDetail = () => {
                 },
                 params: { petId: petId },
             });
-            return response.data;
+            const data = await response.data;
+            console.log(data)
+            return data;
+
         } catch (error) {
             console.error("Error fetching health advice:", error);
             throw error;

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Box, Typography, Button, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
+import useStore from '../data/store';
 
-const BuyFooter = ({ orderItems, orderAmount }) => {
+const BuyFooter = ({ orderAmount }) => {
+    const orderItems = useStore(state => state.orderItems)
     const shippingCost = 2500;
     const totalAmount = orderAmount + shippingCost;
 
@@ -58,7 +60,7 @@ const BuyFooter = ({ orderItems, orderAmount }) => {
                     </Typography>
                 </Box>
 
-                <Link to={`/order?items=${encodeURIComponent(JSON.stringify(orderItems))}`}>
+                <Link to={'/order'}>
                     <Button
                         variant="contained"
                         sx={{

@@ -39,7 +39,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
 
   const fetchAddresses = async () => {
     try {
-      const token = localStorage.getItem('token'); // JWT 토큰 가져오기
+      const token = localStorage.getItem('token');
       const response = await axios.get('http://localhost:8080/api/profile/addresses', {
         headers: {
           Authorization: `Bearer ${token}`,

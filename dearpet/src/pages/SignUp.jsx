@@ -280,6 +280,22 @@ export default function SignUp() {
               </Typography>
             </Box>
 
+            {/* 닉네임 입력 */}
+            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
+              닉네임
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="nickname"
+              id="nickname"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder="닉네임을 입력하세요"
+              sx={{ mb: 1, mt: 1 }}
+            />
+
             {/* 이메일 입력 및 인증 */}
             <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
               이메일

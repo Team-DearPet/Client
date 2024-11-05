@@ -170,21 +170,29 @@ const Order = () => {
 
     const cartCheckout = async (impUid) => {
         try {
-            const cartItemIds = items.map(item => item.cartItemId);
-    
-            const baseUrl = `http://localhost:8080/api/cart/checkout?impUid=${impUid}`;
-            
-            // 선택한 아이템 param에 추가
-            const params = cartItemIds.map(id => `cartItemIds=${id}`).join('&');
-            
-            const url = `${baseUrl}&${params}`;
+            const cartItemIds = items?.map(item => item.cartItemId).filter(id => id !== undefined);
+
+            const baseUrl = `http://localhost:8080/api/orders/checkout?impUid=${impUid}`;
+            const url = cartItemIds.length > 0 
+                ? `${baseUrl}&${cartItemIds.map(id => `cartItemIds=${id}`).join('&')}`
+                : baseUrl;
+            const requestBody = {
+                requirement: requirements,
+                productInfo: {
+                    productId: items[0].productId,
+                    quantity: items[0].quantity,
+                    price: items[0].price
+                }
+            };
+            console.log(JSON.stringify(requestBody));
     
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
-                }
+                },
+                body: JSON.stringify(requestBody)
             });
     
             if (!response.ok) {
@@ -195,29 +203,6 @@ const Order = () => {
             console.log('Error adding order', error);
         }
     }
-
-    const addRequireEta = async(orderId) => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/orders/${orderId}/requirement`, {
-                method: "PATCH",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                },
-                body:{
-                    requirement: requirements
-                }
-            });
-    
-            if (!response.ok) {
-                throw new Error('Failed to add requirement');
-            }
-    
-        } catch (error) {
-            console.log('Error adding requirement', error);
-        }
-    }
-    
 
     return (
         <div>

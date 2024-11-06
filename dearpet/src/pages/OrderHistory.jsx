@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Box, TextField, Typography, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import '../style/OrderHistory.css';
 import ReviewModal from '../component/ReviewModal';
 import Footer from '../component/Footer';
@@ -14,20 +14,22 @@ const OrderHistory = () => {
   const accessToken = localStorage.getItem('token');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
-  const [dialogAction, setDialogAction] = useState(null);
+  const [dialogId, setDialogId] = useState(null);
   const [statusFilter, setStatusFilter] = useState('') // 배송상태필터
   const orderStatus = ['PENDING', 'SHIPPED', 'DELIVERED']
+  const [cancelReason, setCancelReason] = useState('');
 
   const handleDialogClose = () => setDialogOpen(false);
 
-  const openDialog = (message, action) => {
+  const openDialog = (message, id) => {
       setDialogMessage(message);
-      setDialogAction(() => action);
       setDialogOpen(true);
+      setDialogId(id);
   };
 
   const fetchOrders = async () => {
     try {
+      const accessToken = localStorage.getItem('token');
       const response = await fetch(`http://localhost:8080/api/orders`, {
         method: 'GET',
         headers: {
@@ -71,7 +73,21 @@ const OrderHistory = () => {
               }
   
               const productData = await productResponse.json();
-              return { ...item, name: productData.name, image: productData.image };
+
+              const reviewResponse = await fetch(`http://localhost:8080/api/products/${item.productId}/has-reviewed`,{
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${accessToken}`,
+                },
+              })
+
+              if (!reviewResponse.ok) {
+                throw new Error('Failed to fetch product details');
+              }
+
+              const reviewed = await reviewResponse.json()
+              return { ...item, name: productData.name, image: productData.image, reviewed: reviewed };
             })
           );
   
@@ -80,6 +96,7 @@ const OrderHistory = () => {
       );
   
       setOrders(orders);
+      console.log(orders)
     } catch (error) {
       console.error('Error fetching orders', error);
     }
@@ -89,7 +106,7 @@ const OrderHistory = () => {
 useEffect(()=>{fetchOrders()},[])
 
   const handleCancel = (id) => {
-    openDialog('정말 주문을 취소하시겠습니까?',() => orderCancel(id));
+    openDialog('정말 주문을 취소하시겠습니까?', id);
     return;
   }
 
@@ -101,6 +118,7 @@ useEffect(()=>{fetchOrders()},[])
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         },
+        body: JSON.stringify({ reason: cancelReason }),
       });
   
       if (!response.ok) {
@@ -160,6 +178,11 @@ useEffect(()=>{fetchOrders()},[])
     setReviewModalOpen(true);
   };
 
+  const handleReviewChange = (item) => {
+    setSelectedItem(item);
+    setReviewModalOpen(true);
+  }
+
   const handleReviewSubmit = (item, review) => {
     setOrders((prevOrders) => 
       prevOrders.map((order) => ({
@@ -170,20 +193,6 @@ useEffect(()=>{fetchOrders()},[])
       }))
     );
     setReviewModalOpen(false);
-  };
-
-  const handleReviewDelete = (item) => {
-    const confirmDelete = window.confirm("정말 리뷰를 삭제하시겠습니까?");
-    if (confirmDelete) {
-      setOrders((prevOrders) => 
-        prevOrders.map((order) => ({
-          ...order,
-          items: order.items.map((i) =>
-            i.productId === item.productId ? { ...i, reviewed: false, review: '' } : i
-          ),
-        }))
-      );
-    }
   };
 
   const filteredOrders = orders.filter((order) => {
@@ -283,13 +292,13 @@ useEffect(()=>{fetchOrders()},[])
                         </Button>
                       </div>
                       <div>
-                        {item.reviewed ? (
+                      {item.reviewed ? (
                           <Button
-                            onClick={() => handleReviewDelete(item)}
+                            onClick={() => handleReviewChange(item)}
                             className="order-button"
                             style={{marginTop:"-120px"}}
                           >
-                            리뷰삭제
+                            리뷰수정
                           </Button>
                         ) : (
                           <Button
@@ -316,31 +325,39 @@ useEffect(()=>{fetchOrders()},[])
         />
       </Box>
       <Dialog
-                open={dialogOpen}
-                onClose={handleDialogClose}
-                maxWidth="sm"
-                fullWidth
-                sx={{
-                    '& .MuiDialog-paper': {
-                        width: '400px', 
-                        maxWidth: '600px', 
-                    },
-                }}
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        maxWidth="sm"
+        fullWidth
+        sx={{
+            '& .MuiDialog-paper': {
+                width: '400px', 
+                maxWidth: '600px', 
+            },
+        }}
             >
-                <DialogTitle>알림</DialogTitle>
-                <DialogContent>
-                    <DialogContentText dangerouslySetInnerHTML={{ __html: dialogMessage }} />
-                </DialogContent>
-                <DialogActions sx={{ mr: '15px', mb: '15px' }}>
-                    <Button onClick={handleDialogClose} sx={{ color: '#6A47B1' }}>취소</Button>
-                    <Button 
-                        onClick={() => { handleDialogClose(); dialogAction && dialogAction(); }} 
-                        sx={{ bgcolor: '#6A47B1', color: 'white', '&:hover': { bgcolor: '#7B52E1' } }}
-                    >
-                        확인
-                    </Button>
-                </DialogActions>
-            </Dialog>
+        <DialogTitle>알림</DialogTitle>
+        <DialogContent>
+        <DialogContentText>{dialogMessage}</DialogContentText>
+          <TextField
+            label="취소 사유"
+            fullWidth
+            multiline
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            margin="normal"
+          />
+        </DialogContent>
+        <DialogActions sx={{ mr: '15px', mb: '15px' }}>
+            <Button onClick={handleDialogClose} sx={{ color: '#6A47B1' }}>취소</Button>
+            <Button 
+                onClick={() => { handleDialogClose(); orderCancel(dialogId) }} 
+                sx={{ bgcolor: '#6A47B1', color: 'white', '&:hover': { bgcolor: '#7B52E1' } }}
+            >
+                확인
+            </Button>
+        </DialogActions>
+    </Dialog>
       <Footer />
     </div>
   );

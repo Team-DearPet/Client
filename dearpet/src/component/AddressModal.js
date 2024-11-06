@@ -40,7 +40,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
   const fetchAddresses = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://3.34.219.248:8080/api/profile/addresses', {
+      const response = await axios.get('https://3.34.219.248:8080/api/profile/addresses', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,7 +74,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
   const addAddressToList = async (newAddress) => {
     try {
       const token = localStorage.getItem('token'); 
-      const response = await axios.post('http://3.34.219.248:8080/api/profile/addresses', 
+      const response = await axios.post('https://3.34.219.248:8080/api/profile/addresses', 
         { address: newAddress }, 
         { headers: { Authorization: `Bearer ${token}` } } 
       ); 
@@ -106,7 +106,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         return; 
       }
 
-      await axios.patch(`http://3.34.219.248:8080/api/profile/addresses/${addressId}`, 
+      await axios.patch(`https://3.34.219.248:8080/api/profile/addresses/${addressId}`, 
         { 
           defaultAddress: true,
           address: selectedAddr.address 
@@ -128,7 +128,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
     if (confirmDelete) {
       try {
         const token = localStorage.getItem('token'); 
-        await axios.delete(`http://3.34.219.248:8080/api/profile/addresses/${addressId}`, {
+        await axios.delete(`https://3.34.219.248:8080/api/profile/addresses/${addressId}`, {
           headers: { Authorization: `Bearer ${token}` },
         }); 
         const updatedList = addressList.filter((addr) => addr.addressId !== addressId);

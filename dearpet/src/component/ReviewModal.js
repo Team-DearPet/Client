@@ -24,7 +24,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `http://localhost:8080/api/products/${item.productId}/reviews`,
+        `http://3.34.219.248:8080/api/products/${item.productId}/reviews`,
         {
           productId: item.productId,
           rating: reviewRating,

@@ -29,7 +29,7 @@ const Order = () => {
     const merchantUid = `merchant_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
     const fetchUser = async () => {
-        const response = await fetch("https://3.34.219.248/api/profile", {
+        const response = await fetch("https://www.carepet.site/api/profile", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const Order = () => {
             return;
         }
         $.ajax({
-            url: "https://3.34.219.248/api/verification/prepare",
+            url: "https://www.carepet.site/api/verification/prepare",
             type: "POST",
             async: true,
             dataType: "json",
@@ -114,7 +114,7 @@ const Order = () => {
         function (rsp) {
             if (rsp.success) {
                 $.ajax({
-                url: "https://3.34.219.248/api/verification/confirm",
+                url: "https://www.carepet.site/api/verification/confirm",
                 method: "POST",
                 dataType: "json",
                 contentType: "application/json",
@@ -140,7 +140,7 @@ const Order = () => {
     };
 
     const succeedPay = (impUid, merchantUid) => {
-        fetch("https://3.34.219.248/api/payments/save", {
+        fetch("https://www.carepet.site/api/payments/save", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ const Order = () => {
             setOrderItems([])
             const cartItemIds = items?.map(item => item.cartItemId).filter(id => id !== undefined);
 
-            const baseUrl = `https://3.34.219.248/api/orders/checkout?impUid=${impUid}`;
+            const baseUrl = `https://www.carepet.site/api/orders/checkout?impUid=${impUid}`;
             const url = cartItemIds.length > 0 
                 ? `${baseUrl}&${cartItemIds.map(id => `cartItemIds=${id}`).join('&')}`
                 : baseUrl;

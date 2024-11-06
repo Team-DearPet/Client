@@ -29,7 +29,7 @@ const Order = () => {
     const merchantUid = `merchant_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
     const fetchUser = async () => {
-        const response = await fetch("http://localhost:8080/api/profile", {
+        const response = await fetch("http://3.34.219.248:8080/api/profile", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const Order = () => {
             return;
         }
         $.ajax({
-            url: "http://localhost:8080/api/verification/prepare",
+            url: "http://3.34.219.248:8080/api/verification/prepare",
             type: "POST",
             async: true,
             dataType: "json",
@@ -114,7 +114,7 @@ const Order = () => {
         function (rsp) {
             if (rsp.success) {
                 $.ajax({
-                url: "http://localhost:8080/api/verification/confirm",
+                url: "http://3.34.219.248:8080/api/verification/confirm",
                 method: "POST",
                 dataType: "json",
                 contentType: "application/json",
@@ -140,7 +140,7 @@ const Order = () => {
     };
 
     const succeedPay = (impUid, merchantUid) => {
-        fetch("http://localhost:8080/api/payments/save", {
+        fetch("http://3.34.219.248:8080/api/payments/save", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ const Order = () => {
             setOrderItems([])
             const cartItemIds = items?.map(item => item.cartItemId).filter(id => id !== undefined);
 
-            const baseUrl = `http://localhost:8080/api/orders/checkout?impUid=${impUid}`;
+            const baseUrl = `http://3.34.219.248:8080/api/orders/checkout?impUid=${impUid}`;
             const url = cartItemIds.length > 0 
                 ? `${baseUrl}&${cartItemIds.map(id => `cartItemIds=${id}`).join('&')}`
                 : baseUrl;

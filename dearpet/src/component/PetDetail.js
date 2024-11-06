@@ -52,7 +52,7 @@ const PetDetail = () => {
     useEffect(() => {
         const fetchPets = async () => {
             try {
-                const response = await axios.get('http://3.34.219.248:8080/api/pets', {
+                const response = await axios.get('https://3.34.219.248:8080/api/pets', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
@@ -128,7 +128,7 @@ const PetDetail = () => {
 
         try {
             if (isEditMode && editingPetData) {
-                const response = await axios.patch(`http://3.34.219.248:8080/api/pets/${editingPetData.petId}`, newPetData, {
+                const response = await axios.patch(`https://3.34.219.248:8080/api/pets/${editingPetData.petId}`, newPetData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
@@ -136,7 +136,7 @@ const PetDetail = () => {
                 setPets(pets.map(pet => pet.petId === editingPetData.petId ? response.data : pet));
                 setEditingPetData(null);
             } else {
-                const response = await axios.post('http://3.34.219.248:8080/api/pets', newPetData, {
+                const response = await axios.post('https://3.34.219.248:8080/api/pets', newPetData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }
@@ -160,7 +160,7 @@ const PetDetail = () => {
 
     const handleDeletePet = async (petId) => {
         try {
-            await axios.delete(`http://3.34.219.248:8080/api/pets/${petId}`, {
+            await axios.delete(`https://3.34.219.248:8080/api/pets/${petId}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 }
@@ -174,7 +174,7 @@ const PetDetail = () => {
 
     const getHealthAdvice = async (petId) => {
         try {
-            const response = await axios.get(`http://3.34.219.248:8080/api/pets/advice`, {
+            const response = await axios.get(`https://3.34.219.248:8080/api/pets/advice`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },

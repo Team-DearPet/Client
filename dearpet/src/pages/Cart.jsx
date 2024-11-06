@@ -13,7 +13,7 @@ const Cart = () => {
 
     const fetchcart = async () => {
         const accessToken = localStorage.getItem('token');
-        const response = await fetch("http://3.34.219.248:8080/api/cart",{
+        const response = await fetch("https://3.34.219.248:8080/api/cart",{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const Cart = () => {
     const changeQuantity = async (id, newQuantity) => {
         try{
             const accessToken = localStorage.getItem('token');
-            const response = await fetch(`http://3.34.219.248:8080/api/cart/items/${id}?quantity=${newQuantity}`,{
+            const response = await fetch(`https://3.34.219.248:8080/api/cart/items/${id}?quantity=${newQuantity}`,{
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Cart = () => {
     const deleteitem = async (id) => {
         try{
             const accessToken = localStorage.getItem('token');
-            const response = await fetch(`http://3.34.219.248:8080/api/cart/items/${id}`,{
+            const response = await fetch(`https://3.34.219.248:8080/api/cart/items/${id}`,{
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

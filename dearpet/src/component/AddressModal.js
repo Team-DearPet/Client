@@ -106,7 +106,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         return; 
       }
 
-      await axios.patch(`https://3.34.219.248:8080/api/profile/addresses/${addressId}`, 
+      await axios.patch(`https://www.carepet.site/api/profile/addresses/${addressId}`, 
         { 
           defaultAddress: true,
           address: selectedAddr.address 
@@ -128,7 +128,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
     if (confirmDelete) {
       try {
         const token = localStorage.getItem('token'); 
-        await axios.delete(`https://3.34.219.248:8080/api/profile/addresses/${addressId}`, {
+        await axios.delete(`https://www.carepet.site/api/profile/addresses/${addressId}`, {
           headers: { Authorization: `Bearer ${token}` },
         }); 
         const updatedList = addressList.filter((addr) => addr.addressId !== addressId);

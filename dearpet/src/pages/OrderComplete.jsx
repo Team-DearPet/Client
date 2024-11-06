@@ -16,7 +16,7 @@ export default function OrderComplete() {
         if (impUid) {
             // API에서 결제 세부 정보 가져오기
             const accessToken = localStorage.getItem('token'); // 토큰 가져오기
-            axios.get(`https://3.34.219.248:8080/api/payments/${impUid}`, {
+            axios.get(`https://www.carepet.site/api/payments/${impUid}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`, // 인증 토큰 추가
                 }

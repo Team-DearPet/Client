@@ -1,33 +1,45 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, CssBaseline, TextField, Typography, Container, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import '../style/Login.css'; 
-import boneLogo from '../images/bone.png';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Typography,
+  Container,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "../style/Login.css";
+import boneLogo from "../images/bone.png";
 
 const theme = createTheme({
   typography: {
     allVariants: {
-      color: '#000',
-      fontWeight: 'normal',
+      color: "#000",
+      fontWeight: "normal",
     },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         contained: {
-          backgroundColor: '#000',
-          color: '#fff',
-          '&:hover': {
-            backgroundColor: '#333',
+          backgroundColor: "#000",
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#333",
           },
         },
         outlined: {
-          color: '#000',
-          borderColor: '#000',
-          '&:hover': {
-            borderColor: '#333',
-            backgroundColor: '#f5f5f5',
+          color: "#000",
+          borderColor: "#000",
+          "&:hover": {
+            borderColor: "#333",
+            backgroundColor: "#f5f5f5",
           },
         },
       },
@@ -35,15 +47,15 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#ccc',
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ccc",
             },
-            '&:hover fieldset': {
-              borderColor: '#7B52E1',
+            "&:hover fieldset": {
+              borderColor: "#7B52E1",
             },
-            '&.Mui-focused fieldset': {
-              borderColor: '#7B52E1',
+            "&.Mui-focused fieldset": {
+              borderColor: "#7B52E1",
             },
           },
         },
@@ -56,7 +68,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState('');
+  const [dialogMessage, setDialogMessage] = useState("");
   const navigate = useNavigate();
 
   const openDialog = (message) => {
@@ -70,66 +82,87 @@ export default function Login({ setIsLoggedIn, setUserId }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const userData = {
       username: id,
       password: password,
     };
 
     try {
-      const response = await fetch("https://3.34.219.248:8080/api/auth/login", { 
-        method: 'POST',
+      const response = await fetch("https://3.34.219.248/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
       });
 
       if (response.ok) {
-        const token = await response.text(); 
-        localStorage.setItem('token', token); 
-        localStorage.setItem('isLoggedIn', true);
-        localStorage.setItem('userId', id);
-        setIsLoggedIn(true); 
+        const token = await response.text();
+        localStorage.setItem("token", token);
+        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("userId", id);
+        setIsLoggedIn(true);
         setUserId(id);
 
         navigate("/");
       } else {
         openDialog("로그인에 실패했습니다. 다시 시도해 주세요.");
       }
-      
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       openDialog("서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
     }
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://3.34.219.248:8080/oauth2/authorization/google";
+    window.location.href = "https://3.34.219.248/oauth2/authorization/google";
   };
 
   const handleKakaoLogin = () => {
-    window.location.href = "https://3.34.219.248:8080/oauth2/authorization/kakao";
+    window.location.href = "https://3.34.219.248/oauth2/authorization/kakao";
   };
 
   return (
     <div className="main-content">
-      <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-        <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
+      <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Typography
+          variant="h4"
+          component="div"
+          sx={{
+            fontWeight: "700",
+            cursor: "pointer",
+            fontFamily: "Fredoka, sans-serif !important",
+            color: "black",
+            fontSize: "3.5rem",
+            marginBottom: "10px",
+          }}
+        >
           CarePet
-          <img style={{width: '40px'}} src={boneLogo} alt='로고'></img>
+          <img style={{ width: "40px" }} src={boneLogo} alt="로고"></img>
         </Typography>
-      </Link>  
+      </Link>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" className="login-container">
           <CssBaseline />
-          <Box sx={{
-            marginTop: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center', 
-          }}>
-            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem', marginTop: '-20px' }}>
+          <Box
+            sx={{
+              marginTop: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                alignSelf: "flex-start",
+                mt: 1,
+                fontWeight: "500",
+                fontSize: "1.2rem",
+                marginTop: "-20px",
+              }}
+            >
               아이디
             </Typography>
             <TextField
@@ -144,7 +177,15 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               onChange={(e) => setId(e.target.value)}
               sx={{ mb: 1, mt: 1 }}
             />
-            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                alignSelf: "flex-start",
+                mt: 1,
+                fontWeight: "500",
+                fontSize: "1.2rem",
+              }}
+            >
               비밀번호
             </Typography>
             <TextField
@@ -166,44 +207,55 @@ export default function Login({ setIsLoggedIn, setUserId }) {
               sx={{ mt: 3, mb: 2 }}
               className="login-button"
               onClick={handleSubmit}
-              style={{backgroundColor:"#7B52E1", height:"50px", fontSize:"1.2rem"}}
+              style={{
+                backgroundColor: "#7B52E1",
+                height: "50px",
+                fontSize: "1.2rem",
+              }}
             >
               로그인
             </Button>
             <Button
               fullWidth
               variant="outlined"
-              style={{height:"50px"}}
+              style={{ height: "50px" }}
               onClick={handleGoogleLogin}
-              startIcon={<img
-                className='icon-image'
-                src={require('../images/Google.jpg')}
-                alt="Google"
-                style={{ width: '30px', height: '30px', borderRadius: '50%' }}
-              />}
+              startIcon={
+                <img
+                  className="icon-image"
+                  src={require("../images/Google.jpg")}
+                  alt="Google"
+                  style={{ width: "30px", height: "30px", borderRadius: "50%" }}
+                />
+              }
               sx={{ mt: 2, mb: 2 }}
             >
-              <div style={{fontSize:"1.2rem"}}>구글로 시작하기</div>
+              <div style={{ fontSize: "1.2rem" }}>구글로 시작하기</div>
             </Button>
 
             <Button
               fullWidth
               variant="outlined"
-              style={{height:"50px"}}
+              style={{ height: "50px" }}
               onClick={handleKakaoLogin}
-              startIcon={<img
-                className='icon-image'
-                src={require('../images/kakao.jpg')}
-                alt="kakao"
-                style={{ width: '24px', height: '24px', borderRadius: '50%' }}
-              />}
+              startIcon={
+                <img
+                  className="icon-image"
+                  src={require("../images/kakao.jpg")}
+                  alt="kakao"
+                  style={{ width: "24px", height: "24px", borderRadius: "50%" }}
+                />
+              }
               sx={{ mt: 2, mb: 2 }}
             >
-               <div style={{fontSize:"1.2rem"}}>카카오톡으로 시작하기</div>
+              <div style={{ fontSize: "1.2rem" }}>카카오톡으로 시작하기</div>
             </Button>
             <Typography variant="body2" align="center" sx={{ mt: 2 }}>
               회원가입하지 않으셨나요?{" "}
-              <Link to="/signup" style={{ textDecoration: 'none', color: '#7B52E1' }}>
+              <Link
+                to="/signup"
+                style={{ textDecoration: "none", color: "#7B52E1" }}
+              >
                 회원가입하러가기
               </Link>
             </Typography>
@@ -221,9 +273,20 @@ export default function Login({ setIsLoggedIn, setUserId }) {
         <DialogContent>
           <DialogContentText>{dialogMessage}</DialogContentText>
         </DialogContent>
-        <DialogActions sx={{ mr: '15px', mb: '15px' }}>
-          <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
-          <Button onClick={handleDialogClose} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
+        <DialogActions sx={{ mr: "15px", mb: "15px" }}>
+          <Button onClick={handleDialogClose} sx={{ color: "#7B52E1" }}>
+            취소
+          </Button>
+          <Button
+            onClick={handleDialogClose}
+            sx={{
+              color: "white",
+              bgcolor: "#7B52E1",
+              "&:hover": { bgcolor: "#6A47B1" },
+            }}
+          >
+            확인
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

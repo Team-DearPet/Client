@@ -1,33 +1,48 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, CssBaseline, TextField, Typography, Container, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Select, MenuItem, FormControl } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import '../style/SignUp.css';
-import boneLogo from '../images/bone.png';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Typography,
+  Container,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Select,
+  MenuItem,
+  FormControl,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "../style/SignUp.css";
+import boneLogo from "../images/bone.png";
 
 const theme = createTheme({
   typography: {
     allVariants: {
-      color: '#000',
-      fontWeight: 'normal',
+      color: "#000",
+      fontWeight: "normal",
     },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         contained: {
-          backgroundColor: '#000',
-          color: '#fff',
-          '&:hover': {
-            backgroundColor: '#333',
+          backgroundColor: "#000",
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#333",
           },
         },
         outlined: {
-          color: '#000',
-          borderColor: '#000',
-          '&:hover': {
-            borderColor: '#333',
-            backgroundColor: '#F5F5F5',
+          color: "#000",
+          borderColor: "#000",
+          "&:hover": {
+            borderColor: "#333",
+            backgroundColor: "#F5F5F5",
           },
         },
       },
@@ -35,15 +50,15 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#ccc',
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ccc",
             },
-            '&:hover fieldset': {
-              borderColor: '#7B52E1',
+            "&:hover fieldset": {
+              borderColor: "#7B52E1",
             },
-            '&.Mui-focused fieldset': {
-              borderColor: '#7B52E1',
+            "&.Mui-focused fieldset": {
+              borderColor: "#7B52E1",
             },
           },
         },
@@ -61,7 +76,7 @@ export default function SignUp() {
   const [nickname, setNickname] = useState("");
   const [isUsernameChecked, setIsUsernameChecked] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState('');
+  const [dialogMessage, setDialogMessage] = useState("");
   const [dialogAction, setDialogAction] = useState(null);
   const [verificationCode, setVerificationCode] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -86,12 +101,16 @@ export default function SignUp() {
 
   const checkUsernameAvailability = async () => {
     try {
-      const response = await fetch(`https://3.34.219.248:8080/api/auth/check-username?username=${id}`);
+      const response = await fetch(
+        `https://3.34.219.248/api/auth/check-username?username=${id}`
+      );
       const isAvailable = await response.json();
       if (isAvailable) {
         openDialog("아이디 사용 가능", () => setIsUsernameChecked(true));
       } else {
-        openDialog("아이디가 이미 사용 중입니다.", () => setIsUsernameChecked(false));
+        openDialog("아이디가 이미 사용 중입니다.", () =>
+          setIsUsernameChecked(false)
+        );
       }
     } catch (error) {
       console.error("아이디 중복 확인 오류:", error);
@@ -123,13 +142,16 @@ export default function SignUp() {
     }
     const fullEmail = `${emailFront}@${emailBack}`;
     try {
-      const response = await fetch("https://3.34.219.248:8080/api/auth/send-verification-code", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: fullEmail }),
-      });
+      const response = await fetch(
+        "https://3.34.219.248/api/auth/send-verification-code",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: fullEmail }),
+        }
+      );
       const data = await response.json();
 
       if (response.ok) {
@@ -178,10 +200,10 @@ export default function SignUp() {
     };
 
     try {
-      const response = await fetch("https://3.34.219.248:8080/api/auth/signup", {
-        method: 'POST',
+      const response = await fetch("https://3.34.219.248/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
       });
@@ -189,19 +211,30 @@ export default function SignUp() {
       if (response.ok) {
         openDialog("회원가입이 완료됐습니다!", () => navigate("/login"));
       } else {
-        console.error('Error creating user');
+        console.error("Error creating user");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
   return (
     <div className="main-content">
-      <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-        <Typography variant="h4" component="div" sx={{ fontWeight: '700', cursor: 'pointer', fontFamily: 'Fredoka, sans-serif !important', color:'black', fontSize: '3.5rem', marginBottom:'10px'}}>
+      <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Typography
+          variant="h4"
+          component="div"
+          sx={{
+            fontWeight: "700",
+            cursor: "pointer",
+            fontFamily: "Fredoka, sans-serif !important",
+            color: "black",
+            fontSize: "3.5rem",
+            marginBottom: "10px",
+          }}
+        >
           CarePet
-          <img style={{width: '40px'}} src={boneLogo} alt='로고'></img>
+          <img style={{ width: "40px" }} src={boneLogo} alt="로고"></img>
         </Typography>
       </Link>
       <ThemeProvider theme={theme}>
@@ -210,16 +243,25 @@ export default function SignUp() {
           <Box
             sx={{
               marginTop: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center', 
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             {/* 아이디 입력 및 중복 확인 */}
-            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem', marginTop:'-20px' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                alignSelf: "flex-start",
+                mt: 1,
+                fontWeight: "500",
+                fontSize: "1.2rem",
+                marginTop: "-20px",
+              }}
+            >
               아이디
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
               <TextField
                 margin="normal"
                 required
@@ -229,28 +271,43 @@ export default function SignUp() {
                 autoComplete="id"
                 autoFocus
                 value={id}
-                onChange={(e) => { setId(e.target.value); setIsUsernameChecked(false); }}
+                onChange={(e) => {
+                  setId(e.target.value);
+                  setIsUsernameChecked(false);
+                }}
                 sx={{ mb: 1, mt: 1 }}
               />
-              <Button variant="outlined" onClick={checkUsernameAvailability} sx={{
-                  width: '100px',
-                  height: '50px',
-                  bgcolor: '#7B52E1',
-                  color: 'white',
-                  fontSize: '0.8rem',
-                  marginLeft: '10px',
-                  fontWeight: '500',
-                  border: 'none', 
-                  '&:hover': {
-                    bgcolor: '#6A47B1'
-                  }
-                }}>
+              <Button
+                variant="outlined"
+                onClick={checkUsernameAvailability}
+                sx={{
+                  width: "100px",
+                  height: "50px",
+                  bgcolor: "#7B52E1",
+                  color: "white",
+                  fontSize: "0.8rem",
+                  marginLeft: "10px",
+                  fontWeight: "500",
+                  border: "none",
+                  "&:hover": {
+                    bgcolor: "#6A47B1",
+                  },
+                }}
+              >
                 중복 확인
               </Button>
             </Box>
 
             {/* 비밀번호 입력 */}
-            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                alignSelf: "flex-start",
+                mt: 1,
+                fontWeight: "500",
+                fontSize: "1.2rem",
+              }}
+            >
               비밀번호
             </Typography>
             <TextField
@@ -265,23 +322,54 @@ export default function SignUp() {
               onChange={handlePasswordChange}
               sx={{ mb: 1, mt: 1 }}
             />
-            <Box sx={{ width: '100%', mt: 1, mb: 2 }}>
-              <Typography variant="caption" sx={{ color: passwordValidations.hasLowerCase ? 'green' : 'red' }}>
+            <Box sx={{ width: "100%", mt: 1, mb: 2 }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: passwordValidations.hasLowerCase ? "green" : "red",
+                }}
+              >
                 영문 소문자 포함
               </Typography>
-              <Typography variant="caption" sx={{ color: passwordValidations.hasNumber ? 'green' : 'red', ml: 2 }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: passwordValidations.hasNumber ? "green" : "red",
+                  ml: 2,
+                }}
+              >
                 숫자 포함
               </Typography>
-              <Typography variant="caption" sx={{ color: passwordValidations.hasSpecialChar ? 'green' : 'red', ml: 2 }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: passwordValidations.hasSpecialChar ? "green" : "red",
+                  ml: 2,
+                }}
+              >
                 특수문자 포함
               </Typography>
-              <Typography variant="caption" sx={{ color: passwordValidations.isLongEnough ? 'green' : 'red', ml: 2 }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: passwordValidations.isLongEnough ? "green" : "red",
+                  ml: 2,
+                }}
+              >
                 8자리 이상
               </Typography>
             </Box>
 
             {/* 닉네임 입력 */}
-            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                alignSelf: "flex-start",
+                mt: 1,
+                fontWeight: "500",
+                fontSize: "1.2rem",
+              }}
+            >
               닉네임
             </Typography>
             <TextField
@@ -297,10 +385,18 @@ export default function SignUp() {
             />
 
             {/* 이메일 입력 및 인증 */}
-            <Typography variant="body1" sx={{ alignSelf: 'flex-start', mt: 1, fontWeight: '500', fontSize: '1.2rem' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                alignSelf: "flex-start",
+                mt: 1,
+                fontWeight: "500",
+                fontSize: "1.2rem",
+              }}
+            >
               이메일
             </Typography>
-            <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+            <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
               <TextField
                 margin="normal"
                 required
@@ -326,10 +422,7 @@ export default function SignUp() {
                 disabled={selectedDomain !== "custom"}
               />
               <FormControl sx={{ mt: 2 }}>
-                <Select
-                  value={selectedDomain}
-                  onChange={handleEmailBackChange}
-                >
+                <Select value={selectedDomain} onChange={handleEmailBackChange}>
                   <MenuItem value="gmail.com">gmail.com</MenuItem>
                   <MenuItem value="naver.com">naver.com</MenuItem>
                   <MenuItem value="nate.com">nate.com</MenuItem>
@@ -343,10 +436,10 @@ export default function SignUp() {
               sx={{
                 mt: 1,
                 mb: 2,
-                width: '100%',
-                bgcolor: '#7B52E1',
-                color: 'white',
-                '&:hover': { bgcolor: '#6A47B1' },
+                width: "100%",
+                bgcolor: "#7B52E1",
+                color: "white",
+                "&:hover": { bgcolor: "#6A47B1" },
               }}
             >
               인증번호 발송
@@ -367,10 +460,10 @@ export default function SignUp() {
               variant="outlined"
               onClick={handleVerificationCodeCheck}
               sx={{
-                width: '100%',
-                bgcolor: '#7B52E1',
-                color: 'white',
-                '&:hover': { bgcolor: '#6A47B1' },
+                width: "100%",
+                bgcolor: "#7B52E1",
+                color: "white",
+                "&:hover": { bgcolor: "#6A47B1" },
               }}
             >
               인증번호 확인
@@ -384,9 +477,11 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}
               className="signup-button"
               onClick={handleSubmit}
-              style={{ backgroundColor: '#7B52E1', height: '50px' }}
+              style={{ backgroundColor: "#7B52E1", height: "50px" }}
             >
-              <div style={{ fontWeight: '500', fontSize: '1.2rem' }}>회원가입</div>
+              <div style={{ fontWeight: "500", fontSize: "1.2rem" }}>
+                회원가입
+              </div>
             </Button>
           </Box>
         </Container>
@@ -402,9 +497,23 @@ export default function SignUp() {
         <DialogContent>
           <DialogContentText>{dialogMessage}</DialogContentText>
         </DialogContent>
-        <DialogActions sx={{ mr: '15px', mb: '15px' }}>
-          <Button onClick={handleDialogClose} sx={{ color: '#7B52E1' }}>취소</Button>
-          <Button onClick={() => { handleDialogClose(); if (dialogAction) dialogAction(); }} sx={{ color: 'white', bgcolor: '#7B52E1', '&:hover': { bgcolor: '#6A47B1' } }}>확인</Button>
+        <DialogActions sx={{ mr: "15px", mb: "15px" }}>
+          <Button onClick={handleDialogClose} sx={{ color: "#7B52E1" }}>
+            취소
+          </Button>
+          <Button
+            onClick={() => {
+              handleDialogClose();
+              if (dialogAction) dialogAction();
+            }}
+            sx={{
+              color: "white",
+              bgcolor: "#7B52E1",
+              "&:hover": { bgcolor: "#6A47B1" },
+            }}
+          >
+            확인
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

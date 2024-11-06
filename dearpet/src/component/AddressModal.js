@@ -146,7 +146,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ textAlign: 'center' }}>배송지 관리</DialogTitle>
       <DialogContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginTop:1, marginBottom: 2 }}>
           <TextField
             fullWidth
             label="배송지 입력"
@@ -156,10 +156,10 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
             sx={{ 
               marginRight: 1,
               '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#7B52E1', // 포커스 테두리 색상 보라색
+                borderColor: '#7B52E1',
               },
               '& .MuiInputLabel-root.Mui-focused': {
-                color: '#7B52E1', // 포커스 시 라벨 색상 보라색
+                color: '#7B52E1',
               },
             }}
           />
@@ -177,15 +177,11 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <Typography variant="subtitle1">배송지 선택</Typography>
-          <RadioGroup 
-            value={selectedAddressId} 
-            onChange={(e) => handleSelect(e.target.value)}
-            sx={{
+          <RadioGroup value={selectedAddressId} onChange={(e) => handleSelect(e.target.value)} sx={{
               '& .MuiRadio-root.Mui-checked': {
-                color: '#7B52E1', // 배송지 선택시 보라색으로
+                color: '#7B52E1',
               },
-            }}
-            >
+            }}>
             {addressList.map((addr, index) => (
               <Card key={index} variant="outlined" sx={{ marginTop: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <CardContent sx={{ display: 'flex', alignItems: 'center' }}>

@@ -349,6 +349,7 @@ export default function SignUp() {
               sx={{
                 mt: 1,
                 mb: 2,
+                fontSize: '0.9rem',
                 width: '100%',
                 fontSize: '0.9rem',
                 bgcolor: '#7B52E1',
@@ -376,6 +377,7 @@ export default function SignUp() {
               <Button
                 variant="outlined"
                 onClick={handleVerificationCodeCheck}
+                disabled={sentVerificationCode === '' }
                 sx={{
                   width: '150px',
                   bgcolor: '#7B52E1',

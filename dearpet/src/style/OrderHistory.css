@@ -22,6 +22,8 @@
     text-align: center;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
+    pointer-events: auto;
+    cursor: pointer;
   }
   
   .order-status-item {

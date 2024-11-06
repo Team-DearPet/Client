@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Box, Typography, Avatar, Button, TextField, Dialog, DialogContent, DialogActions, DialogTitle, DialogContentText 
+  Box, Typography, Avatar, IconButton, Button, TextField, Dialog, DialogContent, DialogActions, DialogTitle, DialogContentText 
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import CloseIcon from '@mui/icons-material/Close';
 
 const UserDetail = () => {
   const navigate = useNavigate();
@@ -75,6 +77,14 @@ const UserDetail = () => {
       setIsIdChecked(false);
     }
   };
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        setFormData((prev) => ({ ...prev, photo: file }));
+        setPhotoPreview(URL.createObjectURL(file));
+    }
+};
 
   const handleCheckId = async () => {
     try {
@@ -184,6 +194,16 @@ const UserDetail = () => {
       </Box>
 
       <Dialog open={open} onClose={handleClose}>
+      <IconButton 
+          onClick={handleClose} 
+          sx={{ 
+            position: 'absolute', 
+            top: 8, 
+            right: 8 
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogContent>
           <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
             <Box sx={{ position: 'relative', marginRight: 2 }}>
@@ -193,6 +213,21 @@ const UserDetail = () => {
               >
                 {!photoPreview && <PersonIcon sx={{ fontSize: 80 }}/> }
               </Avatar>
+              <IconButton 
+                variant="contained" 
+                component="label" 
+                sx={{
+                  border: 'solid 2px #d9d9d9',
+                  bgcolor: 'white', 
+                  position: 'absolute', 
+                  bottom: 5, 
+                  left: 40, 
+                  transform: 'translate(50%, 50%)'
+                }}
+              >
+                <CameraAltIcon />
+                <input type="file" hidden onChange={handlePhotoUpload} />
+              </IconButton>
             </Box>
 
             <Box width="100%">

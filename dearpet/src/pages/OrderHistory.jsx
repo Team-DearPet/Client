@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, Paper } from '@mui/material';
+import { Button, Box, Typography, Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import '../style/OrderHistory.css';
 import ReviewModal from '../component/ReviewModal';
 import Footer from '../component/Footer';
@@ -8,10 +8,26 @@ import { useNavigate } from 'react-router-dom';
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [statusCounts, setStatusCounts] = useState({'배송중': 0, '배송완료': 0, '취소/반품': 0});
+  const accessToken = localStorage.getItem('token');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [dialogAction, setDialogAction] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('') // 배송상태필터
+  const orderStatus = ['PENDING', 'SHIPPED', 'DELIVERED']
+
+  const handleDialogClose = () => setDialogOpen(false);
+
+  const openDialog = (message, action) => {
+      setDialogMessage(message);
+      setDialogAction(() => action);
+      setDialogOpen(true);
+  };
 
   const fetchOrders = async () => {
     try {
-      const accessToken = localStorage.getItem('token');
       const response = await fetch(`http://localhost:8080/api/orders`, {
         method: 'GET',
         headers: {
@@ -85,28 +101,65 @@ const OrderHistory = () => {
   
 
 useEffect(()=>{fetchOrders()},[])
-  
-  const [reviewModalOpen, setReviewModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [statusCounts, setStatusCounts] = useState({'배송중': 0, '배송완료': 0, '취소/반품': 0});
-  const [hasReviewed, setHasReviewed] = useState(false);
 
-  const handleCancel = (orderIndex) => {
-    const newOrders = [...orders];
-    newOrders[orderIndex].status = '취소/반품';
-    setOrders(newOrders);
-    setStatusCounts((prev) => ({
-      ...prev,
-      ['취소/반품']: prev['취소/반품'] + 1,
-    }));
+const handleCancel = (id) => {
+  openDialog('정말 주문을 취소하시겠습니까?',() => orderCancel(id));
+  return;
+}
+
+const orderCancel = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/orders/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to cancel orders');
+    }
+  }catch(error){
+    console.error('Error canceling orders', error);
+  }
+
+  setOrders((prevOrders) =>
+    prevOrders.map((order) =>
+      order.orderId === id ? { ...order, status: 'CANCELLED' } : order
+    )
+  );
+
+  // 취소된 상태 카운트 업데이트
+  setStatusCounts((prev) => ({
+    ...prev,
+    '취소/반품': prev['취소/반품'] + 1,
+  }));
+};
+  
+  const handleStatusChange = (orderId) => {
+    setOrders(prevOrders =>
+      prevOrders.map(order => {
+        if (order.orderId === orderId) {
+          const currentStatusIndex = orderStatus.indexOf(order.status);
+          const nextStatus = currentStatusIndex < orderStatus.length - 1
+            ? orderStatus[currentStatusIndex + 1]
+            : order.status;  // 더 이상 변경할 상태가 없으면 그대로 유지
+          
+          return { ...order, status: nextStatus };
+        }
+        return order;
+      })
+    );
   };
 
   const updateStatusCounts = () => {
     let 배송중 = 0, 배송완료 = 0, 취소반품 = 0;
   
     orders.forEach((order) => {
-      if (order.status === '구매확정') 배송완료++;
-      if (order.status === '취소/반품') 취소반품++;
+      if (order.status === 'SHIPPED') 배송중++;
+      if (order.status === 'DELIVERED') 배송완료++;
+      if (order.status === 'CANCELLED') 취소반품++;
     });
   
     setStatusCounts({ 배송중, 배송완료, '취소/반품': 취소반품 });
@@ -153,33 +206,56 @@ useEffect(()=>{fetchOrders()},[])
     }
   };
 
+  const filteredOrders = orders.filter((order) => {
+    // if (statusFilter === '') return true;
+    if (statusFilter === '') {
+      return order.status !== 'CANCELLED'; // 기본 상태에서도 'CANCELLED' 상태인 주문 제외
+    }
+    if (statusFilter === '배송중') return order.status === 'SHIPPED';
+    if (statusFilter === '배송완료') return order.status === 'DELIVERED';
+    if (statusFilter === '취소/반품') return order.status === 'CANCELLED';
+    return false;
+  });
+
   return (
     <div>
       <Box>
-        <h1 style={{ textAlign: 'center' }}>주문내역</h1>
+        <h1 style={{ textAlign: 'center', cursor: 'pointer' }} onClick={()=>{setStatusFilter('')}}>주문내역</h1>
         <Box className="order-history-container">
   
           <div className="order-status-container">
             {['배송중', '배송완료', '취소/반품'].map((status) => (
-              <div className="order-status-item" key={status}>
-                <Typography sx={{ fontWeight: 'bold' }}>{status}</Typography>
-                <Typography sx={{ color: 'gray' }}>{statusCounts[status]}</Typography>
+              <div className="order-status-item" key={status} onClick={() => { 
+                setStatusFilter(status); 
+              }}>
+                <Typography sx={{ fontWeight: statusFilter === status ? 'bold' : 'normal', color: statusFilter === status ? '#7B52E1' : 'black' }}>{status}</Typography>
+                <Typography sx={{ color: statusFilter === status ? '#ff4d4f' : 'gray' }}>{statusCounts[status]}</Typography>
               </div>
             ))}
           </div>
   
-          {orders.map((order) => (
+          {filteredOrders.slice().reverse().map((order) => (
             <Box key={order.orderId} className="order-item">
               <Typography variant="subtitle1" className="order-date">
                 {new Date(order.date).toLocaleDateString()}
-                <Button
-                  variant="contained"
-                  className='DeleteButton'
-                  disabled={order.status === 'DELIVERED'}
-                  onClick={() => handleCancel(order.orderId)}
-                >
-                  구매취소
-                </Button>
+                <Box display="flex" gap={2}>
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#7B52E1', color: '#7B52E1'}}
+                    onClick={() => handleStatusChange(order.orderId)}
+                    disabled={order.status === 'CANCELLED'}  // CANCELLED 상태에서는 버튼 비활성화
+                  >
+                    상태 변경
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className='DeleteButton'
+                    disabled={order.status === 'DELIVERED' || order.status === 'CANCELLED'}
+                    onClick={() => handleCancel(order.orderId)}
+                  >
+                    구매취소
+                  </Button>
+                </Box>
               </Typography>
               <Paper className="order-paper">
                 {order.items.map((item, itemIndex) => (
@@ -192,7 +268,15 @@ useEffect(()=>{fetchOrders()},[])
                     <div className="order-details">
                       <Box gap={1} sx={{display:'flex'}}>
                         <Typography className="order-status">
-                          {order.status === "PENDING" ? "결제완료" : order.status === "SHIPPED" ? "배송중" : "구매확정"}
+                        {order.status === "PENDING" 
+                          ? "결제완료" 
+                          : order.status === "SHIPPED" 
+                          ? "배송중" 
+                          : order.status === "DELIVERED" 
+                          ? "구매확정" 
+                          : order.status === "CANCELLED" 
+                          ? "주문취소" 
+                          : ""}
                         </Typography>
                         <Typography
                           className="order-delivery"
@@ -204,7 +288,7 @@ useEffect(()=>{fetchOrders()},[])
                               month: "2-digit",  // 두 자리 월
                               day: "2-digit",    // 두 자리 일
                               weekday: "short"   // 짧은 요일 (월, 화, 수 등)
-                            })} 배송예정
+                            })} {order.status === 'DELIVERED'? '배송완료' : '배송예정'}
                         </Typography>
                       </Box>
                       <Typography className="order-price">{(item.price/item.quantity).toLocaleString()}원</Typography>
@@ -251,6 +335,32 @@ useEffect(()=>{fetchOrders()},[])
           onSubmit={handleReviewSubmit}
         />
       </Box>
+      <Dialog
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                maxWidth="sm"
+                fullWidth
+                sx={{
+                    '& .MuiDialog-paper': {
+                        width: '400px', 
+                        maxWidth: '600px', 
+                    },
+                }}
+            >
+                <DialogTitle>알림</DialogTitle>
+                <DialogContent>
+                    <DialogContentText dangerouslySetInnerHTML={{ __html: dialogMessage }} />
+                </DialogContent>
+                <DialogActions sx={{ mr: '15px', mb: '15px' }}>
+                    <Button onClick={handleDialogClose} sx={{ color: '#6A47B1' }}>취소</Button>
+                    <Button 
+                        onClick={() => { handleDialogClose(); dialogAction && dialogAction(); }} 
+                        sx={{ bgcolor: '#6A47B1', color: 'white', '&:hover': { bgcolor: '#7B52E1' } }}
+                    >
+                        확인
+                    </Button>
+                </DialogActions>
+            </Dialog>
       <Footer />
     </div>
   );

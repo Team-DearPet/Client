@@ -13,7 +13,7 @@ const ShippingInfo = ( { onAddressChange, onRequireChange }) => {
     const fetchAddress = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('https://3.34.219.248:8080/api/profile/addresses', {
+            const response = await fetch('https://www.carepet.site/api/profile/addresses', {
                 method: 'GET',
                 headers: {
                   Authorization: `Bearer ${token}`,

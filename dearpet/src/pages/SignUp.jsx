@@ -86,7 +86,7 @@ export default function SignUp() {
 
   const checkUsernameAvailability = async () => {
     try {
-      const response = await fetch(`http://3.34.219.248:8080/api/auth/check-username?username=${id}`);
+      const response = await fetch(`https://3.34.219.248:8080/api/auth/check-username?username=${id}`);
       const isAvailable = await response.json();
       if (isAvailable) {
         openDialog("아이디 사용 가능", () => setIsUsernameChecked(true));
@@ -123,7 +123,7 @@ export default function SignUp() {
     }
     const fullEmail = `${emailFront}@${emailBack}`;
     try {
-      const response = await fetch("http://3.34.219.248:8080/api/auth/send-verification-code", {
+      const response = await fetch("https://3.34.219.248:8080/api/auth/send-verification-code", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,7 +178,7 @@ export default function SignUp() {
     };
 
     try {
-      const response = await fetch("http://3.34.219.248:8080/api/auth/signup", {
+      const response = await fetch("https://3.34.219.248:8080/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

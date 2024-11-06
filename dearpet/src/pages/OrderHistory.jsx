@@ -69,8 +69,6 @@ const OrderHistory = () => {
               }
 
               const reviewed = await reviewResponse.json()
-
-
               return { ...item, name: productData.name, image: productData.image, reviewed: reviewed };
             })
           );
@@ -122,6 +120,11 @@ useEffect(()=>{fetchOrders()},[])
     setSelectedItem(item);
     setReviewModalOpen(true);
   };
+  
+  const handleReviewChange = (item) => {
+    setSelectedItem(item);
+    setReviewModalOpen(true);
+  }
 
   const handleReviewSubmit = (item, review) => {
     setOrders((prevOrders) => 
@@ -134,6 +137,7 @@ useEffect(()=>{fetchOrders()},[])
     );
     setReviewModalOpen(false);
   };
+
 
   const handleReviewDelete = (item) => {
     const confirmDelete = window.confirm("정말 리뷰를 삭제하시겠습니까?");
@@ -217,7 +221,7 @@ useEffect(()=>{fetchOrders()},[])
                       <div>
                         {item.reviewed ? (
                           <Button
-                            onClick={() => handleReviewDelete(item)}
+                            onClick={() => handleReviewChange(item)}
                             className="order-button"
                             style={{marginTop:"-120px"}}
                           >

@@ -13,7 +13,7 @@ const ShippingInfo = ( { onAddressChange, onRequireChange }) => {
     const fetchAddress = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/profile/addresses', {
+            const response = await fetch('http://3.34.219.248:8080/api/profile/addresses', {
                 method: 'GET',
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -57,6 +57,7 @@ const ShippingInfo = ( { onAddressChange, onRequireChange }) => {
         onRequireChange(newRequire);
     };
 
+    
     return (
         <Box mt={4}>
             <Box 

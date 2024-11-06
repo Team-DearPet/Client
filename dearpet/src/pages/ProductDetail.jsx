@@ -20,7 +20,7 @@ function ProductDetail() {
     const fetchProduct = async () => {
         const accessToken = localStorage.getItem('token');
         try{
-        const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
+        const response = await fetch(`http://3.34.219.248:8080/api/products/${productId}`, {
             method: 'GET',
             headers: {
             'Content-Type': 'application/json',

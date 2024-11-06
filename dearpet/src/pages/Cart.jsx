@@ -13,7 +13,7 @@ const Cart = () => {
 
   const fetchcart = async () => {
     const accessToken = localStorage.getItem("token");
-    const response = await fetch("https://3.34.219.248:8080/api/cart", {
+    const response = await fetch("https://3.34.219.248/api/cart", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +33,7 @@ const Cart = () => {
     try {
       const accessToken = localStorage.getItem("token");
       const response = await fetch(
-        `https://3.34.219.248:8080/api/cart/items/${id}?quantity=${newQuantity}`,
+        `https://3.34.219.248/api/cart/items/${id}?quantity=${newQuantity}`,
         {
           method: "PATCH",
           headers: {

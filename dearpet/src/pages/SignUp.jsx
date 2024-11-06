@@ -330,7 +330,20 @@ export default function SignUp() {
                 disabled={selectedDomain !== "custom"}
                 sx={{ mb: 1, mt: 1 }}
               />
-              <FormControl sx={{ mt: 1, minWidth: 120 }}>
+              <FormControl sx={{ mt: 1, minWidth: 120, '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#ccc',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#7B52E1',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#7B52E1',
+                },
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#7B52E1',
+              }, }}>
                 <Select
                   value={selectedDomain}
                   onChange={handleEmailBackChange}
@@ -348,7 +361,7 @@ export default function SignUp() {
               sx={{
                 mt: 1,
                 mb: 2,
-                fontSize: '0.9rem',
+                fontSize: '1.1rem',
                 width: '100%',
                 bgcolor: '#7B52E1',
                 color: 'white',

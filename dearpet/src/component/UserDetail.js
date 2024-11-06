@@ -36,7 +36,7 @@ const UserDetail = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('https://3.34.219.248:8080/api/profile', {
+        const response = await axios.get('https://3.34.219.248/api/profile', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -88,7 +88,7 @@ const UserDetail = () => {
 
   const handleCheckId = async () => {
     try {
-      const response = await axios.get(`https://3.34.219.248:8080/api/auth/check-username?username=${formData.username}`);
+      const response = await axios.get(`https://3.34.219.248/api/auth/check-username?username=${formData.username}`);
       const isAvailable = await response.data;
       setIsIdValid(isAvailable);
       setIsIdChecked(true);
@@ -127,7 +127,7 @@ const UserDetail = () => {
     };
   
     try {
-      await axios.patch('https://3.34.219.248:8080/api/profile', updatedData, {
+      await axios.patch('https://3.34.219.248/api/profile', updatedData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

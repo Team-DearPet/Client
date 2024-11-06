@@ -17,7 +17,7 @@ const CartItem = ({ item, totalPrice, handleTotalChange, handleQuantityChange, h
     const fetchImage = async () => {
         const accessToken = localStorage.getItem('token');
         try{
-        const response = await fetch(`http://3.34.219.248:8080/api/products/${item.productId}`, {
+        const response = await fetch(`https://3.34.219.248:8080/api/products/${item.productId}`, {
             method: 'GET',
             headers: {
             'Content-Type': 'application/json',

@@ -12,7 +12,7 @@ const ReviewList = ({ product }) => {
 
     const fetchReviews = async () => {
         try {
-            const response = await fetch(`http://3.34.219.248:8080/api/reviews?productId=${productId}`, {
+            const response = await fetch(`https://3.34.219.248:8080/api/reviews?productId=${productId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const ReviewList = ({ product }) => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const response = await axios.get('http://3.34.219.248:8080/api/profile', {
+                const response = await axios.get('https://3.34.219.248:8080/api/profile', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰 저장소에서 가져오기
                     },

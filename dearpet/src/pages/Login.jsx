@@ -77,7 +77,7 @@ export default function Login({ setIsLoggedIn, setUserId }) {
     };
 
     try {
-      const response = await fetch("https://3.34.219.248:8080/api/auth/login", { 
+      const response = await fetch("https://3.34.219.248/api/auth/login", { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,11 +105,11 @@ export default function Login({ setIsLoggedIn, setUserId }) {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://3.34.219.248:8080/oauth2/authorization/google";
+    window.location.href = "https://3.34.219.248/oauth2/authorization/google";
   };
 
   const handleKakaoLogin = () => {
-    window.location.href = "https://3.34.219.248:8080/oauth2/authorization/kakao";
+    window.location.href = "https://3.34.219.248/oauth2/authorization/kakao";
   };
 
   return (

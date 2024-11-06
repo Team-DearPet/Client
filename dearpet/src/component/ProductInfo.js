@@ -53,7 +53,7 @@ const ProductInfo = ({ item }) => {
         }
 
         try {
-            const response = await fetch(`https://3.34.219.248:8080/api/cart/items?productId=${item.productId}&quantity=${quantity}`, {
+            const response = await fetch(`https://3.34.219.248/api/cart/items?productId=${item.productId}&quantity=${quantity}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

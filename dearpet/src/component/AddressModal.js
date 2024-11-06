@@ -40,7 +40,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
   const fetchAddresses = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://3.34.219.248:8080/api/profile/addresses', {
+      const response = await axios.get('https://www.carepet.site/api/profile/addresses', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,7 +74,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
   const addAddressToList = async (newAddress) => {
     try {
       const token = localStorage.getItem('token'); 
-      const response = await axios.post('https://3.34.219.248:8080/api/profile/addresses', 
+      const response = await axios.post('https://www.carepet.site/api/profile/addresses', 
         { address: newAddress }, 
         { headers: { Authorization: `Bearer ${token}` } } 
       ); 

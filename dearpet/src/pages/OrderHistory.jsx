@@ -346,6 +346,22 @@ useEffect(()=>{fetchOrders()},[])
             value={cancelReason}
             onChange={(e) => setCancelReason(e.target.value)}
             margin="normal"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#ccc',  // 기본 border 색상
+                },
+                '&:hover fieldset': {
+                  borderColor: '#7B52E1',  // hover 시 border 색상
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#7B52E1',  // focused 상태에서 border 색상
+                },
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#7B52E1',
+              },
+            }}
           />
         </DialogContent>
         <DialogActions sx={{ mr: '15px', mb: '15px' }}>

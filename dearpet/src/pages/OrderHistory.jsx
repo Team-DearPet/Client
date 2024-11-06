@@ -15,6 +15,7 @@ const OrderHistory = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
   const [dialogAction, setDialogAction] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('') // 배송상태필터
 
   const handleDialogClose = () => setDialogOpen(false);
 
@@ -167,22 +168,32 @@ useEffect(()=>{fetchOrders()},[])
     }
   };
 
+  const filteredOrders = orders.filter((order) => {
+    if (statusFilter === '') return true;
+    if (statusFilter === '배송중') return order.status === 'SHIPPED';
+    if (statusFilter === '배송완료') return order.status === 'DELIVERED';
+    if (statusFilter === '취소/반품') return order.status === 'CANCELLED';
+    return false;
+  });
+
   return (
     <div>
       <Box>
-        <h1 style={{ textAlign: 'center' }}>주문내역</h1>
+        <h1 style={{ textAlign: 'center', cursor: 'pointer' }} onClick={()=>{setStatusFilter('')}}>주문내역</h1>
         <Box className="order-history-container">
   
           <div className="order-status-container">
             {['배송중', '배송완료', '취소/반품'].map((status) => (
-              <div className="order-status-item" key={status}>
-                <Typography sx={{ fontWeight: 'bold' }}>{status}</Typography>
-                <Typography sx={{ color: 'gray' }}>{statusCounts[status]}</Typography>
+              <div className="order-status-item" key={status} onClick={() => { 
+                setStatusFilter(status); 
+              }}>
+                <Typography sx={{ fontWeight: statusFilter === status ? 'bold' : 'normal', color: statusFilter === status ? '#7B52E1' : 'black' }}>{status}</Typography>
+                <Typography sx={{ color: statusFilter === status ? '#ff4d4f' : 'gray' }}>{statusCounts[status]}</Typography>
               </div>
             ))}
           </div>
   
-          {orders.slice().reverse().map((order) => (
+          {filteredOrders.slice().reverse().map((order) => (
             <Box key={order.orderId} className="order-item">
               <Typography variant="subtitle1" className="order-date">
                 {new Date(order.date).toLocaleDateString()}

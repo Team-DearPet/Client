@@ -24,7 +24,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `https://3.34.219.248/api/products/${item.productId}/reviews`,
+        `https://www.carepet.site/api/products/${item.productId}/reviews`,
         {
           productId: item.productId,
           rating: reviewRating,

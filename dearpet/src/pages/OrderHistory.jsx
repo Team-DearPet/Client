@@ -16,6 +16,7 @@ const OrderHistory = () => {
   const [dialogMessage, setDialogMessage] = useState('');
   const [dialogAction, setDialogAction] = useState(null);
   const [statusFilter, setStatusFilter] = useState('') // 배송상태필터
+  const orderStatus = ['PENDING', 'SHIPPED', 'DELIVERED']
 
   const handleDialogClose = () => setDialogOpen(false);
 
@@ -122,10 +123,27 @@ useEffect(()=>{fetchOrders()},[])
     }));
   };
 
+  const handleStatusChange = (orderId) => {
+    setOrders(prevOrders =>
+      prevOrders.map(order => {
+        if (order.orderId === orderId) {
+          const currentStatusIndex = orderStatus.indexOf(order.status);
+          const nextStatus = currentStatusIndex < orderStatus.length - 1
+            ? orderStatus[currentStatusIndex + 1]
+            : order.status;  // 더 이상 변경할 상태가 없으면 그대로 유지
+          
+          return { ...order, status: nextStatus };
+        }
+        return order;
+      })
+    );
+  };
+
   const updateStatusCounts = () => {
     let 배송중 = 0, 배송완료 = 0, 취소반품 = 0;
   
     orders.forEach((order) => {
+      if (order.status === 'SHIPPED') 배송중++;
       if (order.status === 'DELIVERED') 배송완료++;
       if (order.status === 'CANCELLED') 취소반품++;
     });
@@ -169,7 +187,10 @@ useEffect(()=>{fetchOrders()},[])
   };
 
   const filteredOrders = orders.filter((order) => {
-    if (statusFilter === '') return true;
+    // if (statusFilter === '') return true;
+    if (statusFilter === '') {
+      return order.status !== 'CANCELLED'; // 기본 상태에서도 'CANCELLED' 상태인 주문 제외
+    }
     if (statusFilter === '배송중') return order.status === 'SHIPPED';
     if (statusFilter === '배송완료') return order.status === 'DELIVERED';
     if (statusFilter === '취소/반품') return order.status === 'CANCELLED';
@@ -197,14 +218,24 @@ useEffect(()=>{fetchOrders()},[])
             <Box key={order.orderId} className="order-item">
               <Typography variant="subtitle1" className="order-date">
                 {new Date(order.date).toLocaleDateString()}
-                <Button
-                  variant="contained"
-                  className='DeleteButton'
-                  disabled={order.status === 'DELIVERED' || order.status === 'CANCELLED'}
-                  onClick={() => handleCancel(order.orderId)}
-                >
-                  구매취소
-                </Button>
+                <Box display="flex" gap={2}>
+                  <Button
+                    variant="outlined"
+                    sx={{ borderColor: '#7B52E1', color: '#7B52E1'}}
+                    onClick={() => handleStatusChange(order.orderId)}
+                    disabled={order.status === 'CANCELLED'}  // CANCELLED 상태에서는 버튼 비활성화
+                  >
+                    상태 변경
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className='DeleteButton'
+                    disabled={order.status === 'DELIVERED' || order.status === 'CANCELLED'}
+                    onClick={() => handleCancel(order.orderId)}
+                  >
+                    구매취소
+                  </Button>
+                </Box>
               </Typography>
               <Paper className="order-paper">
                 {order.items.map((item, itemIndex) => (
@@ -217,7 +248,15 @@ useEffect(()=>{fetchOrders()},[])
                     <div className="order-details">
                       <Box gap={1} sx={{display:'flex'}}>
                         <Typography className="order-status">
-                          {order.status === "PENDING" ? "결제완료" : order.status === "SHIPPED" ? "배송중" : "CANCELLED" ? "주문취소" : "구매확정"}
+                        {order.status === "PENDING" 
+                          ? "결제완료" 
+                          : order.status === "SHIPPED" 
+                          ? "배송중" 
+                          : order.status === "DELIVERED" 
+                          ? "구매확정" 
+                          : order.status === "CANCELLED" 
+                          ? "주문취소" 
+                          : ""}
                         </Typography>
                         <Typography
                           className="order-delivery"
@@ -229,7 +268,7 @@ useEffect(()=>{fetchOrders()},[])
                               month: "2-digit",  // 두 자리 월
                               day: "2-digit",    // 두 자리 일
                               weekday: "short"   // 짧은 요일 (월, 화, 수 등)
-                            })} 배송예정
+                            })} {order.status === 'DELIVERED'? '배송완료' : '배송예정'}
                         </Typography>
                       </Box>
                       <Typography className="order-price">{(item.price/item.quantity).toLocaleString()}원</Typography>

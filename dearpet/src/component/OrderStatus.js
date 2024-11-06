@@ -13,7 +13,7 @@ const OrderStatus = () => {
   const fetchOrderStatus = async () => {
     try{
       const accessToken = localStorage.getItem('token');
-      const response = await fetch(`https://3.34.219.248:8080/api/orders`, {
+      const response = await fetch(`https://3.34.219.248/api/orders`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

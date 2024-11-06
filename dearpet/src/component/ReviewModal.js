@@ -199,6 +199,20 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
                 </Button>
               </Box>
 
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', marginTop: 2 }}>
+              {images.map((image, index) => (
+                <Box key={index} sx={{ position: 'relative', margin: 1 }}>
+                  <img src={image} alt={`review-${index}`} style={{ width: 50, height: 50 }} />
+                  <IconButton
+                    onClick={() => handleImageRemove(image)}
+                    sx={{ position: 'absolute', top: -10, right: -10 }}
+                  >
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              ))}
+            </Box>
+
               <TextField
                 label="리뷰 내용"
                 multiline

@@ -153,7 +153,15 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
             variant="outlined"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            sx={{ marginRight: 1 }}
+            sx={{ 
+              marginRight: 1,
+              '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#7B52E1', // 포커스 테두리 색상 보라색
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#7B52E1', // 포커스 시 라벨 색상 보라색
+              },
+            }}
           />
           <Button variant="contained" sx={{
             width: '200px',
@@ -169,7 +177,15 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <Typography variant="subtitle1">배송지 선택</Typography>
-          <RadioGroup value={selectedAddressId} onChange={(e) => handleSelect(e.target.value)}>
+          <RadioGroup 
+            value={selectedAddressId} 
+            onChange={(e) => handleSelect(e.target.value)}
+            sx={{
+              '& .MuiRadio-root.Mui-checked': {
+                color: '#7B52E1', // 배송지 선택시 보라색으로
+              },
+            }}
+            >
             {addressList.map((addr, index) => (
               <Card key={index} variant="outlined" sx={{ marginTop: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
@@ -187,7 +203,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>닫기</Button>
+        <Button onClick={onClose} sx={{ color: '#7B52E1' }}>닫기</Button>
       </DialogActions>
     </Dialog>
   );

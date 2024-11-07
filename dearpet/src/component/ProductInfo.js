@@ -53,7 +53,7 @@ const ProductInfo = ({ item }) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/api/cart/items?productId=${item.productId}&quantity=${quantity}`, {
+            const response = await fetch(`https://www.carepet.site/api/cart/items?productId=${item.productId}&quantity=${quantity}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

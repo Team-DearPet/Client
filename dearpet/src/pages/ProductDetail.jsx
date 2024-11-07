@@ -20,7 +20,7 @@ function ProductDetail() {
     const fetchProduct = async () => {
         const accessToken = localStorage.getItem('token');
         try{
-        const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
+        const response = await fetch(`https://www.carepet.site/api/products/${productId}`, {
             method: 'GET',
             headers: {
             'Content-Type': 'application/json',

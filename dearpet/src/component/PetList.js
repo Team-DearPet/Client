@@ -12,7 +12,7 @@ const PetList = () => {
     useEffect(() => {
         const fetchPets = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/pets', {
+                const response = await axios.get('https://www.carepet.site/api/pets', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     }

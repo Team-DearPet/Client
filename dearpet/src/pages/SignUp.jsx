@@ -86,7 +86,7 @@ export default function SignUp() {
 
   const checkUsernameAvailability = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/auth/check-username?username=${id}`);
+      const response = await fetch(`https://www.carepet.site/api/auth/check-username?username=${id}`);
       const isAvailable = await response.json();
       if (isAvailable) {
         openDialog("아이디 사용 가능", () => setIsUsernameChecked(true));
@@ -123,7 +123,7 @@ export default function SignUp() {
     }
     const fullEmail = `${emailFront}@${emailBack}`;
     try {
-      const response = await fetch("http://localhost:8080/api/auth/send-verification-code", {
+      const response = await fetch("https://www.carepet.site/api/auth/send-verification-code", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,7 +178,7 @@ export default function SignUp() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/signup", {
+      const response = await fetch("https://www.carepet.site/api/auth/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -330,7 +330,20 @@ export default function SignUp() {
                 disabled={selectedDomain !== "custom"}
                 sx={{ mb: 1, mt: 1 }}
               />
-              <FormControl sx={{ mt: 1, minWidth: 120 }}>
+              <FormControl sx={{ mt: 1, minWidth: 120, '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#ccc',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#7B52E1',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#7B52E1',
+                },
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#7B52E1',
+              }, }}>
                 <Select
                   value={selectedDomain}
                   onChange={handleEmailBackChange}
@@ -349,7 +362,7 @@ export default function SignUp() {
               sx={{
                 mt: 1,
                 mb: 2,
-                fontSize: '0.9rem',
+                fontSize: '1.1rem',
                 width: '100%',
                 fontSize: '0.9rem',
                 bgcolor: '#7B52E1',

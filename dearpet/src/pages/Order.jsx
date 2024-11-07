@@ -80,7 +80,7 @@ const Order = () => {
             },
             data: JSON.stringify({
                 merchantUid: merchantUid,
-                expectedAmount: 100
+                expectedAmount: totalPrice
             }),
             success: function (data) {
                 if (data.status === "CONFIRMED") {
@@ -105,7 +105,7 @@ const Order = () => {
             pay_method: "card",
             merchant_uid: merchantUid,
             name: orderItems,
-            amount: 100,
+            amount: totalPrice,
             buyer_addr: address,
             buyer_email: user.email,
             buyer_name: user.username,

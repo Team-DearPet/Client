@@ -159,7 +159,7 @@ const Order = () => {
         })
         .then(data => {
             cartCheckout(impUid);//장바구니에 주문한 상품 삭제 및 주문 생성
-            openDialog("결제 정보가 성공적으로 저장되었습니다!", () => navigate('/orderscomplete', { state: { impUid: impUid } }));
+            navigate('/orderscomplete', { state: { impUid: impUid } })
         })
         .catch(error => {
             console.error('Error saving payment information:', error);

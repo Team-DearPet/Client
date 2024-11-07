@@ -22,8 +22,8 @@ const Footer = () => {
             CarePet
             <img style={{width: '23px'}} src={boneLogo} alt='로고'></img>
           </Typography>
-          <Typography variant="body2">Email: dearpet@example.com</Typography>
-          <Typography variant="body2">Phone: +82 (123) 456-7890</Typography>
+          <Typography variant="body2">Email: ureca.carepet@gmail.com</Typography>
+          <Typography variant="body2">Phone: +82 (010) 7175-4872</Typography>
         </Grid2>
 
         <Grid2 item xs={12} sm={4} textAlign="center">

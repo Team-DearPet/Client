@@ -39,8 +39,8 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
 
   const fetchAddresses = async () => {
     try {
-      const token = localStorage.getItem('token'); // JWT 토큰 가져오기
-      const response = await axios.get('http://localhost:8080/api/profile/addresses', {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('https://www.carepet.site/api/profile/addresses', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,7 +74,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
   const addAddressToList = async (newAddress) => {
     try {
       const token = localStorage.getItem('token'); 
-      const response = await axios.post('http://localhost:8080/api/profile/addresses', 
+      const response = await axios.post('https://www.carepet.site/api/profile/addresses', 
         { address: newAddress }, 
         { headers: { Authorization: `Bearer ${token}` } } 
       ); 
@@ -106,7 +106,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         return; 
       }
 
-      await axios.patch(`http://localhost:8080/api/profile/addresses/${addressId}`, 
+      await axios.patch(`https://www.carepet.site/api/profile/addresses/${addressId}`, 
         { 
           defaultAddress: true,
           address: selectedAddr.address 
@@ -128,7 +128,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
     if (confirmDelete) {
       try {
         const token = localStorage.getItem('token'); 
-        await axios.delete(`http://localhost:8080/api/profile/addresses/${addressId}`, {
+        await axios.delete(`https://www.carepet.site/api/profile/addresses/${addressId}`, {
           headers: { Authorization: `Bearer ${token}` },
         }); 
         const updatedList = addressList.filter((addr) => addr.addressId !== addressId);

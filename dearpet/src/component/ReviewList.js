@@ -12,7 +12,7 @@ const ReviewList = ({ product }) => {
 
     const fetchReviews = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/reviews?productId=${productId}`, {
+            const response = await fetch(`https://www.carepet.site/api/reviews?productId=${productId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const ReviewList = ({ product }) => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/profile', {
+                const response = await axios.get('https://www.carepet.site/api/profile', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰 저장소에서 가져오기
                     },

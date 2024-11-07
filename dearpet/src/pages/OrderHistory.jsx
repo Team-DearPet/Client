@@ -30,7 +30,7 @@ const OrderHistory = () => {
   const fetchOrders = async () => {
     try {
       const accessToken = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/api/orders`, {
+      const response = await fetch(`https://www.carepet.site/api/orders`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const OrderHistory = () => {
       const data = await response.json();
       const orders = await Promise.all(
         data.map(async (order) => {
-          const itemsResponse = await fetch(`http://localhost:8080/api/orders/${order.orderId}/items`, {
+          const itemsResponse = await fetch(`https://www.carepet.site/api/orders/${order.orderId}/items`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const OrderHistory = () => {
           const itemsData = await itemsResponse.json();
           const items = await Promise.all(
             itemsData.map(async (item) => {
-              const productResponse = await fetch(`http://localhost:8080/api/products/${item.productId}`, {
+              const productResponse = await fetch(`https://www.carepet.site/api/products/${item.productId}`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const OrderHistory = () => {
   
               const productData = await productResponse.json();
 
-              const reviewResponse = await fetch(`http://localhost:8080/api/products/${item.productId}/has-reviewed`,{
+              const reviewResponse = await fetch(`https://www.carepet.site/api/products/${item.productId}/has-reviewed`,{
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ useEffect(()=>{fetchOrders()},[])
 
   const orderCancel = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/orders/${id}`, {
+      const response = await fetch(`https://www.carepet.site/api/orders/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

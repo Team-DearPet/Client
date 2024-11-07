@@ -24,7 +24,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
         const fetchUserReview = async () => {
           const accessToken = localStorage.getItem('token');
           try {
-            const response = await fetch(`http://localhost:8080/api/reviews/user`, {
+            const response = await fetch(`https://www.carepet.site/api/reviews/user`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
       
       if (hasReviewed) {
         const response = await axios.patch(
-          `http://localhost:8080/api/reviews/${userReviewed.reviewId}`,
+          `https://www.carepet.site/api/reviews/${userReviewed.reviewId}`,
           {
             rating: reviewRating,
             comment: reviewText,
@@ -101,7 +101,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
         });
       } else {
         const response = await axios.post(
-          `http://localhost:8080/api/products/${item.productId}/reviews`,
+          `https://www.carepet.site/api/products/${item.productId}/reviews`,
           {
             productId: item.productId,
             rating: reviewRating,
@@ -130,7 +130,7 @@ const ReviewFormModal = ({ open, item, onClose, onSubmit }) => {
   const handleDeleteReview = async () => {
     try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:8080/api/reviews/${userReviewed.reviewId}`, {
+        await axios.delete(`https://www.carepet.site/api/reviews/${userReviewed.reviewId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

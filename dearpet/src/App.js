@@ -37,7 +37,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/map" element={<Map />} />
       <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserId={setUserId}/>} />
-      <Route path="/oauth2/callback/:provider" element={<OAuth2Callback setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />} />
+      <Route path="/oauth2/callback" element={<OAuth2Callback setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/detail/:productId" element={<ProductDetail />} />
       <Route path="/cart" element={<Cart />} />

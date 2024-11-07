@@ -233,11 +233,11 @@ export default function SignUp() {
                 sx={{ mb: 1, mt: 1 }}
               />
               <Button variant="outlined" onClick={checkUsernameAvailability} sx={{
-                  width: '100px',
-                  height: '50px',
+                  width: '150px',
+                  height: '56px',
                   bgcolor: '#7B52E1',
                   color: 'white',
-                  fontSize: '0.8rem',
+                  fontSize: '0.9rem',
                   marginLeft: '10px',
                   fontWeight: '500',
                   border: 'none', 
@@ -265,17 +265,20 @@ export default function SignUp() {
               onChange={handlePasswordChange}
               sx={{ mb: 1, mt: 1 }}
             />
-            <Box sx={{ width: '100%', mt: 1, mb: 2 }}>
-              <Typography variant="caption" sx={{ color: passwordValidations.hasLowerCase ? 'green' : 'red' }}>
-                영문 소문자 포함
+            <Box sx={{ alignSelf: 'flex-start', mt: 1, display: 'flex', flexDirection: 'row', gap: 2}}>
+              <Typography
+                variant="body2"
+                sx={{ color: passwordValidations.hasLowerCase ? 'green' : 'red' }}
+              >
+                영어 소문자 포함
               </Typography>
-              <Typography variant="caption" sx={{ color: passwordValidations.hasNumber ? 'green' : 'red', ml: 2 }}>
+              <Typography variant="body2" sx={{ color: passwordValidations.hasNumber ? 'green' : 'red', ml: 2 }}>
                 숫자 포함
               </Typography>
-              <Typography variant="caption" sx={{ color: passwordValidations.hasSpecialChar ? 'green' : 'red', ml: 2 }}>
+              <Typography variant="body2" sx={{ color: passwordValidations.hasSpecialChar ? 'green' : 'red', ml: 2 }}>
                 특수문자 포함
               </Typography>
-              <Typography variant="caption" sx={{ color: passwordValidations.isLongEnough ? 'green' : 'red', ml: 2 }}>
+              <Typography variant="body2" sx={{ color: passwordValidations.isLongEnough ? 'green' : 'red', ml: 2 }}>
                 8자리 이상
               </Typography>
             </Box>
@@ -310,7 +313,8 @@ export default function SignUp() {
                 id="emailFront"
                 value={emailFront}
                 onChange={(e) => setEmailFront(e.target.value)}
-                placeholder="이메일 앞부분"
+                placeholder="이메일"
+                sx={{ mb: 1, mt: 1 }}
               />
               <Typography sx={{ mt: 3 }}>@</Typography>
               <TextField
@@ -324,8 +328,22 @@ export default function SignUp() {
                 onChange={(e) => setEmailBack(e.target.value)}
                 placeholder="도메인"
                 disabled={selectedDomain !== "custom"}
+                sx={{ mb: 1, mt: 1 }}
               />
-              <FormControl sx={{ mt: 2 }}>
+              <FormControl sx={{ mt: 1, minWidth: 120, '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#ccc',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#7B52E1',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#7B52E1',
+                },
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#7B52E1',
+              }, }}>
                 <Select
                   value={selectedDomain}
                   onChange={handleEmailBackChange}
@@ -343,38 +361,48 @@ export default function SignUp() {
               sx={{
                 mt: 1,
                 mb: 2,
+                fontSize: '1.1rem',
                 width: '100%',
                 bgcolor: '#7B52E1',
                 color: 'white',
+                height: '50px',
+                border: 'none',
                 '&:hover': { bgcolor: '#6A47B1' },
               }}
             >
               인증번호 발송
             </Button>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="verificationCode"
-              type="text"
-              id="verificationCode"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              placeholder="인증번호 입력"
-              sx={{ mb: 1, mt: 1 }}
-            />
-            <Button
-              variant="outlined"
-              onClick={handleVerificationCodeCheck}
-              sx={{
-                width: '100%',
-                bgcolor: '#7B52E1',
-                color: 'white',
-                '&:hover': { bgcolor: '#6A47B1' },
-              }}
-            >
-              인증번호 확인
-            </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="verificationCode"
+                type="text"
+                id="verificationCode"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                placeholder="인증번호 입력"
+                sx={{ mb: 1, mt: 1 }}
+              />
+              <Button
+                variant="outlined"
+                onClick={handleVerificationCodeCheck}
+                disabled={sentVerificationCode === '' }
+                sx={{
+                  width: '150px',
+                  bgcolor: '#7B52E1',
+                  color: 'white',
+                  fontSize: '0.9rem',
+                  height: '56px',
+                  marginLeft: '10px',
+                  border: 'none',
+                  '&:hover': { bgcolor: '#6A47B1' },
+                }}
+              >
+                인증번호 확인
+              </Button>
+            </Box>
 
             {/* 회원가입 버튼 */}
             <Button

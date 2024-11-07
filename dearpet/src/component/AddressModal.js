@@ -146,14 +146,22 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ textAlign: 'center' }}>배송지 관리</DialogTitle>
       <DialogContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginTop:1, marginBottom: 2 }}>
           <TextField
             fullWidth
             label="배송지 입력"
             variant="outlined"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            sx={{ marginRight: 1 }}
+            sx={{ 
+              marginRight: 1,
+              '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#7B52E1',
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#7B52E1',
+              },
+            }}
           />
           <Button variant="contained" sx={{
             width: '200px',
@@ -169,7 +177,11 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <Typography variant="subtitle1">배송지 선택</Typography>
-          <RadioGroup value={selectedAddressId} onChange={(e) => handleSelect(e.target.value)}>
+          <RadioGroup value={selectedAddressId} onChange={(e) => handleSelect(e.target.value)} sx={{
+              '& .MuiRadio-root.Mui-checked': {
+                color: '#7B52E1',
+              },
+            }}>
             {addressList.map((addr, index) => (
               <Card key={index} variant="outlined" sx={{ marginTop: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
@@ -187,7 +199,7 @@ const AddressModal = ({ open, onClose, onAddressChange }) => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>닫기</Button>
+        <Button onClick={onClose} sx={{ color: '#7B52E1' }}>닫기</Button>
       </DialogActions>
     </Dialog>
   );

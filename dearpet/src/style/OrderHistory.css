@@ -1,0 +1,118 @@
+.order-history-container {
+    background-color: white;
+    padding: 20px;
+    min-height: 100vh;
+    font-family: 'Noto Sans', sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .order-header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    position: relative;
+  }
+  
+  .order-status-container {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  
+  .order-status-item {
+    display: inline-block;
+    width: 32%;
+  }
+  
+  .order-item {
+    width: 100%;
+    max-width: 1024px;
+    margin: 20px auto;
+  }
+  
+  .order-date {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold !important;
+    margin-bottom: 10px !important;
+    font-size: 1.2rem !important;
+  }
+
+  .DeleteButton {
+    background-color: #7B52E1 !important;
+  }
+  
+  .order-paper {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    background-color: #F7F4FD !important;
+  }
+  
+  .order-image-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: #eee;
+    border-radius: 8px;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+  
+  .order-details {
+    display: inline-block;
+    vertical-align: top;
+    width: 100;
+    margin-left: 30px;
+    padding-top: 40px;
+  }
+  
+  .order-status {
+    color: #ff4d4f !important;
+    margin-bottom: 5px !important;
+  }
+  
+  .order-price {
+    font-weight: bold !important;
+    font-size: 1.2rem !important;
+    margin-bottom: 5px !important;
+  }
+  
+  .order-delivery{
+    margin-bottom: 5px !important;
+  }
+
+  .order-product {
+    margin-bottom: 5px !important;
+    color: gray;
+  }
+  
+  .order-button-container {
+    text-align: right !important;
+  }
+  
+  .order-button {
+    background-color: white !important;
+    color: #AC92ED !important;
+    border: 1px solid #AC92ED !important;
+    padding: 8px !important;
+    margin-right: 40px !important;
+    width: 20% !important;
+    height: 7vh !important;
+  }
+  
+  .order-button:hover {
+    background-color: #E0D7F8 !important;
+  }
+  

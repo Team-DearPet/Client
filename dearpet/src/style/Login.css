@@ -1,0 +1,50 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  padding: 40px;
+  width: 100% !important;
+  margin: 0 auto;
+  min-height: 100vh !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F7F4FD;
+}
+
+.login-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px; 
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); 
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: #7B52E1;
+  transform: scale(1.02); 
+}
+
+input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #7B52E1;
+  outline: none;
+}
+
+icon-image {
+  border-radius: 50%;
+}

@@ -1,0 +1,66 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .map-list-container {
+    display: flex; 
+    justify-content: center;
+    align-items: flex-start;
+    margin: 20px;
+    margin-left: 20%;
+  }
+  
+  
+  .map-box {
+    flex:1.2;
+    margin-right: 20px;
+    margin-top: 40px;
+  }
+  
+  .hospital-list {
+    margin-top: 40px;
+    flex: 1;
+    max-height: 600px;
+    overflow-y: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+  }
+  
+  .hospital-list::-webkit-scrollbar {
+    display: none; 
+  }
+  
+  .hospital-card {
+    background-color: #ECE5FB;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    padding-left: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    width: 60%;
+  }
+  
+  .hospital-card:hover {
+    background-color: #dacafc;
+  }
+  
+  .title {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .hospital-card.active {
+    background-color: #D3C3E5;
+    border: 2px solid black;
+    transition: background-color 0.3s ease, border 0.3s ease;
+  }
+  
+  .hospital-card p {
+    margin-top: 5px; 
+  }
